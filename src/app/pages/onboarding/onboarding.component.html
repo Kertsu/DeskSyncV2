@@ -1,1 +1,67 @@
-<p>onboarding works!</p>
+<div id="login-wrapper" class="grid m-0 p-0 h-screen" style="place-content: center;">
+    <div id=""
+      class="flex flex-column gap-3 sm:w-full md:flex-row md:w-10 lg:w-9 xl:w-6"
+    >
+      <div
+        class="flex flex-column w-full justify-content-center align-items-center pt-4 md:max-h-full xl:w-7"
+      >
+        <div class="w-full px-3 justify-content-center flex align-items-center">
+          <img
+            src="../../../assets/images/onboard.svg"
+            class="w-6"
+            alt="Onboarding Logo"
+          />
+        </div>
+    
+        <h2 class="font-normal text-center">Hey there, {{userService.getUser().username}}!</h2>
+
+        <div  class="mx-3 bg-primary-50 p-3 border-round border-1 border-primary-300">
+            <p class="text-primary-500">Welcome aboard! We're excited to have you join us. For security purposes, please take a moment to change your password. You're just one step away from diving into the system and making the most of your experience.</p>
+          </div>
+      </div>
+    
+      <form [formGroup]="changePasswordForm" (ngSubmit)="resetPassword()"
+        class="flex flex-column mx-3 gap-4 surface-ground p-3 border-round border-1 border-black-alpha-10 h-full md:justify-content-center xl:w-5"
+      >
+
+        <div class="flex flex-column justify-content-center gap-1">
+          <div class="flex flex-column gap-2">
+            <label for="password">New Password</label>
+            <input pInputText type="password" id="password" formControlName="password" [ngClass]="{'ng-invalid ng-dirty shake-error':errorMessage}"/>
+          </div>
+        </div>
+
+        <div class="flex flex-column justify-content-center gap-1">
+          <div class="flex flex-column gap-2">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+            [ngClass]="{'ng-invalid ng-dirty shake-error':errorMessage}" 
+              pInputText
+              id="confirmPassword"
+              type="password"
+              formControlName="confirmPassword"
+            />
+          </div>
+          <span *ngIf="errorMessage" class="text-red-500 text-sm">{{errorMessage}}</span>
+        </div>
+    
+        <div
+          [ngClass]="{ '!cursor-auto': isLoading }"
+          class="w-full cursor-pointer flex justify-content-center"
+        >
+          <button
+            pButton
+            pRipple
+            *ngIf="!isLoading"
+            class="w-full py-2 px-4 text-white rounded-sm p-button-primary"
+            label="Change password"
+            type="submit"
+          ></button>
+          <p-progressSpinner styleClass="w-2rem h-2rem"
+            *ngIf="isLoading"
+          ></p-progressSpinner>
+        </div>
+      </form>
+    </div>
+
+  </div>

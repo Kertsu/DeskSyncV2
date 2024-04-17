@@ -1,1 +1,306 @@
 <p>manage-desks works!</p>
+<div class="card">
+    <p-toast></p-toast>
+    <p-toolbar styleClass="mb-4 gap-2">
+      <ng-template pTemplate="left">
+        <button
+          pButton
+          pRipple
+          label="New"
+          icon="pi pi-plus"
+          class="p-button-success mr-2"
+          (click)="openNew()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          label="Delete"
+          icon="pi pi-trash"
+          class="p-button-danger"
+          (click)="deleteSelectedDesks()"
+          [disabled]="!selectedDesks || !selectedDesks.length"
+        ></button>
+      </ng-template>
+      <!-- <ng-template pTemplate="right">
+          <form [formGroup]="areaForm">
+            <p-dropdown
+            [style]="{minWidth: '220px'}"    
+            [options]="areas"
+            optionLabel="name"
+            [showClear]="true"
+            formControlName="selectedArea"
+            placeholder="Select an Area"
+            ></p-dropdown>
+          </form>
+        </ng-template> -->
+    </p-toolbar>
+  
+    <p-table
+      styleClass="p-datatable-gridlines"
+      #dt
+      [value]="desks"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="['deskNumber']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [(selection)]="selectedDesks"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+      [lazy]="true"
+      (onLazyLoad)="loadDesks($event)"
+      [selection]="selectedDesks"
+      (selectionChange)="onSelectionChange($event)"
+      [selectAll]="selectAll"
+      (selectAllChange)="onSelectAllChange($event)"
+      [totalRecords]="totalRecords"
+      [loading]="loading"
+    >
+      <ng-template pTemplate="caption">
+        <div
+          class="flex flex-column gap-2 md:flex-row align-items-center justify-content-between"
+        >
+          <h5 class="m-0">Manage Desks</h5>
+          <!-- <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="text"
+                (input)="applyFilterGlobal($event, 'equals')"
+                placeholder="Search..."
+              />
+            </span> -->
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th pSortableColumn="deskNumber">
+            Desk <p-sortIcon field="deskNumber"></p-sortIcon>
+          </th>
+          <th>Area</th>
+          <th>Desk Image</th>
+          <th>Workspace Essentials</th>
+          <!-- <th >
+              Rating
+            </th> -->
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-desk>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="desk"></p-tableCheckbox>
+          </td>
+          <td>
+            {{ desk.title }}
+          </td>
+          <td>{{ getArea(desk.area) }}</td>
+          <td>
+            <img
+              class="h-4rem shadow-4"
+              style="object-fit: contain"
+              [src]="getImage(desk)"
+              alt="Hotdesk"
+            />
+          </td>
+          <td>
+            <div
+              class="flex flex-column justify-content-start align-items-start gap-2"
+            >
+              <p-chip *ngFor="let essentials of desk.workspaceEssentials">{{
+                essentials
+              }}</p-chip>
+            </div>
+          </td>
+          <!-- <td>
+            <form [formGroup]="desksForm">
+              <p-rating [stars]="5" [formControlName]="desk.id" [readonly]="true" [cancel]="false"></p-rating>
+          </form>
+  
+            </td> -->
+          <td>
+            {{ desk.status }}
+          </td>
+          <td>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-success mr-2"
+              (click)="editDesk(desk)"
+            ></button>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-warning"
+              (click)="deleteDesk(desk)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+          In total there are {{ desks ? desks.length : 0 }} desks.
+        </div>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td class="text-center" colspan="7">No hotdesks found</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  
+  <form [formGroup]="createForm" (ngSubmit)="createDesk()">
+    <p-dialog
+      [(visible)]="deskDialog"
+      [style]="{ width: '450px' }"
+      header="Desk Details"
+      [modal]="true"
+      styleClass="p-fluid"
+      (onHide)="createForm.reset()"
+    >
+      <ng-template pTemplate="content">
+        <div class="field">
+          <label for="name">Desk number</label>
+          <input
+            type="text"
+            placeholder="Ex. 1"
+            formControlName="deskNumber"
+            pInputText
+            id="deskNumber"
+            required
+          />
+          <small
+            class="text-red-500"
+            *ngIf="
+              createForm.get('deskNumber')?.hasError('required') &&
+              createForm.get('deskNumber')?.dirty
+            "
+          >
+            Desk number is required.
+          </small>
+        </div>
+        <div class="field">
+          <label for="essentials">Workspace Essentials</label>
+          <p-multiSelect
+            [options]="wsEssentials"
+            formControlName="essentials"
+            optionLabel="label"
+            placeholder="Select Essentials"
+            appendTo="body"
+          ></p-multiSelect>
+          <small
+            class="text-red-500"
+            *ngIf="createForm.get('essentials')?.hasError('maxSelection')"
+          >
+            You can select a maximum of three (3) essentials.
+          </small>
+        </div>
+      </ng-template>
+  
+      <ng-template pTemplate="footer">
+        <button
+          pButton
+          pRipple
+          label="Cancel"
+          icon="pi pi-times"
+          class="p-button-text"
+          (click)="hideDialog()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          [disabled]="createForm.invalid"
+          type="submit"
+          label="Save"
+          icon="pi pi-check"
+          class="p-button-text"
+        ></button>
+      </ng-template>
+    </p-dialog>
+  </form>
+  
+  <form [formGroup]="editForm" (ngSubmit)="saveDesk()">
+    <p-dialog
+      [(visible)]="editDialog"
+      [style]="{ width: '450px' }"
+      header="Desk Details"
+      [modal]="true"
+      styleClass="p-fluid"
+      (onHide)="editForm.reset()"
+    >
+      <ng-template pTemplate="content">
+        <div class="field">
+          <label for="name">Status</label>
+          <p-dropdown
+            appendTo="body"
+            class="w-full"
+            formControlName="status"
+            [options]="[{ name: 'AVAILABLE' }, { name: 'UNAVAILABLE' }]"
+            optionLabel="name"
+            placeholder="Select status"
+          ></p-dropdown>
+        </div>
+        <div class="field">
+          <label for="essentials">Workspace Essentials</label>
+          <p-multiSelect
+            [options]="wsEssentials"
+            formControlName="essentials"
+            optionLabel="label"
+            placeholder="Select Essentials"
+            appendTo="body"
+          ></p-multiSelect>
+          <small
+            class="text-red-500"
+            *ngIf="editForm.get('essentials')?.hasError('maxSelection')"
+          >
+            You can select a maximum of three (3) essentials.
+          </small>
+        </div>
+        <div class="field">
+          <label
+            for="date"
+            *ngIf="this.editForm.get('status')?.value.name == 'AVAILABLE'"
+            >Make this desk unavailable for a specific date?</label
+          >
+          <p-calendar
+            *ngIf="this.editForm.get('status')?.value.name == 'AVAILABLE'"
+            [minDate]="minDate"
+            formControlName="date"
+            [showIcon]="true"
+            appendTo="body"
+          ></p-calendar>
+        </div>
+      </ng-template>
+  
+      <ng-template pTemplate="footer">
+        <button
+          pButton
+          pRipple
+          label="Cancel"
+          icon="pi pi-times"
+          class="p-button-text"
+          (click)="hideDialog()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          [disabled]="editForm.invalid"
+          type="submit"
+          label="Save"
+          icon="pi pi-check"
+          class="p-button-text"
+        ></button>
+      </ng-template>
+    </p-dialog>
+  </form>
+  
+  <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavigationService } from '../../shared/navigation.service';
 
 @Component({
   selector: 'app-not-found',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class NotFoundComponent {
 
+  constructor(protected navigationService: NavigationService){
+
+  }
+
+  
 }
