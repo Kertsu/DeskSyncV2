@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputTextModule } from 'primeng/inputtext';
@@ -17,7 +17,15 @@ import { AppFooterComponent } from './app.footer.component';
 import { AppConfigModule } from './config/config.module';
 import { AppSidebarComponent } from "./app.sidebar.component";
 import { AppLayoutComponent } from "./app.layout.component";
-
+import {OverlayPanelModule} from 'primeng/overlaypanel'
+import { MessagesModule } from 'primeng/messages';
+import { TableModule } from 'primeng/table';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { SpeedDialModule } from 'primeng/speeddial';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FileUploadModule } from 'primeng/fileupload';
+import { RatingModule } from 'primeng/rating';
 @NgModule({
     declarations: [
         AppMenuitemComponent,
@@ -29,17 +37,26 @@ import { AppLayoutComponent } from "./app.layout.component";
     ],
     imports: [
         BrowserModule,
-        FormsModule,
+        TableModule,
+        ReactiveFormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
         InputTextModule,
         SidebarModule,
         BadgeModule,
         RadioButtonModule,
+        MessagesModule,
         InputSwitchModule,
         RippleModule,
         RouterModule,
-        AppConfigModule
+        OverlayPanelModule,
+        AppConfigModule,
+        ProgressBarModule,
+        SpeedDialModule,
+        DialogModule,
+        InputTextareaModule,
+        FileUploadModule,
+        RatingModule
     ],
     exports: [AppLayoutComponent]
 })
