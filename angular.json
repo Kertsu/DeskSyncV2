@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DeskSyncV2": {
+    "desksyncv2": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/desk-sync-v2",
+            "outputPath": "dist/desksyncv2",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -35,9 +35,16 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              {"input" :"src/app/themes/lara-light.css", "bundleName": "lara-light", "inject": false},
+              {"input" :"src/app/themes/lara-dark.css", "bundleName": "lara-dark", "inject": false},
+              {"input" :"src/app/themes/bootstrap4-light-blue.css", "bundleName": "bootstrap4-light-blue", "inject": false},
+              {"input" :"src/app/themes/bootstrap4-dark-blue.css", "bundleName": "bootstrap4-dark-blue", "inject": false},
+              {"input" :"src/app/themes/bootstrap4-light-purple.css", "bundleName": "bootstrap4-light-purple", "inject": false},
+              {"input" :"src/app/themes/bootstrap4-dark-purple.css", "bundleName": "bootstrap4-dark-purple", "inject": false},
+              {"input" :"src/app/themes/tailwind-light.css", "bundleName": "tailwind-light", "inject": false}
             ],
-            "scripts": []
+            "scripts": ["src/assets/imageMapResizer.min.js"]
           },
           "configurations": {
             "production": {
@@ -45,7 +52,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -67,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "DeskSyncV2:build:production"
+              "buildTarget": "desksyncv2:build:production"
             },
             "development": {
-              "buildTarget": "DeskSyncV2:build:development"
+              "buildTarget": "desksyncv2:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +85,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "DeskSyncV2:build"
+            "buildTarget": "desksyncv2:build"
           }
         },
         "test": {
