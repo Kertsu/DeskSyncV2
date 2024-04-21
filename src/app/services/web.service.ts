@@ -13,9 +13,9 @@ interface ResetPasswordData {
   providedIn: 'root',
 })
 export class WebService {
-  baseUserURL: string = 'http://localhost:8000/api/users';
-  baseHotdeskURL: string = 'http://localhost:8000/api/hotdesks';
-  baseReservationURL: string = 'http://localhost:8000/api/reservations';
+  baseUserURL: string = 'http://localhost:5000/api/users';
+  baseHotdeskURL: string = 'http://localhost:5000/api/hotdesks';
+  baseReservationURL: string = 'http://localhost:5000/api/reservations';
 
   constructor(private http: HttpClient) {}
 

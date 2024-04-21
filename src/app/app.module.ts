@@ -84,7 +84,7 @@ import { OnboardingComponent } from './pages/onboarding/onboarding.component';
 
 const config: SocketIoConfig = {
   // url: 'https://hdbsv2.onrender.com', options: {transports: ['websocket']}
-  url: 'http://localhost:8000',
+  url: 'http://localhost:5000',
   options: { transports: ['websocket'] },
 };
 
