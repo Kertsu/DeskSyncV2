@@ -119,4 +119,8 @@ export class WebService {
   getSwitchValue() {
     return this.http.get(`${this.baseSwitchUrl}`);
   }
+
+  handleSwitch(autoAccepting: boolean){
+    return this.http.put(`${this.baseSwitchUrl}`, { autoAccepting  });
+  }
 }

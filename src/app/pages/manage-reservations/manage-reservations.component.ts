@@ -7,6 +7,7 @@ import { WebService } from '../../services/web.service';
 import { forkJoin } from 'rxjs';
 import { User } from '../../models/User';
 import { Reservation } from '../../models/Reservation';
+import {MessageService as LayoutMessageService} from '../../utils/message.service'
 
 @Component({
   selector: 'app-manage-reservations',
@@ -79,7 +80,8 @@ export class ManageReservationsComponent {
     private confirmationService: ConfirmationService,
     private fb: FormBuilder,
     private webService: WebService,
-    private paramsBuilder: ParamsBuilderService
+    private paramsBuilder: ParamsBuilderService,
+    private layoutMessageService: LayoutMessageService
   ) {}
 
   ngOnInit() {
@@ -287,7 +289,6 @@ export class ManageReservationsComponent {
   }
 
   confirmChange(oldValue: boolean, newValue: boolean) {
-    console.log(oldValue, 'oldv')
     this.confirmationService.confirm({
       message: `Are you sure you want to turn ${
         newValue ? 'on' : 'off'
@@ -297,11 +298,22 @@ export class ManageReservationsComponent {
       accept: () => {
         this.checked.setValue(newValue);
         this.oldValue = newValue
-        console.log('accept', this.checked.value)
+        this.webService.handleSwitch(newValue).subscribe({
+          next: (res: any) => {
+            const value = res.updatedSwitch.autoAccepting
+            if (value !== null){
+              this.layoutMessageService.addMessage('success', '', `You turned ${value ? 'on' : 'off'} auto accepting`, 3000)
+            }
+          },
+          error: (error) => {
+            console.log(error)
+          },
+          complete: () => {
+          },
+        })
       },
       reject: () => {
         this.checked.setValue(oldValue);
-        console.log('reject', this.checked.value)
       },
     });
   }
