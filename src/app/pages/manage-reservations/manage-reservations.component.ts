@@ -70,6 +70,8 @@ export class ManageReservationsComponent {
 
   submitted: boolean = false;
 
+  oldValue!: boolean;
+
   @ViewChild('dt') dt: Table | undefined;
 
   constructor(
@@ -80,7 +82,32 @@ export class ManageReservationsComponent {
     private paramsBuilder: ParamsBuilderService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.webService.getSwitchValue().subscribe({
+      next: (res: any) => {
+        console.log(res);
+        const switchValue = res.autoAcceptSwitch.autoAccepting;
+
+        this.checked.setValue(switchValue, {emitEvent: false});
+        this.oldValue = switchValue
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+
+    this.checked.valueChanges.subscribe({
+      next: (newValue) => {
+        if (newValue !== null) {
+          console.log(newValue, 'vc')
+          this.confirmChange(this.oldValue,newValue);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
 
   applyFilterGlobal($event: any, stringVal: any) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
@@ -180,11 +207,11 @@ export class ManageReservationsComponent {
     }
   }
 
-  handleReservation(reservation:Reservation,action: string) {
+  handleReservation(reservation: Reservation, action: string) {
     this.webService.handleReservation(reservation, action).subscribe({
       next: () => {
         this.messageService.add({
-          severity:'success',
+          severity: 'success',
           summary: 'Successful',
           detail: `Reservation ${action == 'reject' ? 'rejected' : 'approved'}`,
           life: 3000,
@@ -198,25 +225,27 @@ export class ManageReservationsComponent {
           life: 3000,
         });
       },
-      complete: ()=>{
-        if (action == 'approve'){
+      complete: () => {
+        if (action == 'approve') {
           for (const r of this.reservations) {
             if (r.id == reservation.id) {
               r.status = 'APPROVED';
             }
           }
-        } else{
-          this.reservations = this.reservations.filter(r => r.id !== reservation.id)
+        } else {
+          this.reservations = this.reservations.filter(
+            (r) => r.id !== reservation.id
+          );
         }
-      }
-    })
+      },
+    });
   }
 
   abortReservation(reservation: Reservation) {
     this.webService.onAbort(reservation).subscribe({
       next: () => {
         this.messageService.add({
-          severity:'success',
+          severity: 'success',
           summary: 'Successful',
           detail: 'Reservation aborted',
           life: 3000,
@@ -231,9 +260,11 @@ export class ManageReservationsComponent {
         });
       },
       complete: () => {
-        this.reservations = this.reservations.filter(r => r.id !== reservation.id)
-      }
-    })
+        this.reservations = this.reservations.filter(
+          (r) => r.id !== reservation.id
+        );
+      },
+    });
   }
 
   confirm(reservation: Reservation, action: string) {
@@ -242,15 +273,35 @@ export class ManageReservationsComponent {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        switch(action){
+        switch (action) {
           case 'approve':
-          case'reject':
+          case 'reject':
             this.handleReservation(reservation, action);
             break;
           case 'abort':
             this.abortReservation(reservation);
             break;
         }
+      },
+    });
+  }
+
+  confirmChange(oldValue: boolean, newValue: boolean) {
+    console.log(oldValue, 'oldv')
+    this.confirmationService.confirm({
+      message: `Are you sure you want to turn ${
+        newValue ? 'on' : 'off'
+      } auto accepting?`,
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.checked.setValue(newValue);
+        this.oldValue = newValue
+        console.log('accept', this.checked.value)
+      },
+      reject: () => {
+        this.checked.setValue(oldValue);
+        console.log('reject', this.checked.value)
       },
     });
   }

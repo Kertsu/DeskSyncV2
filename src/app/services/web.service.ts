@@ -16,6 +16,7 @@ export class WebService {
   baseUserURL: string = 'http://localhost:5000/api/users';
   baseHotdeskURL: string = 'http://localhost:5000/api/hotdesks';
   baseReservationURL: string = 'http://localhost:5000/api/reservations';
+  baseSwitchUrl: string = 'http://localhost:5000/api/switch';
 
   constructor(private http: HttpClient) {}
 
@@ -74,38 +75,48 @@ export class WebService {
     return this.http.get(`${this.baseHotdeskURL}`, { params });
   }
 
-  createHotdesk(desk: {deskNumber: number, essentials: string[]}){
-    return this.http.post(`${this.baseHotdeskURL}`, desk)
+  createHotdesk(desk: { deskNumber: number; essentials: string[] }) {
+    return this.http.post(`${this.baseHotdeskURL}`, desk);
   }
 
-  updateHotdesk(desk: Hotdesk, data: {essentials: string[], status: string}){
-    return this.http.put(`${this.baseHotdeskURL}/${desk.id}`, data)
+  updateHotdesk(desk: Hotdesk, data: { essentials: string[]; status: string }) {
+    return this.http.put(`${this.baseHotdeskURL}/${desk.id}`, data);
   }
 
-  deleteHotdesk(desk: Hotdesk){
-    return this.http.delete(`${this.baseHotdeskURL}/${desk.id}`)
+  deleteHotdesk(desk: Hotdesk) {
+    return this.http.delete(`${this.baseHotdeskURL}/${desk.id}`);
   }
 
   // RESERVATION
-  onReserve(data: ReservationRequest){
-    return this.http.post(`${this.baseReservationURL}/reserve`, data)
+  onReserve(data: ReservationRequest) {
+    return this.http.post(`${this.baseReservationURL}/reserve`, data);
   }
 
-  getUnavailabilities(params? : any){
+  getUnavailabilities(params?: any) {
     return this.http.get(`${this.baseReservationURL}`, { params });
   }
 
-  onAbort(reservation: Reservation){
-    return this.http.delete(`${this.baseReservationURL}/abort/${reservation.id}`)
+  onAbort(reservation: Reservation) {
+    return this.http.delete(
+      `${this.baseReservationURL}/abort/${reservation.id}`
+    );
   }
 
-  getReservations(params?: any){
-    return this.http.get(`${this.baseReservationURL}/`, {params})
+  getReservations(params?: any) {
+    return this.http.get(`${this.baseReservationURL}/`, { params });
   }
 
-  handleReservation(reservation: Reservation, action: string){
-    return this.http.patch(`${this.baseReservationURL}/${reservation.id}/action/${action}`, {})
+  handleReservation(reservation: Reservation, action: string) {
+    return this.http.patch(
+      `${this.baseReservationURL}/${reservation.id}/action/${action}`,
+      {}
+    );
   }
 
   // AUDIT TRAILS
+
+  // SWITCH
+  getSwitchValue() {
+    return this.http.get(`${this.baseSwitchUrl}`);
+  }
 }
