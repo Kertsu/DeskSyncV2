@@ -303,7 +303,7 @@ export class ManageDesksComponent {
   }
 
   getImage(desk: any) {
-    return `../../assets/images/map/individual/${desk.deskNumber}.png`;
+    return `../../assets/images/map/desk-area/${desk.deskNumber}.png`;
   }
 
   getArea(area: number) {

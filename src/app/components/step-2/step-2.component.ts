@@ -32,7 +32,7 @@ export class Step2Component implements OnInit {
   areaDataList = [
     {
       id: 1,
-      imagePath: '../../assets/images/map/Area 1 Numbered.png',
+      imagePath: '../../assets/images/map/office-area/Area 1 Numbered.png',
       desks: [
         {
           deskNumber: 1,
@@ -194,7 +194,7 @@ export class Step2Component implements OnInit {
     },
     {
       id: 2,
-      imagePath: '../../assets/images/map/Area 2 Numbered.png',
+      imagePath: '../../assets/images/map/office-area/Area 2 Numbered.png',
       desks: [
         {
           deskNumber: 27,
@@ -362,7 +362,7 @@ export class Step2Component implements OnInit {
     },
     {
       id: 3,
-      imagePath: '../../assets/images/map/Area 3 Numbered.png',
+      imagePath: '../../assets/images/map/office-area/Area 3 Numbered.png',
       desks: [
         {
           deskNumber: 54,
@@ -578,9 +578,11 @@ export class Step2Component implements OnInit {
   }
 
   handleSelectDesk(desk: Hotdesk) {
+    console.log(desk, 'handle');
     this.formGroup
       .get('selectedDesk')
       ?.setValue({ deskNumber: desk.deskNumber, title: desk.title });
+    console.log(this.formGroup.value);
   }
 
   confirm() {
@@ -593,7 +595,7 @@ export class Step2Component implements OnInit {
       mode: 0,
     };
 
-    sessionStorage.setItem('hdbsv2-desk', JSON.stringify(this.desk))
+    sessionStorage.setItem('hdbsv2-desk', JSON.stringify(this.desk));
 
     this.reservationService.setReservation(reservation);
     this.router.navigate(['/hdbsv2/book/confirmation']);
@@ -621,14 +623,11 @@ export class Step2Component implements OnInit {
   }
 
   getOptions() {
-    for (const desk of this.desks) {
-      const option = {
-        deskNumber: desk.deskNumber,
-        title: desk.title,
-      };
-
-      this.options.push(option);
-    }
+    this.options = this.desks.map((desk) => ({
+      deskNumber: desk.deskNumber,
+      title: desk.title,
+    }));
+    console.log(this.options);
   }
 
   reset() {
@@ -638,7 +637,7 @@ export class Step2Component implements OnInit {
   }
 
   getImage() {
-    return `../../assets/images/map/individual/${this.desk.deskNumber}.png`;
+    return `../../assets/images/map/desk-area/${this.desk.deskNumber}.png`;
   }
 
   getReservations(callback?: () => void) {
@@ -648,7 +647,7 @@ export class Step2Component implements OnInit {
     this.isLoading = true;
     this.webService.getReservations(params).subscribe({
       next: (res: any) => {
-        console.log('reservations', res)
+        console.log('reservations', res);
         this.reservations = res.reservations;
         if (callback) {
           callback();
@@ -704,6 +703,8 @@ export class Step2Component implements OnInit {
   }
 
   initialize() {
+    console.log(this.area);
+
     setTimeout(() => {
       imageMapResize();
     }, 300);

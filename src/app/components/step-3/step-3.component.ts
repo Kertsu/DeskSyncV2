@@ -43,7 +43,7 @@ export class Step3Component implements OnInit{
   }
 
   getImage(){
-    return `../../assets/images/map/individual/${this.desk.deskNumber}.png`
+    return `../../assets/images/map/desk-area/${this.desk.deskNumber}.png`
   }
 
   voidReservation(){

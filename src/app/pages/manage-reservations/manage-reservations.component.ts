@@ -127,7 +127,7 @@ export class ManageReservationsComponent {
   }
 
   getImage(reservation: any) {
-    return `../../assets/images/map/individual/${reservation.deskNumber}.png`;
+    return `../../assets/images/map/desk-area/${reservation.deskNumber}.png`;
   }
 
   loadReservations(event: any) {
