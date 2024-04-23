@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { ErrorService } from './error.service';
 
 interface User {
   id: string;
@@ -13,7 +14,7 @@ interface User {
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private errorService: ErrorService) {}
 
   setUser(user: User) {
     localStorage.setItem('hdbsv2User', JSON.stringify(user));
@@ -31,6 +32,8 @@ export class UserService {
     localStorage.removeItem('hdbsv2User');
     localStorage.removeItem('hdbsv2Token');
     sessionStorage.clear()
+
+    this.errorService.clearErrorMessage()
 
     this.router.navigate(['/login']);
   }

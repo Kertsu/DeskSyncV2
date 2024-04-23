@@ -101,6 +101,8 @@ export const resetPasswordGuard: CanActivateFn = (route, state) => {
 export const onboardingGuard: CanActivateFn = (route, state) => {
   const webService = inject(WebService);
   const router = inject(Router);
+  const errorService = inject(ErrorService);
+
   return webService.getSelf().pipe(
     map((res: any) => {
       console.log(res);
@@ -111,10 +113,12 @@ export const onboardingGuard: CanActivateFn = (route, state) => {
       return true;
     }),
     catchError((err) => {
-      console.log(err);
+      const errorMessage = err.error.error
       localStorage.removeItem('hdbsv2User')
       localStorage.removeItem('hdbsv2Token')
+      errorService.setErrorMessage(errorMessage);
       router.navigate(['/login']);
+
       return of(false);
     })
   );

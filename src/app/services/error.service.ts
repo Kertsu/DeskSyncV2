@@ -13,6 +13,10 @@ export class ErrorService {
   setErrorMessage(message: string | null): void {
     this.errorMessageSubject.next(message);
   }
+
+  clearErrorMessage(): void {
+    this.errorMessageSubject.next(null);
+  }
 }
 
 
