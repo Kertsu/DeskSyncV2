@@ -156,19 +156,37 @@ export class ManageUsersComponent {
   }
 
   deleteUser(user: any) {
+    console.log(user)
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + user.username + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.users = this.users.filter((val) => val.id !== user.id);
-        this.user = {};
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'User Deleted',
-          life: 3000,
-        });
+        this.webService.deleteUser(user).subscribe({
+          next: (res:any) => {
+           console.log(res)
+          },
+          error: (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: err.error.error,
+              detail: '',
+              life: 3000,
+            });
+          },
+          complete: () => {
+            this.users = this.users.filter((val) => val.id !== user.id);
+            this.totalRecords = this.users.length
+            this.user = {};
+            this.selectedUsers = []
+            this.messageService.add({
+              severity:'success',
+              summary: 'Successful',
+              detail: 'User Deleted',
+              life: 3000,
+            });
+          }
+        })
       },
     });
   }
@@ -194,6 +212,8 @@ export class ManageUsersComponent {
         next: (res: any) => {
           console.log(res);
           this.submitted = false;
+          this.users.push(res.user)
+          this.totalRecords = this.users.length
           this.createForm.reset();
           this.messageService.add({
             severity:'success',

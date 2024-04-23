@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Hotdesk } from '../models/Hotdesk';
 import { ReservationRequest } from '../requests/ReservationRequest';
 import { Reservation } from '../models/Reservation';
+import { User } from '../models/User';
 
 interface ResetPasswordData {
   password: string;
@@ -72,6 +73,10 @@ export class WebService {
 
   registerUser(email: string){
     return this.http.post(`${this.baseUserURL}/register`, {email})
+  }
+
+  deleteUser(user: User){
+    return this.http.delete(`${this.baseUserURL}/${user.id || user._id}`)
   }
 
   // DESK
