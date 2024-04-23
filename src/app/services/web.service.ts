@@ -70,6 +70,10 @@ export class WebService {
     );
   }
 
+  registerUser(email: string){
+    return this.http.post(`${this.baseUserURL}/register`, {email})
+  }
+
   // DESK
   getDesks(params?: any) {
     return this.http.get(`${this.baseHotdeskURL}`, { params });

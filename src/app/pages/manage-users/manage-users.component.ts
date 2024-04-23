@@ -186,6 +186,38 @@ export class ManageUsersComponent {
 
   createUser() {
     this.submitted = true;
+
+    const email = this.createForm.get('email')?.value
+
+    if (email && this.createForm.valid){
+      this.webService.registerUser(email).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          this.submitted = false;
+          this.createForm.reset();
+          this.messageService.add({
+            severity:'success',
+            summary: 'Successful',
+            detail: 'User Created',
+            life: 3000,
+          });
+        },
+        error: (error) => {
+          this.submitted = false;
+          this.createUserDialog = false;
+
+          this.messageService.add({
+            severity: 'error',
+            summary: `${error.error.error}`,
+            detail: '',
+            life: 3000,
+          });
+        }, complete: () => {
+          this.submitted = false;
+          this.createUserDialog = false;
+        }
+      })
+    }
   }
 
   saveUser() {
