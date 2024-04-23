@@ -112,6 +112,8 @@ export const onboardingGuard: CanActivateFn = (route, state) => {
     }),
     catchError((err) => {
       console.log(err);
+      localStorage.removeItem('hdbsv2User')
+      localStorage.removeItem('hdbsv2Token')
       router.navigate(['/login']);
       return of(false);
     })
