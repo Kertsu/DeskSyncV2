@@ -79,6 +79,14 @@ export class WebService {
     return this.http.delete(`${this.baseUserURL}/${user.id || user._id}`)
   }
 
+  updateUser(user: User, data: any){
+    return this.http.patch(`${this.baseUserURL}/${user.id || user._id}`, {})
+  }
+
+  handleUser(user: User, action: string){
+    return this.http.patch(`${this.baseUserURL}/${user.id || user._id}/action/${action}`, {})
+  }
+
   // DESK
   getDesks(params?: any) {
     return this.http.get(`${this.baseHotdeskURL}`, { params });

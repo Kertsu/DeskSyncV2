@@ -4,11 +4,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import {
   FormBuilder,
   FormControl,
-  FormGroup,
   Validators,
 } from '@angular/forms';
 import { ParamsBuilderService } from '../../services/params-builder.service';
 import { WebService } from '../../services/web.service';
+import { User } from '../../models/User';
 
 interface Role {
   label: string;
@@ -32,9 +32,9 @@ export class ManageUsersComponent {
   role = new FormControl();
   status = new FormControl();
 
-  users!: any[];
+  users!: User[];
 
-  user!: any;
+  user!: User;
 
   selectedUsers!: any[];
 
@@ -57,7 +57,6 @@ export class ManageUsersComponent {
       ],
     ],
     role: new FormControl<Role | null>(null),
-    status: new FormControl<Status | null>(null),
   });
 
   createForm = this.fb.group({
@@ -145,10 +144,6 @@ export class ManageUsersComponent {
       username: user.username,
       email: user.email,
       role,
-      status:
-        user.isDisabled === 1
-          ? { label: 'Disable', value: 1 }
-          : { label: 'Enable', value: 0 },
     });
 
     this.user = { ...user };
@@ -169,8 +164,8 @@ export class ManageUsersComponent {
           error: (err) => {
             this.messageService.add({
               severity: 'error',
-              summary: err.error.error,
-              detail: '',
+              summary: 'Error',
+              detail: err.error.error,
               life: 3000,
             });
           },
@@ -243,7 +238,7 @@ export class ManageUsersComponent {
   saveUser() {
     this.submitted = true;
 
-    if (this.user.name?.trim()) {
+    if (this.user.username?.trim()) {
       if (this.user.id) {
         this.users[this.findIndexById(this.user.id)] = this.user;
         this.messageService.add({
@@ -253,7 +248,7 @@ export class ManageUsersComponent {
           life: 3000,
         });
       } else {
-        this.user.image = 'user-placeholder.svg';
+        // this.user.image = 'user-placeholder.svg';
         this.users.push(this.user);
         this.messageService.add({
           severity: 'success',
@@ -314,5 +309,38 @@ export class ManageUsersComponent {
       this.selectedUsers = [];
       this.selectAll = false;
     }
+  }
+
+  handleUserStatus(user: User, action : string){
+    this.confirmationService.confirm({
+      message: `Are you sure you want to ${action} ${user.username}?`,
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.webService.handleUser(user, action).subscribe({
+          next: (res: any) => {
+            console.log(res);
+           
+            this.messageService.add({
+              severity:'success',
+              summary: 'Successful',
+              detail: res.message,
+              life: 3000,
+            });
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              detail: `${error.error.error}`,
+              summary: 'Error',
+              life: 3000,
+            });
+          }, complete: () => {
+            user.isDisabled = user.isDisabled === 1 ? 0 : 1;
+            this.users = this.users.map(u => u.id === user.id ? user : u);
+          }
+        })
+      },
+    });
   }
 }
