@@ -80,7 +80,7 @@ export class WebService {
   }
 
   updateUser(user: User, data: any){
-    return this.http.patch(`${this.baseUserURL}/${user.id || user._id}`, {})
+    return this.http.patch(`${this.baseUserURL}/${user.id || user._id}`, data)
   }
 
   handleUser(user: User, action: string){

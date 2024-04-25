@@ -1,11 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import {
-  FormBuilder,
-  FormControl,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ParamsBuilderService } from '../../services/params-builder.service';
 import { WebService } from '../../services/web.service';
 import { User } from '../../models/User';
@@ -151,15 +147,15 @@ export class ManageUsersComponent {
   }
 
   deleteUser(user: any) {
-    console.log(user)
+    console.log(user);
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + user.username + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.webService.deleteUser(user).subscribe({
-          next: (res:any) => {
-           console.log(res)
+          next: (res: any) => {
+            console.log(res);
           },
           error: (err) => {
             this.messageService.add({
@@ -171,17 +167,17 @@ export class ManageUsersComponent {
           },
           complete: () => {
             this.users = this.users.filter((val) => val.id !== user.id);
-            this.totalRecords = this.users.length
+            this.totalRecords = this.users.length;
             this.user = {};
-            this.selectedUsers = []
+            this.selectedUsers = [];
             this.messageService.add({
-              severity:'success',
+              severity: 'success',
               summary: 'Successful',
               detail: 'User Deleted',
               life: 3000,
             });
-          }
-        })
+          },
+        });
       },
     });
   }
@@ -200,18 +196,18 @@ export class ManageUsersComponent {
   createUser() {
     this.submitted = true;
 
-    const email = this.createForm.get('email')?.value
+    const email = this.createForm.get('email')?.value;
 
-    if (email && this.createForm.valid){
+    if (email && this.createForm.valid) {
       this.webService.registerUser(email).subscribe({
         next: (res: any) => {
           console.log(res);
           this.submitted = false;
-          this.users.push(res.user)
-          this.totalRecords = this.users.length
+          this.users.push(res.user);
+          this.totalRecords = this.users.length;
           this.createForm.reset();
           this.messageService.add({
-            severity:'success',
+            severity: 'success',
             summary: 'Successful',
             detail: 'User Created',
             life: 3000,
@@ -227,53 +223,51 @@ export class ManageUsersComponent {
             detail: '',
             life: 3000,
           });
-        }, complete: () => {
+        },
+        complete: () => {
           this.submitted = false;
           this.createUserDialog = false;
-        }
-      })
+        },
+      });
     }
   }
 
-  saveUser() {
+  saveUser(user: User) {
     this.submitted = true;
 
-    if (this.user.username?.trim()) {
-      if (this.user.id) {
-        this.users[this.findIndexById(this.user.id)] = this.user;
+    const data = {
+      username: this.editForm.get('username')?.value,
+      role: this.editForm.get('role')?.value?.value,
+    };
+
+    console.log(data);
+
+    this.webService.updateUser(user, data).subscribe({
+      next: (res: any) => {
+        console.log(res)
+        this.users = this.users.map((u) => (u.id === user.id ? res.updatedUser : u));
+      },
+      error: (error) => {
         this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'User Updated',
+          severity: 'error',
+          summary: `Error`,
+          detail: error.error.error,
           life: 3000,
         });
-      } else {
-        // this.user.image = 'user-placeholder.svg';
-        this.users.push(this.user);
+        this.userDialog = false;
+
+      },
+      complete: () => {
         this.messageService.add({
           severity: 'success',
-          summary: 'Successful',
-          detail: 'User Created',
+          summary: `Success`,
+          detail: `You updated ${user.username}`,
           life: 3000,
         });
+
+        this.userDialog = false;
       }
-
-      this.users = [...this.users];
-      this.userDialog = false;
-      this.user = {};
-    }
-  }
-
-  findIndexById(id: string): number {
-    let index = -1;
-    for (let i = 0; i < this.users.length; i++) {
-      if (this.users[i]._id === id) {
-        index = i;
-        break;
-      }
-    }
-
-    return index;
+    });
   }
 
   loadUsers(event: any) {
@@ -311,7 +305,7 @@ export class ManageUsersComponent {
     }
   }
 
-  handleUserStatus(user: User, action : string){
+  handleUserStatus(user: User, action: string) {
     this.confirmationService.confirm({
       message: `Are you sure you want to ${action} ${user.username}?`,
       header: 'Confirm',
@@ -320,9 +314,9 @@ export class ManageUsersComponent {
         this.webService.handleUser(user, action).subscribe({
           next: (res: any) => {
             console.log(res);
-           
+
             this.messageService.add({
-              severity:'success',
+              severity: 'success',
               summary: 'Successful',
               detail: res.message,
               life: 3000,
@@ -335,11 +329,12 @@ export class ManageUsersComponent {
               summary: 'Error',
               life: 3000,
             });
-          }, complete: () => {
+          },
+          complete: () => {
             user.isDisabled = user.isDisabled === 1 ? 0 : 1;
-            this.users = this.users.map(u => u.id === user.id ? user : u);
-          }
-        })
+            this.users = this.users.map((u) => (u.id === user.id ? user : u));
+          },
+        });
       },
     });
   }

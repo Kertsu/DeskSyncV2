@@ -246,11 +246,10 @@
         <label for="email">Email</label>
         <input
           type="text"
-          formControlName="email"
           pInputText
           id="email"
-          required
-          autofocus
+          [value]="editForm.get('email')?.value"
+          [disabled]="true"
         />
       </div>
       <div class="field">
@@ -282,7 +281,7 @@
       label="Save"
       icon="pi pi-check"
       class="p-button-text"
-      (click)="saveUser()"
+      (click)="saveUser(user)"
     ></button>
   </ng-template>
 </p-dialog>
