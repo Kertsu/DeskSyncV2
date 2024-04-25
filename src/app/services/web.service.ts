@@ -87,6 +87,10 @@ export class WebService {
     return this.http.patch(`${this.baseUserURL}/${user.id || user._id}/action/${action}`, {})
   }
 
+  changePassword(data: { currentPassword: string, newPassword: string, confirmPassword: string }){
+    return this.http.patch(`${this.baseUserURL}/change-password`, data)
+  }
+
   // DESK
   getDesks(params?: any) {
     return this.http.get(`${this.baseHotdeskURL}`, { params });

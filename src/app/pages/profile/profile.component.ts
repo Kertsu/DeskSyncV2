@@ -1,20 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import {
+  FormGroup,
+  FormBuilder,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { useAnimation, transition, trigger } from '@angular/animations';
 import { tada } from 'ng-animate';
 import confetti from 'canvas-confetti';
 import { UiService } from '../../services/ui.service';
+import { WebService } from '../../services/web.service';
+import { MessageService as LayoutMessageService } from '../../utils/message.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
   providers: [MessageService],
-  animations: [
-    trigger('tada', [transition('* => *', useAnimation(tada))])
-  ],
+  animations: [trigger('tada', [transition('* => *', useAnimation(tada))])],
 })
 export class ProfileComponent implements OnInit {
   informationForm!: FormGroup;
@@ -26,16 +31,30 @@ export class ProfileComponent implements OnInit {
   originalFormValue: any;
   avatarSource: string = this.userService.getUser()?.avatar;
   bannerSource: string = this.userService.getUser()?.banner;
-  bounceState:any;
+  bounceState: any;
   successShown: boolean = false;
 
   constructor(
     protected userService: UserService,
     private fb: FormBuilder,
     private messageService: MessageService,
-    private uiService: UiService
+    private uiService: UiService,
+    private webService: WebService,
+    private layoutMessageService: LayoutMessageService
   ) {
-    this.changePasswordForm = new FormGroup({});
+    this.changePasswordForm = this.fb.group({
+      currentPassword: ['', Validators.required],
+      newPassword: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(
+            '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{15,}$'
+          ),
+        ],
+      ],
+      confirmPassword: ['', Validators.required],
+    });
     this.informationForm = this.fb.group({
       username: '',
       description: '',
@@ -81,12 +100,12 @@ export class ProfileComponent implements OnInit {
     this.avatarSource = this.userService.getUser()?.avatar;
     this.bannerSource = this.userService.getUser()?.banner;
     this.messageShown = false;
-    this.uiService.setMessageShown(this.messageShown)
+    this.uiService.setMessageShown(this.messageShown);
   }
 
   showAlert() {
     this.messageShown = true;
-    this.uiService.setMessageShown(this.messageShown)
+    this.uiService.setMessageShown(this.messageShown);
     this.messageService.add({
       key: 'bc',
       severity: 'custom',
@@ -130,15 +149,42 @@ export class ProfileComponent implements OnInit {
     this.uploadPopupShown = true;
   }
 
-  changePassword(){
-    this.visible = false;
-    this.successShown = true;
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
+  changePassword() {
+    const data = {
+      currentPassword: this.changePasswordForm.value.currentPassword,
+      newPassword: this.changePasswordForm.value.newPassword,
+      confirmPassword: this.changePasswordForm.value.confirmPassword,
+    };
+
+    this.webService.changePassword(data).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.layoutMessageService.addMessage(
+          'success',
+          res.message,
+          'Success',
+          3000
+        );
+      },
+      error: (error) => {
+        this.layoutMessageService.addMessage(
+          'error',
+          error.error.error,
+          'Error',
+          3000
+        );
+        this.visible = false;
+      },
+      complete: () => {
+        this.visible = false;
+        this.successShown = true;
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
+      },
     });
+    // this.webService.changePassword
   }
-
-
 }

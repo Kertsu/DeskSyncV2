@@ -87,3 +87,9 @@ ul {
   object-fit: cover;
   object-position: center;
 }
+
+
+::ng-deep p-password>div,
+::ng-deep p-password>div>input{
+  width: 100%;
+}
