@@ -142,7 +142,7 @@
     <ng-template pTemplate="body" let-user>
       <tr>
         <td>
-          <p-tableCheckbox [value]="user"></p-tableCheckbox>
+          <p-tableCheckbox *ngIf="userService.getUser().id != user.id" [value]="user"></p-tableCheckbox>
         </td>
         <!-- <td>
             <p-avatar image="{{ user.avatar }}" shape="circle"></p-avatar>
@@ -160,20 +160,26 @@
         </td>
         <td>
           <button
+            [disabled]="userService.getUser().id == user.id"
             pButton
             pRipple
             icon="pi pi-pencil"
             class="p-button-rounded p-button-success mr-2"
             (click)="editUser(user)"
+            pTooltip="Edit"
+            tooltipPosition="top"
           ></button>
         </td>
         <td>
           <button
+            [disabled]="userService.getUser().id == user.id"
             pButton
             pRipple
             icon="pi pi-trash"
             class="p-button-rounded p-button-warning"
             (click)="deleteUser(user)"
+            pTooltip="Delete"
+            tooltipPosition="top"
           ></button>
         </td>
       </tr>
@@ -208,11 +214,11 @@
       <button
         pButton
         pRipple
-        [icon]="user.isDisabled ? 'pi pi-lock':'pi pi-lock-open'"
+        [icon]="user.isDisabled ? 'pi pi-lock' : 'pi pi-lock-open'"
         class="p-button-rounded p-button-danger"
-        [pTooltip]="user.isDisabled ? 'Enable':'Disable'"
+        [pTooltip]="user.isDisabled ? 'Enable' : 'Disable'"
         tooltipPosition="top"
-        (click)="handleUserStatus(user, user.isDisabled ? 'enable':'disable')"
+        (click)="handleUserStatus(user, user.isDisabled ? 'enable' : 'disable')"
       ></button>
     </div>
   </ng-template>

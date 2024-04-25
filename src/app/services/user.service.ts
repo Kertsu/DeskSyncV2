@@ -2,13 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorService } from './error.service';
 
-interface User {
-  id: string;
-  role: string;
-  email: string;
-  username: string;
-  token: string;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +9,7 @@ interface User {
 export class UserService {
   constructor(private router: Router, private errorService: ErrorService) {}
 
-  setUser(user: User) {
+  setUser(user: any) {
     localStorage.setItem('hdbsv2User', JSON.stringify(user));
   }
 

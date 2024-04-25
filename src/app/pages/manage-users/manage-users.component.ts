@@ -5,6 +5,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ParamsBuilderService } from '../../services/params-builder.service';
 import { WebService } from '../../services/web.service';
 import { User } from '../../models/User';
+import { UserService } from '../../services/user.service';
 
 interface Role {
   label: string;
@@ -73,7 +74,8 @@ export class ManageUsersComponent {
     private confirmationService: ConfirmationService,
     private fb: FormBuilder,
     private paramsBuilder: ParamsBuilderService,
-    private webService: WebService
+    private webService: WebService,
+    protected userService: UserService 
   ) {}
 
   ngOnInit() {
@@ -244,7 +246,6 @@ export class ManageUsersComponent {
 
     this.webService.updateUser(user, data).subscribe({
       next: (res: any) => {
-        console.log(res)
         this.users = this.users.map((u) => (u.id === user.id ? res.updatedUser : u));
       },
       error: (error) => {
