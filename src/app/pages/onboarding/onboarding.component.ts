@@ -12,7 +12,7 @@ import { UserService } from '../../services/user.service';
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
-  styleUrl: './onboarding.component.css',
+  styleUrls: ['./onboarding.component.css'],
   animations: [trigger('tada', [transition('* => *', useAnimation(tada))])],
 })
 export class OnboardingComponent implements OnInit {
