@@ -35,9 +35,9 @@ export class ProfileComponent implements OnInit {
   successShown: boolean = false;
 
   selectedAvatarUrl: string | ArrayBuffer | null = null;
-  selectedAvatarImage!: File;
+  selectedAvatarImage!: File |undefined ;
   selectedBannerUrl: string | ArrayBuffer | null = null;
-  selectedBannerImage!: File;
+  selectedBannerImage!: File |undefined;
 
   constructor(
     protected userService: UserService,
@@ -205,9 +205,21 @@ export class ProfileComponent implements OnInit {
     if (this.selectedAvatarImage)
       formData.append('avatar', this.selectedAvatarImage);
 
+
+    if (this.bannerSource == 'https://res.cloudinary.com/drlztlr1m/image/upload/v1708332794/memuvo7apu0eqdt4f6mr.svg'){
+      formData.append('defaultBanner', this.bannerSource)
+      formData.delete('banner')
+    } 
+    
+    if (this.avatarSource == 'http://res.cloudinary.com/drlztlr1m/image/upload/v1706979188/oxbsppubd3rsabqwfxsr.jpg'){
+      formData.append('defaultAvatar', this.avatarSource)
+      formData.delete('avatar')
+    }
+
     this.webService.updateProfile(formData).subscribe({
       next: (res: any) => {
         console.log(res);
+        this.userService.setUser(res.user)
         this.layoutMessageService.addMessage(
           'success',
           res.message,
@@ -227,6 +239,9 @@ export class ProfileComponent implements OnInit {
         this.messageShown = false;
         this.uiService.setMessageShown(this.messageShown);
         this.messageService.clear('bc')
+
+        this.selectedAvatarImage = undefined
+        this.selectedBannerImage = undefined
       },
     });
   }
