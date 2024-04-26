@@ -34,6 +34,11 @@ export class ProfileComponent implements OnInit {
   bounceState: any;
   successShown: boolean = false;
 
+  selectedAvatarUrl: string | ArrayBuffer | null = null;
+  selectedAvatarImage!: File;
+  selectedBannerUrl: string | ArrayBuffer | null = null;
+  selectedBannerImage!: File;
+
   constructor(
     protected userService: UserService,
     private fb: FormBuilder,
@@ -186,5 +191,68 @@ export class ProfileComponent implements OnInit {
       },
     });
     // this.webService.changePassword
+  }
+
+  saveChanges() {
+    const formData = new FormData();
+
+    if (this.informationForm.value.username)
+      formData.append('username', this.informationForm.value.username);
+    if (this.informationForm.value.description)
+      formData.append('description', this.informationForm.value.description);
+    if (this.selectedBannerImage)
+      formData.append('banner', this.selectedBannerImage);
+    if (this.selectedAvatarImage)
+      formData.append('avatar', this.selectedAvatarImage);
+
+    this.webService.updateProfile(formData).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.layoutMessageService.addMessage(
+          'success',
+          res.message,
+          'Success',
+          3000
+        );
+      },
+      error: (error) => {
+        this.layoutMessageService.addMessage(
+          'error',
+          error.error.error,
+          'Error',
+          3000
+        );
+      },
+      complete: () => {
+        this.messageShown = false;
+        this.uiService.setMessageShown(this.messageShown);
+        this.messageService.clear('bc')
+      },
+    });
+  }
+
+  onFileSelected(event: any, model: string) {
+    const file: File = event.target.files[0];
+    if (file) {
+      switch (model) {
+        case 'avatar':
+          this.selectedAvatarUrl = URL.createObjectURL(file);
+          this.selectedAvatarImage = file;
+          this.avatarSource = this.selectedAvatarUrl;
+          console.log(this.selectedAvatarImage, 'a-image');
+          console.log(this.selectedAvatarUrl, 'a-url');
+          break;
+        case 'banner':
+          this.selectedBannerUrl = URL.createObjectURL(file);
+          this.selectedBannerImage = file;
+          this.bannerSource = this.selectedBannerUrl;
+          console.log(this.selectedBannerImage, 'b-image');
+          console.log(this.selectedBannerUrl, 'b-url');
+          break;
+        default:
+          break;
+      }
+    }
+    this.checkForChanges();
   }
 }

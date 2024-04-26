@@ -91,6 +91,10 @@ export class WebService {
     return this.http.patch(`${this.baseUserURL}/change-password`, data)
   }
 
+  updateProfile(data: FormData){
+    return this.http.put(`${this.baseUserURL}/self/update`, data)
+  }
+
   // DESK
   getDesks(params?: any) {
     return this.http.get(`${this.baseHotdeskURL}`, { params });
