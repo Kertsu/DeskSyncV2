@@ -35,9 +35,9 @@ export class ProfileComponent implements OnInit {
   successShown: boolean = false;
 
   selectedAvatarUrl: string | ArrayBuffer | null = null;
-  selectedAvatarImage!: File |undefined ;
+  selectedAvatarImage!: File | undefined;
   selectedBannerUrl: string | ArrayBuffer | null = null;
-  selectedBannerImage!: File |undefined;
+  selectedBannerImage!: File | undefined;
 
   oldValue!: boolean;
 
@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
     private uiService: UiService,
     private webService: WebService,
     private layoutMessageService: LayoutMessageService,
-    private confirmationService: ConfirmationService,
+    private confirmationService: ConfirmationService
   ) {
     this.changePasswordForm = this.fb.group({
       currentPassword: ['', Validators.required],
@@ -73,15 +73,15 @@ export class ProfileComponent implements OnInit {
     this.patchUser();
     this.setOriginalFormValue();
 
-    this.oldValue = this.userService.getUser()?.receivingEmail
+    this.oldValue = this.userService.getUser()?.receivingEmail;
 
-    this.checked.setValue(this.oldValue, {emitEvent: false})
+    this.checked.setValue(this.oldValue, { emitEvent: false });
 
     this.checked.valueChanges.subscribe({
       next: (newValue) => {
         if (newValue !== null) {
-          console.log(newValue, 'vc')
-          this.confirmChange(this.oldValue,newValue);
+          console.log(newValue, 'vc');
+          this.confirmChange(this.oldValue, newValue);
         }
       },
       error: (error) => {
@@ -220,21 +220,26 @@ export class ProfileComponent implements OnInit {
     if (this.selectedAvatarImage)
       formData.append('avatar', this.selectedAvatarImage);
 
+    if (
+      this.bannerSource ==
+      'https://res.cloudinary.com/drlztlr1m/image/upload/v1708332794/memuvo7apu0eqdt4f6mr.svg'
+    ) {
+      formData.append('defaultBanner', this.bannerSource);
+      formData.delete('banner');
+    }
 
-    if (this.bannerSource == 'https://res.cloudinary.com/drlztlr1m/image/upload/v1708332794/memuvo7apu0eqdt4f6mr.svg'){
-      formData.append('defaultBanner', this.bannerSource)
-      formData.delete('banner')
-    } 
-    
-    if (this.avatarSource == 'http://res.cloudinary.com/drlztlr1m/image/upload/v1706979188/oxbsppubd3rsabqwfxsr.jpg'){
-      formData.append('defaultAvatar', this.avatarSource)
-      formData.delete('avatar')
+    if (
+      this.avatarSource ==
+      'http://res.cloudinary.com/drlztlr1m/image/upload/v1706979188/oxbsppubd3rsabqwfxsr.jpg'
+    ) {
+      formData.append('defaultAvatar', this.avatarSource);
+      formData.delete('avatar');
     }
 
     this.webService.updateProfile(formData).subscribe({
       next: (res: any) => {
         console.log(res);
-        this.userService.setUser(res.user)
+        this.userService.setUser(res.user);
         this.layoutMessageService.addMessage(
           'success',
           res.message,
@@ -253,10 +258,10 @@ export class ProfileComponent implements OnInit {
       complete: () => {
         this.messageShown = false;
         this.uiService.setMessageShown(this.messageShown);
-        this.messageService.clear('bc')
+        this.messageService.clear('bc');
 
-        this.selectedAvatarImage = undefined
-        this.selectedBannerImage = undefined
+        this.selectedAvatarImage = undefined;
+        this.selectedBannerImage = undefined;
       },
     });
   }
@@ -288,30 +293,36 @@ export class ProfileComponent implements OnInit {
 
   confirmChange(oldValue: boolean, newValue: boolean) {
     this.confirmationService.confirm({
-      message: `Are you sure you want to turn this ${
-        newValue ? 'on' : 'off'
-      }?`,
+      message: `Are you sure you want to turn this ${newValue ? 'on' : 'off'}?`,
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.checked.setValue(newValue);
-        this.oldValue = newValue
+        this.oldValue = newValue;
         this.webService.updateNotificationPreference(newValue).subscribe({
           next: (res: any) => {
-              const value = res.user.receivingEmail
-              if (value !== null){
-                this.layoutMessageService.addMessage('success',  `You have turned ${value ? 'on' : 'off'} the feature`,'Success', 3000)
-              }
-              this.userService.setUser(res.user)
-            },
-            error: (error) => {
-              this.layoutMessageService.addMessage('error', error.error.error, 'Error', 3000)
-            },
-            complete: () => {
-            },
-        })
-      }
-      ,
+            const value = res.user.receivingEmail;
+            if (value !== null) {
+              this.layoutMessageService.addMessage(
+                'success',
+                `You have turned ${value ? 'on' : 'off'} the feature`,
+                'Success',
+                3000
+              );
+            }
+            this.userService.setUser(res.user);
+          },
+          error: (error) => {
+            this.layoutMessageService.addMessage(
+              'error',
+              error.error.error,
+              'Error',
+              3000
+            );
+          },
+          complete: () => {},
+        });
+      },
       reject: () => {
         this.checked.setValue(oldValue);
       },

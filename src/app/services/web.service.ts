@@ -18,6 +18,7 @@ export class WebService {
   baseHotdeskURL: string = 'http://localhost:5000/api/hotdesks';
   baseReservationURL: string = 'http://localhost:5000/api/reservations';
   baseSwitchUrl: string = 'http://localhost:5000/api/switch';
+  baseTrailUrl: string = 'http://localhost:5000/api/trails';
 
   constructor(private http: HttpClient) {}
 
@@ -71,32 +72,42 @@ export class WebService {
     );
   }
 
-  registerUser(email: string){
-    return this.http.post(`${this.baseUserURL}/register`, {email})
+  registerUser(email: string) {
+    return this.http.post(`${this.baseUserURL}/register`, { email });
   }
 
-  deleteUser(user: User){
-    return this.http.delete(`${this.baseUserURL}/${user.id || user._id}`)
+  deleteUser(user: User) {
+    return this.http.delete(`${this.baseUserURL}/${user.id || user._id}`);
   }
 
-  updateUser(user: User, data: any){
-    return this.http.patch(`${this.baseUserURL}/${user.id || user._id}`, data)
+  updateUser(user: User, data: any) {
+    return this.http.patch(`${this.baseUserURL}/${user.id || user._id}`, data);
   }
 
-  handleUser(user: User, action: string){
-    return this.http.patch(`${this.baseUserURL}/${user.id || user._id}/action/${action}`, {})
+  handleUser(user: User, action: string) {
+    return this.http.patch(
+      `${this.baseUserURL}/${user.id || user._id}/action/${action}`,
+      {}
+    );
   }
 
-  changePassword(data: { currentPassword: string, newPassword: string, confirmPassword: string }){
-    return this.http.patch(`${this.baseUserURL}/change-password`, data)
+  changePassword(data: {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }) {
+    return this.http.patch(`${this.baseUserURL}/change-password`, data);
   }
 
-  updateProfile(data: FormData){
-    return this.http.put(`${this.baseUserURL}/self/update`, data)
+  updateProfile(data: FormData) {
+    return this.http.put(`${this.baseUserURL}/self/update`, data);
   }
 
-  updateNotificationPreference(receivingEmail: boolean){
-    return this.http.patch(`${this.baseUserURL}/self/update-notification-settings`, {receivingEmail})
+  updateNotificationPreference(receivingEmail: boolean) {
+    return this.http.patch(
+      `${this.baseUserURL}/self/update-notification-settings`,
+      { receivingEmail }
+    );
   }
 
   // DESK
@@ -143,13 +154,16 @@ export class WebService {
   }
 
   // AUDIT TRAILS
+  getTrails(params?: any) {
+    return this.http.get(`${this.baseTrailUrl}/`, { params });
+  }
 
   // SWITCH
   getSwitchValue() {
     return this.http.get(`${this.baseSwitchUrl}`);
   }
 
-  handleSwitch(autoAccepting: boolean){
-    return this.http.put(`${this.baseSwitchUrl}`, { autoAccepting  });
+  handleSwitch(autoAccepting: boolean) {
+    return this.http.put(`${this.baseSwitchUrl}`, { autoAccepting });
   }
 }
