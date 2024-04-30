@@ -95,6 +95,10 @@ export class WebService {
     return this.http.put(`${this.baseUserURL}/self/update`, data)
   }
 
+  updateNotificationPreference(receivingEmail: boolean){
+    return this.http.patch(`${this.baseUserURL}/self/update-notification-settings`, {receivingEmail})
+  }
+
   // DESK
   getDesks(params?: any) {
     return this.http.get(`${this.baseHotdeskURL}`, { params });

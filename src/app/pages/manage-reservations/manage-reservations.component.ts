@@ -78,7 +78,6 @@ export class ManageReservationsComponent {
   constructor(
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private fb: FormBuilder,
     private webService: WebService,
     private paramsBuilder: ParamsBuilderService,
     private layoutMessageService: LayoutMessageService

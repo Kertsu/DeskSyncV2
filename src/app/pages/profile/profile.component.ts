@@ -12,13 +12,13 @@ import confetti from 'canvas-confetti';
 import { UiService } from '../../services/ui.service';
 import { WebService } from '../../services/web.service';
 import { MessageService as LayoutMessageService } from '../../utils/message.service';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
   animations: [trigger('tada', [transition('* => *', useAnimation(tada))])],
 })
 export class ProfileComponent implements OnInit {
@@ -39,13 +39,16 @@ export class ProfileComponent implements OnInit {
   selectedBannerUrl: string | ArrayBuffer | null = null;
   selectedBannerImage!: File |undefined;
 
+  oldValue!: boolean;
+
   constructor(
     protected userService: UserService,
     private fb: FormBuilder,
     private messageService: MessageService,
     private uiService: UiService,
     private webService: WebService,
-    private layoutMessageService: LayoutMessageService
+    private layoutMessageService: LayoutMessageService,
+    private confirmationService: ConfirmationService,
   ) {
     this.changePasswordForm = this.fb.group({
       currentPassword: ['', Validators.required],
@@ -69,6 +72,22 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.patchUser();
     this.setOriginalFormValue();
+
+    this.oldValue = this.userService.getUser()?.receivingEmail
+
+    this.checked.setValue(this.oldValue, {emitEvent: false})
+
+    this.checked.valueChanges.subscribe({
+      next: (newValue) => {
+        if (newValue !== null) {
+          console.log(newValue, 'vc')
+          this.confirmChange(this.oldValue,newValue);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
 
     this.informationForm.valueChanges.subscribe(() => {
       this.checkForChanges();
@@ -133,10 +152,6 @@ export class ProfileComponent implements OnInit {
   setOriginalFormValue() {
     this.originalFormValue = this.informationForm.value;
   }
-
-  // onUpload(event: any){
-  //   console.log(event)
-  // }
 
   removeAvatar() {
     this.avatarSource =
@@ -269,5 +284,37 @@ export class ProfileComponent implements OnInit {
       }
     }
     this.checkForChanges();
+  }
+
+  confirmChange(oldValue: boolean, newValue: boolean) {
+    this.confirmationService.confirm({
+      message: `Are you sure you want to turn this ${
+        newValue ? 'on' : 'off'
+      }?`,
+      header: 'Confirm',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.checked.setValue(newValue);
+        this.oldValue = newValue
+        this.webService.updateNotificationPreference(newValue).subscribe({
+          next: (res: any) => {
+              const value = res.user.receivingEmail
+              if (value !== null){
+                this.layoutMessageService.addMessage('success',  `You have turned ${value ? 'on' : 'off'} the feature`,'Success', 3000)
+              }
+              this.userService.setUser(res.user)
+            },
+            error: (error) => {
+              this.layoutMessageService.addMessage('error', error.error.error, 'Error', 3000)
+            },
+            complete: () => {
+            },
+        })
+      }
+      ,
+      reject: () => {
+        this.checked.setValue(oldValue);
+      },
+    });
   }
 }
