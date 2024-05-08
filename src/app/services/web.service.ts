@@ -154,6 +154,11 @@ export class WebService {
     );
   }
 
+  getSelfReservations(params?: any){
+    return this.http.get(`${this.baseReservationURL}/self`, { params });
+
+  }
+
   // AUDIT TRAILS
   getTrails(params?: any) {
     return this.http.get(`${this.baseTrailUrl}/`, { params });
