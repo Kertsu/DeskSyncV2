@@ -92,7 +92,7 @@ export class ManageDeskUnavailabilitiesComponent {
   }
 
   getImage(unavailability: any) {
-    return `../../assets/images/map/individual/${unavailability.deskNumber}.png`;
+    return `../../assets/images/map/desk-area/${unavailability.deskNumber}.png`;
   }
 
   loadUnavailabilities(event: any) {
