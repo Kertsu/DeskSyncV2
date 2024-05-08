@@ -18,7 +18,8 @@ export class AppMenuComponent implements OnInit {
   ngOnInit() {
     const user = this.userService.getUser();
 
-    const isAdmin = user && user.role === 'admin' || user && user.role === 'superadmin';
+    const isAdmin =
+      (user && user.role === 'admin') || (user && user.role === 'superadmin');
     this.model = [
       {
         label: 'Home',
@@ -29,8 +30,12 @@ export class AppMenuComponent implements OnInit {
             routerLink: ['dashboard'],
           },
           { label: 'Book', icon: 'pi pi-fw pi-book', routerLink: ['book'] },
-          { label: 'Logs', icon: 'pi pi-fw pi-comments', routerLink: ['logs'], visible: isAdmin
-        },
+          {
+            label: 'Logs',
+            icon: 'pi pi-fw pi-comments',
+            routerLink: ['logs'],
+            visible: isAdmin,
+          },
           {
             label: 'Manage',
             visible: isAdmin,
@@ -87,7 +92,23 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'My account',
             icon: 'pi pi-fw pi-user',
-            routerLink: ['profile'],
+            items: [
+              {
+                label: 'Profile',
+                icon: 'pi pi-fw pi-user-edit',
+                routerLink: ['profile'],
+              },
+              {
+                label: 'Reservations',
+                icon: 'pi pi-fw pi-chart-line',
+                routerLink: ['reservations'],
+              },
+              {
+                label: 'History',
+                icon: 'pi pi-fw pi-calendar',
+                routerLink: ['/'],
+              },
+            ],
           },
         ],
       },

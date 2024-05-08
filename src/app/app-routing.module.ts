@@ -23,6 +23,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CheckEmailComponent } from './pages/check-email/check-email.component';
 import { confirmationGuard, deskAreaGuard, navigationGuard, onboardingGuard, passwordResetGuard, passwordResetSuccessGuard, resetPasswordGuard } from './shared/navigation.guard';
 import { OnboardingComponent } from './pages/onboarding/onboarding.component';
+import { ReservationsComponent } from './pages/reservations/reservations.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/login'},
@@ -83,6 +84,10 @@ const routes: Routes = [
         path: 'profile',
         component: ProfileComponent,
       },
+      {
+        path:'reservations',
+        component: ReservationsComponent
+      }
     ],
   },{
     path: "**", component: NotFoundComponent
