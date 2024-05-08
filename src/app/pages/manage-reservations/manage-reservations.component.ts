@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Validators, FormBuilder, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ParamsBuilderService } from '../../services/params-builder.service';
