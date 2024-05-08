@@ -84,9 +84,9 @@ import { OnboardingComponent } from './pages/onboarding/onboarding.component';
 import { ReservationsComponent } from './pages/reservations/reservations.component';
 
 const config: SocketIoConfig = {
-  url: 'https://hdbsv2-r473.onrender.com', options: {transports: ['websocket']}
-  // url: 'http://localhost:5000',
-  // options: { transports: ['websocket'] },
+  // url: 'https://hdbsv2-r473.onrender.com', options: {transports: ['websocket']}
+  url: 'http://localhost:5000',
+  options: { transports: ['websocket'] },
 };
 
 @NgModule({
