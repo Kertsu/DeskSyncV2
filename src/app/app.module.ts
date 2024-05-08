@@ -82,6 +82,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CheckEmailComponent } from './pages/check-email/check-email.component';
 import { OnboardingComponent } from './pages/onboarding/onboarding.component';
 import { ReservationsComponent } from './pages/reservations/reservations.component';
+import { HistoryComponent } from './pages/history/history.component';
 
 const config: SocketIoConfig = {
   // url: 'https://hdbsv2-r473.onrender.com', options: {transports: ['websocket']}
@@ -121,6 +122,7 @@ const config: SocketIoConfig = {
     CheckEmailComponent,
     OnboardingComponent,
     ReservationsComponent,
+    HistoryComponent,
   ],
   imports: [
     BrowserModule,

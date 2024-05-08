@@ -24,6 +24,7 @@ import { CheckEmailComponent } from './pages/check-email/check-email.component';
 import { confirmationGuard, deskAreaGuard, navigationGuard, onboardingGuard, passwordResetGuard, passwordResetSuccessGuard, resetPasswordGuard } from './shared/navigation.guard';
 import { OnboardingComponent } from './pages/onboarding/onboarding.component';
 import { ReservationsComponent } from './pages/reservations/reservations.component';
+import { HistoryComponent } from './pages/history/history.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/login'},
@@ -87,6 +88,10 @@ const routes: Routes = [
       {
         path:'reservations',
         component: ReservationsComponent
+      },
+      {
+        path: 'history',
+        component: HistoryComponent
       }
     ],
   },{

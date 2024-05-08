@@ -163,6 +163,10 @@ export class WebService {
     return this.http.delete(`${this.baseReservationURL}/cancel/${reservation.id}`);
   }
 
+  getSelfReservationHistory(params: any){
+    return this.http.get(`${this.baseReservationURL}/self/history`, { params });
+  }
+
   // AUDIT TRAILS
   getTrails(params?: any) {
     return this.http.get(`${this.baseTrailUrl}/`, { params });
