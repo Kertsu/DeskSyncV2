@@ -20,8 +20,9 @@ export class ReservationsComponent {
 
   constructor(
     private webService: WebService,
+    private messageService: MessageService,
     private paramsBuilder: ParamsBuilderService,
-    private confirmationService: ConfirmationService,
+    private confirmationService: ConfirmationService
   ) {}
 
   cancelSelectedReservations() {}
@@ -56,10 +57,35 @@ export class ReservationsComponent {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        
+        this.cancelReservation(reservation);
       },
     });
   }
 
-  
+  cancelReservation(reservation: Reservation) {
+    this.webService.cancelReservation(reservation).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successful',
+          detail: res.message,
+          life: 3000,
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error.error,
+        });
+      },
+      complete: () => {
+        this.reservations = this.reservations.filter(
+          (r) => r.id !== reservation.id
+        );
+        this.totalRecords = this.reservations.length;
+      },
+    });
+  }
 }

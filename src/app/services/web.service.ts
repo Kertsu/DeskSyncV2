@@ -159,6 +159,10 @@ export class WebService {
 
   }
 
+  cancelReservation(reservation: Reservation){
+    return this.http.delete(`${this.baseReservationURL}/cancel/${reservation.id}`);
+  }
+
   // AUDIT TRAILS
   getTrails(params?: any) {
     return this.http.get(`${this.baseTrailUrl}/`, { params });
