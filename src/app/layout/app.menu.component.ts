@@ -106,7 +106,7 @@ export class AppMenuComponent implements OnInit {
               {
                 label: 'History',
                 icon: 'pi pi-fw pi-calendar',
-                routerLink: ['/'],
+                routerLink: ['history'],
               },
             ],
           },

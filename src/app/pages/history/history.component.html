@@ -1,0 +1,74 @@
+<div class="card">
+    <p-table
+      styleClass="p-datatable-gridlines"
+      #dt
+      [value]="reservations"
+      [rows]="10"
+      [paginator]="true"
+      [globalFilterFields]="['reservationname', 'email', 'role', 'type']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [showCurrentPageReport]="true"
+      [lazy]="true"
+      (onLazyLoad)="loadReservations($event)"
+      [totalRecords]="totalRecords"
+      [loading]="loading"
+    >
+      <ng-template pTemplate="caption">
+        <div
+          class="flex flex-column gap-2 md:flex-row align-items-center justify-content-between"
+        >
+          <h5 class="m-0">My Reservations</h5>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          
+          <th>Desk</th>
+          <th>Desk Image</th>
+          <th pSortableColumn="date">
+            Date <p-sortIcon field="date"></p-sortIcon>
+          </th>
+          <th pSortableColumn="start">
+            Start <p-sortIcon field="start"></p-sortIcon>
+          </th>
+          <th pSortableColumn="end">End <p-sortIcon field="end"></p-sortIcon></th>
+          <th pSortableColumn="type">
+            Type <p-sortIcon field="type"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-reservation>
+        <tr>
+          
+          <td>{{ reservation.deskNumber }}</td>
+          <td>
+            <img
+              class="h-4rem shadow-4"
+              style="object-fit: contain"
+              [src]="getImage(reservation)"
+              alt="Hotdesk"
+            />
+          </td>
+          <td>{{ reservation.date | date : "mediumDate" }}</td>
+          <td>{{ reservation.startTime | date : "shortTime" }}</td>
+          <td>{{ reservation.endTime | date : "shortTime" }}</td>
+          <td>{{ reservation.type }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+          In total there are
+          {{ reservations ? reservations.length : 0 }} reservations.
+        </div>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td class="text-center" colspan="9">No reservations found</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
