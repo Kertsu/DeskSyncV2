@@ -51,12 +51,13 @@ export class LoginComponent {
         this.router.navigate(['/hdbsv2/dashboard'])
       },
       error: error => {
-        this.errorMessage = error.error.error
+        console.log(error)
+        this.errorMessage = error.error.error || error.error
         this.changeStatus(false)
 
         setTimeout(() => {
           this.errorMessage = null
-        }, 1000);
+        }, 3000);
       }
     })
 
