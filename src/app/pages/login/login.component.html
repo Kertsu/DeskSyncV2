@@ -50,13 +50,13 @@
               >Forgot password?</a
             >
           </div>
-          <input
+          <p-password
+            pStyleClass="w-full"
             [ngClass]="{ 'ng-invalid ng-dirty shake-error': errorMessage }"
-            pInputText
-            id="password"
-            type="password"
             formControlName="password"
-          />
+            [feedback]="false"
+            [toggleMask]="true"
+          ></p-password>
         </div>
         <span *ngIf="errorMessage" class="text-red-500 text-sm">{{
           errorMessage
