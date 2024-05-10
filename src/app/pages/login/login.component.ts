@@ -55,9 +55,9 @@ export class LoginComponent {
         this.errorMessage = error.error.error || error.error
         this.changeStatus(false)
 
-        setTimeout(() => {
-          this.errorMessage = null
-        }, 3000);
+        // setTimeout(() => {
+        //   this.errorMessage = null
+        // }, 3000);
       }
     })
 
