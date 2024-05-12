@@ -17,28 +17,29 @@
     </div>
 
     <div
-      *ngIf="errorMessage"
+      *ngIf="errorMessage && !infoMessage"
       class="mx-3 bg-red-50 p-3 border-round border-1 border-red-300"
     >
       <p class="text-red-500">{{ errorMessage }}</p>
     </div>
 
+    <div *ngIf="infoMessage && !errorMessage" class="mx-3 bg-primary-50 p-3 border-round border-1 border-primary-300">
+      <p class="text-primary-500">{{infoMessage}}</p>
+    </div>
+
     <form
       [formGroup]="otpForm"
       (ngSubmit)="verify()"
-      class="flex flex-column mx-3 gap-4 surface-ground p-3 border-round border-1 border-black-alpha-10"
+      class="flex flex-column mx-3 gap-4 surface-ground p-3 border-round border-1 border-black-alpha-10 align-items-center"
     >
-      <p class="font-normal m-0">
+      <p class="font-normal m-0 text-center">
         We have sent an OTP to your email. Please enter the OTP below to
         continue.
       </p>
 
       <div class="flex flex-column justify-content-center gap-1">
         <div class="flex flex-column gap-2">
-          <label for="verificationCode">Verification Code</label>
-          <input pInputText formControlName="verificationCode" id="verificationCode" 
-          [ngClass]="{ 'ng-invalid ng-dirty': errorMessage }"
-          />
+          <p-inputOtp formControlName="verificationCode" [length]="7"  />
           <div
             *ngIf="
               otpForm.get('verificationCode')?.dirty &&
@@ -69,6 +70,15 @@
         ></p-progressSpinner>
       </div>
     </form>
+
+    <div
+        class="flex flex-column mx-3 surface-ground p-3 border-round border-1 border-black-alpha-10 align-items-center"
+      >
+        <p class="font-normal m-0">
+          Didn't receive the code?
+        </p>
+        <p-button styleClass="py-2 px-4" [label]="timer === 60 ? 'Resend OTP' : timer.toString()" [text]="true" [disabled]="timer !== 60" (onClick)="resend()"/>
+      </div>
 
     <div class="w-full mt-6">
       <app-form-links></app-form-links>

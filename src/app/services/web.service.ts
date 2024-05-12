@@ -111,6 +111,15 @@ export class WebService {
     );
   }
 
+  verifyOTP(otp: string)
+  {
+    return this.http.post(`${this.baseUserURL}/otp/validate`, { otp });
+  }
+
+  resendOTP(){
+    return this.http.post(`${this.baseUserURL}/otp/resend`, {});
+  }
+
   // DESK
   getDesks(params?: any) {
     return this.http.get(`${this.baseHotdeskURL}`, { params });
