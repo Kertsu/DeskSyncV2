@@ -84,6 +84,7 @@ export class OnboardingComponent implements OnInit {
     this.webService.onboardingChangePassword(data).subscribe({
       next: (res: any) => {
         console.log(res);
+        this.userService.setDeviceToken(res.deviceToken)
         this.changePasswordForm.reset();
         this.errorMessage = null;
         this.router.navigate(['/hdbsv2/dashboard']);

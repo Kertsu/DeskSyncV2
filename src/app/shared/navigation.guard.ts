@@ -106,7 +106,7 @@ export const onboardingGuard: CanActivateFn = (route, state) => {
   return webService.getSelf().pipe(
     map((res: any) => {
       console.log(res);
-      if (!res.user.passwordChangedAt) {
+      if (!res.user.registeredDeviceToken) {
         router.navigate(['/onboarding']);
         return false;
       }

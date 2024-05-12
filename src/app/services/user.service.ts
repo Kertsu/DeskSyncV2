@@ -38,4 +38,8 @@ export class UserService {
   isLoggedIn() {
     return this.getToken() != null && this.getToken() != '';
   }
+
+  setDeviceToken(deviceToken: string){
+    localStorage.setItem('hdbsv2DeviceToken', deviceToken);
+  }
 }
