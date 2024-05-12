@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { SocketService } from '../../services/socket.service';
 import { UserService } from '../../services/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { WebService } from '../../services/web.service';
 import { NavigationService } from '../../shared/navigation.service';
 import { ErrorService } from '../../services/error.service';
@@ -21,14 +20,11 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private router: Router
-    ,private webService: WebService,
+    private router: Router,
+    private webService: WebService,
     protected navigationService: NavigationService,
     protected errorService: ErrorService
-  ) {
-    
-  }
-
+  ) {}
 
   loginForm = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
@@ -39,28 +35,30 @@ export class LoginComponent {
     this.changeStatus(true);
 
     const data = {
-      email : this.loginForm.get('email')?.value ?? '',
-      password : this.loginForm.get('password')?.value ?? ''
-    }
+      email: this.loginForm.get('email')?.value ?? '',
+      password: this.loginForm.get('password')?.value ?? '',
+    };
 
     this.webService.onLoginUser(data).subscribe({
       next: (res: any) => {
         console.log(res);
         this.changeStatus(false);
-        this.userService.setToken(res.user.token)
-        this.router.navigate(['/hdbsv2/dashboard'])
+        this.userService.setToken(res.user.token);
+        if (res.OTP && res.deviceToken) {
+          this.userService.setDeviceToken(res.deviceToken);
+        }
+        this.router.navigate(['/hdbsv2/dashboard']);
       },
-      error: error => {
-        console.log(error)
-        this.errorMessage = error.error.error || error.error
-        this.changeStatus(false)
+      error: (error) => {
+        console.log(error);
+        this.errorMessage = error.error.error || error.error;
+        this.changeStatus(false);
 
         // setTimeout(() => {
         //   this.errorMessage = null
         // }, 3000);
-      }
-    })
-
+      },
+    });
   }
 
   changeStatus(value: boolean) {
