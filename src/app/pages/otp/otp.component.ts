@@ -17,7 +17,11 @@ export class OtpComponent implements OnInit {
   isSubmitted: boolean = false;
   isLoading: boolean = false;
   errorMessage!: string | null;
+  infoMessage!: string | null;
   sessionErrorMessage!: string | null;
+
+  timer: number = 60;
+  
 
   otpForm = this.fb.group({
     verificationCode: ['', Validators.required],
@@ -45,12 +49,14 @@ export class OtpComponent implements OnInit {
       this.webService.verifyOTP(otp).subscribe({
         next: (res: any) => {
           console.log(res);
+          this.errorMessage = null
           this.isLoading = false;
-          
+          this.router.navigate(['/hdbsv2/dashboard']);
         },
         error: (err: any) => {
           console.log(err);
           this.errorMessage = err.error.error
+          this.infoMessage = null
           this.isLoading = false;
         },
         complete: () => {
@@ -59,5 +65,24 @@ export class OtpComponent implements OnInit {
       })
     }
   }
-  resend() {}
+  resend() {
+    let intervalId = setInterval(() => {
+      this.timer--;
+      if (this.timer === 0) {
+        clearInterval(intervalId);
+        this.timer = 60; 
+      }
+    }, 1000);
+
+    this.webService.resendOTP().subscribe({
+      next: (res: any) => {
+        this.errorMessage = null
+        this.infoMessage = res.message
+      },
+      error: (err: any) => {
+        this.errorMessage = err.error.error
+        this.infoMessage = null
+      },
+    })
+  }
 }

@@ -17,10 +17,14 @@
     </div>
 
     <div
-      *ngIf="errorMessage"
+      *ngIf="errorMessage && !infoMessage"
       class="mx-3 bg-red-50 p-3 border-round border-1 border-red-300"
     >
       <p class="text-red-500">{{ errorMessage }}</p>
+    </div>
+
+    <div *ngIf="infoMessage && !errorMessage" class="mx-3 bg-primary-50 p-3 border-round border-1 border-primary-300">
+      <p class="text-primary-500">{{infoMessage}}</p>
     </div>
 
     <form
@@ -35,7 +39,7 @@
 
       <div class="flex flex-column justify-content-center gap-1">
         <div class="flex flex-column gap-2">
-          <p-inputOtp formControlName="verificationCode" [length]="7" [integerOnly]="true" />
+          <p-inputOtp formControlName="verificationCode" [length]="7"  />
           <div
             *ngIf="
               otpForm.get('verificationCode')?.dirty &&
@@ -73,7 +77,7 @@
         <p class="font-normal m-0">
           Didn't receive the code?
         </p>
-        <p-button styleClass="py-2 px-4" label="Resend OTP" [text]="true" (onClick)="resend()"/>
+        <p-button styleClass="py-2 px-4" [label]="timer === 60 ? 'Resend OTP' : timer.toString()" [text]="true" [disabled]="timer !== 60" (onClick)="resend()"/>
       </div>
 
     <div class="w-full mt-6">
