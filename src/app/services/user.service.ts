@@ -8,7 +8,7 @@ import { ErrorService } from './error.service';
 })
 export class UserService {
   constructor(private router: Router, private errorService: ErrorService) {}
-
+  
   setUser(user: any) {
     localStorage.setItem('hdbsv2User', JSON.stringify(user));
   }

@@ -9,6 +9,9 @@ import { NavigationService } from '../../shared/navigation.service';
   styleUrls: ['./otp.component.css']
 })
 export class OtpComponent {
+  // TODO - set the otp flag to false
+
+
   isSubmitted: boolean = false;
   isLoading: boolean = false;
   errorMessage!: string | null;
