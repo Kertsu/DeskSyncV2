@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { SocketService } from '../../services/socket.service';
 import { UserService } from '../../services/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { WebService } from '../../services/web.service';
 import { NavigationService } from '../../shared/navigation.service';
 import { ErrorService } from '../../services/error.service';

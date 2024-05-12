@@ -6,7 +6,6 @@ import { WebService } from '../services/web.service';
 import { catchError, map, of } from 'rxjs';
 import { ErrorService } from '../services/error.service';
 import { ReservationService } from '../services/reservation.service';
-import { ReservationRequest } from '../requests/ReservationRequest';
 
 export const navigationGuard: CanActivateChildFn = (route, state) => {
   const uiService = inject(UiService);
@@ -98,7 +97,7 @@ export const resetPasswordGuard: CanActivateFn = (route, state) => {
   }
 };
 
-export const onboardingGuard: CanActivateFn = (route, state) => {
+export const dashboardGuard: CanActivateFn = (route, state) => {
   const webService = inject(WebService);
   const router = inject(Router);
   const errorService = inject(ErrorService);
@@ -148,4 +147,30 @@ export const confirmationGuard: CanActivateFn = (route, state) => {
   }
   router.navigate(['/hdbsv2/book/desk-area']);
   return false;
+};
+
+export const onboardingGuard: CanActivateFn = (route, state) => {
+  const webService = inject(WebService);
+  const router = inject(Router);
+  const errorService = inject(ErrorService);
+
+  return webService.getSelf().pipe(
+    map((res: any) => {
+      console.log(res);
+      if (res.user.registeredDeviceToken) {
+        router.navigate(['/hdbsv2/dashboard']);
+        return false;
+      }
+      return true;
+    }),
+    catchError((err) => {
+      const errorMessage = err.error.error
+      localStorage.removeItem('hdbsv2User')
+      localStorage.removeItem('hdbsv2Token')
+      errorService.setErrorMessage(errorMessage);
+      router.navigate(['/login']);
+
+      return of(false);
+    })
+  );
 };
