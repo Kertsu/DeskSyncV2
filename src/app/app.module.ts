@@ -47,8 +47,9 @@ import { ImageModule } from 'primeng/image';
 import { PasswordModule } from 'primeng/password';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PanelModule } from 'primeng/panel';
-import {AccordionModule} from 'primeng/accordion'
-import {MultiSelectModule} from 'primeng/multiselect'
+import { AccordionModule } from 'primeng/accordion';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { InputOtpModule } from 'primeng/inputotp';
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
@@ -171,6 +172,7 @@ const config: SocketIoConfig = {
     PanelModule,
     AccordionModule,
     MultiSelectModule,
+    InputOtpModule,
     SocketIoModule.forRoot(config),
   ],
   providers: [provideHttpClient(withInterceptors([authInterceptor]))],

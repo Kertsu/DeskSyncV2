@@ -111,6 +111,11 @@ export class WebService {
     );
   }
 
+  verifyOTP(otp: string)
+  {
+    return this.http.post(`${this.baseUserURL}/otp/validate`, { otp });
+  }
+
   // DESK
   getDesks(params?: any) {
     return this.http.get(`${this.baseHotdeskURL}`, { params });
