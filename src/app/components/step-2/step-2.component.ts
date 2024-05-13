@@ -558,7 +558,6 @@ export class Step2Component implements OnInit {
 
     this.formGroup.valueChanges.subscribe({
       next: (res: any) => {
-        console.log(res, 'res');
         let self = this;
         if (res.date) {
           const { date, startTime, endTime } = timeConvert(new Date(res.date));
@@ -684,7 +683,7 @@ export class Step2Component implements OnInit {
       if (reservation) {
         if (reservation.mode == 1) {
           desk.status = 'TEMPORARILY UNAVAILABLE';
-          break;
+          // break;
         } else {
           switch (reservation.status) {
             case 'PENDING':
