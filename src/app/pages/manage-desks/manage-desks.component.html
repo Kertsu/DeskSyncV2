@@ -264,14 +264,14 @@
             You can select a maximum of three (3) essentials.
           </small>
         </div>
-        <div class="field">
+        <div class="field"
+        *ngIf="desk && desk.status == 'AVAILABLE' && editForm.get('status')?.value.name == 'AVAILABLE'">
           <label
             for="date"
-            *ngIf="this.editForm.get('status')?.value.name == 'AVAILABLE'"
+            
             >Make this desk unavailable for a specific date?</label
           >
           <p-calendar
-            *ngIf="this.editForm.get('status')?.value.name == 'AVAILABLE'"
             [minDate]="minDate"
             formControlName="date"
             [showIcon]="true"
