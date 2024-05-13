@@ -231,7 +231,7 @@
     <p-dialog
       [(visible)]="editDialog"
       [style]="{ width: '450px' }"
-      header="Desk Details"
+      [header]="desk && 'Desk #' + desk.deskNumber + ' Details'"
       [modal]="true"
       styleClass="p-fluid"
       (onHide)="editForm.reset()"
