@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import * as FileSaver from 'file-saver';
@@ -170,32 +169,32 @@ export class LogsComponent implements OnInit {
     });
   }
 
-  exportExcel() {
-    import('xlsx').then((xlsx) => {
-      const formattedTrails = this.trails.map((trail) => {
-        const { __v, _id, user, ...rest } = trail;
-        return {
-          ...rest,
-          createdAt: new Date(trail.createdAt).toLocaleString('en-US', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-          }),
-        };
-      });
+  // exportExcel() {
+  //   import('xlsx').then((xlsx) => {
+  //     const formattedTrails = this.trails.map((trail) => {
+  //       const { __v, _id, user, ...rest } = trail;
+  //       return {
+  //         ...rest,
+  //         createdAt: new Date(trail.createdAt).toLocaleString('en-US', {
+  //           year: 'numeric',
+  //           month: '2-digit',
+  //           day: '2-digit',
+  //           hour: '2-digit',
+  //           minute: '2-digit',
+  //           second: '2-digit',
+  //         }),
+  //       };
+  //     });
 
-      const worksheet = xlsx.utils.json_to_sheet(formattedTrails);
-      const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-      const excelBuffer: any = xlsx.write(workbook, {
-        bookType: 'xlsx',
-        type: 'array',
-      });
-      this.saveAsExcelFile(excelBuffer, 'trails');
-    });
-  }
+  //     const worksheet = xlsx.utils.json_to_sheet(formattedTrails);
+  //     const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+  //     const excelBuffer: any = xlsx.write(workbook, {
+  //       bookType: 'xlsx',
+  //       type: 'array',
+  //     });
+  //     this.saveAsExcelFile(excelBuffer, 'trails');
+  //   });
+  // }
 
   saveAsExcelFile(buffer: any, fileName: string): void {
     let EXCEL_TYPE =
