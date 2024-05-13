@@ -558,7 +558,6 @@ export class Step2Component implements OnInit {
 
     this.formGroup.valueChanges.subscribe({
       next: (res: any) => {
-        console.log(res, 'res');
         let self = this;
         if (res.date) {
           const { date, startTime, endTime } = timeConvert(new Date(res.date));
@@ -578,11 +577,9 @@ export class Step2Component implements OnInit {
   }
 
   handleSelectDesk(desk: Hotdesk) {
-    console.log(desk, 'handle');
     this.formGroup
       .get('selectedDesk')
       ?.setValue({ deskNumber: desk.deskNumber, title: desk.title });
-    console.log(this.formGroup.value);
   }
 
   confirm() {
@@ -627,7 +624,6 @@ export class Step2Component implements OnInit {
       deskNumber: desk.deskNumber,
       title: desk.title,
     }));
-    console.log(this.options);
   }
 
   reset() {
@@ -647,7 +643,7 @@ export class Step2Component implements OnInit {
     this.isLoading = true;
     this.webService.getReservations(params).subscribe({
       next: (res: any) => {
-        console.log('reservations', res);
+        console.log('reservations', res.reservations);
         this.reservations = res.reservations;
         if (callback) {
           callback();
@@ -679,12 +675,11 @@ export class Step2Component implements OnInit {
       const reservation = this.reservations.find(
         (r) => r.deskNumber === desk.deskNumber
       );
-      console.log(reservation);
+      console.log(reservation, 'RES');
 
       if (reservation) {
         if (reservation.mode == 1) {
           desk.status = 'TEMPORARILY UNAVAILABLE';
-          break;
         } else {
           switch (reservation.status) {
             case 'PENDING':
@@ -703,7 +698,6 @@ export class Step2Component implements OnInit {
   }
 
   initialize() {
-    console.log(this.area);
 
     setTimeout(() => {
       imageMapResize();
