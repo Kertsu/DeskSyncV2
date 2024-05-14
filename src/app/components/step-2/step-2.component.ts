@@ -669,7 +669,7 @@ export class Step2Component implements OnInit {
     for (const desk of this.desks) {
       if (this.reservations.length == 0) {
         desk.status =
-          desk.status == 'UNAVAILABLE' ? 'UNAVAILABLE' : 'AVAILABLE';
+          desk.status == 'UNAVAILABLE' ? 'PERMANENTLY UNAVAILABLE' : 'AVAILABLE';
       }
 
       const reservation = this.reservations.find(
