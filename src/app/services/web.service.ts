@@ -14,11 +14,11 @@ interface ResetPasswordData {
   providedIn: 'root',
 })
 export class WebService {
-  baseUserURL: string = 'https://hdbsv2-r473.onrender.com/api/users';
-  baseHotdeskURL: string = 'https://hdbsv2-r473.onrender.com/api/hotdesks';
-  baseReservationURL: string = 'https://hdbsv2-r473.onrender.com/api/reservations';
-  baseSwitchUrl: string = 'https://hdbsv2-r473.onrender.com/api/switch';
-  baseTrailUrl: string = 'https://hdbsv2-r473.onrender.com/api/trails';
+  baseUserURL: string = 'https://hdbsv2.onrender.com/api/users';
+  baseHotdeskURL: string = 'https://hdbsv2.onrender.com/api/hotdesks';
+  baseReservationURL: string = 'https://hdbsv2.onrender.com/api/reservations';
+  baseSwitchUrl: string = 'https://hdbsv2.onrender.com/api/switch';
+  baseTrailUrl: string = 'https://hdbsv2.onrender.com/api/trails';
   
 
   constructor(private http: HttpClient) {}
