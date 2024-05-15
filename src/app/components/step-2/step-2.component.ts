@@ -660,6 +660,7 @@ export class Step2Component implements OnInit {
     for (const desk of this.desks) {
       if (deskNumber == desk.deskNumber) {
         this.desk = desk;
+        console.log(desk)
       }
     }
     this.isLoading = false;
@@ -667,16 +668,21 @@ export class Step2Component implements OnInit {
 
   updateDeskStatus() {
     for (const desk of this.desks) {
+      if (desk.status === 'UNAVAILABLE') {
+        desk.status = 'PERMANENTLY UNAVAILABLE';
+        continue;
+      }
+  
       if (this.reservations.length == 0) {
         desk.status =
-          desk.status == 'UNAVAILABLE' ? 'PERMANENTLY UNAVAILABLE' : 'AVAILABLE';
+          desk.status === 'PERMANENTLY UNAVAILABLE' ? 'PERMANENTLY UNAVAILABLE' : 'AVAILABLE';
       }
-
+  
       const reservation = this.reservations.find(
         (r) => r.deskNumber === desk.deskNumber
       );
       console.log(reservation, 'RES');
-
+  
       if (reservation) {
         if (reservation.mode == 1) {
           desk.status = 'TEMPORARILY UNAVAILABLE';
@@ -696,6 +702,7 @@ export class Step2Component implements OnInit {
       }
     }
   }
+  
 
   initialize() {
 
