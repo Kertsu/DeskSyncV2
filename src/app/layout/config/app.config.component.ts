@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
 import { MenuService } from '../app.menu.service';
 import { UiService } from '../../services/ui.service';
@@ -7,7 +7,7 @@ import { UiService } from '../../services/ui.service';
     selector: 'app-config',
     templateUrl: './app.config.component.html',
 })
-export class AppConfigComponent {
+export class AppConfigComponent implements OnInit {
     @Input() minimal: boolean = false;
 
     scales: number[] = [12, 13, 14, 15, 16];
@@ -15,8 +15,18 @@ export class AppConfigComponent {
     constructor(
         public layoutService: LayoutService,
         public menuService: MenuService,
-        private uiService: UiService
+        protected uiService: UiService
     ) {}
+
+
+    ngOnInit(): void {
+        const themeLink = document.getElementById('app-theme') as HTMLLinkElement;
+        const href = themeLink.href
+        
+        const parts = href.split("/");
+        const theme = parts[parts.length - 1]
+        this.uiService.theme = theme.split('.')[0];
+    }
 
     get visible(): boolean {
         return this.layoutService.state.configSidebarVisible;
