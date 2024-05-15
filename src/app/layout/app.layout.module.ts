@@ -56,7 +56,7 @@ import { RatingModule } from 'primeng/rating';
         DialogModule,
         InputTextareaModule,
         FileUploadModule,
-        RatingModule
+        RatingModule,
     ],
     exports: [AppLayoutComponent]
 })

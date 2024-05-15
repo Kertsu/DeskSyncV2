@@ -1,5 +1,5 @@
 <div class="w-full flex flex-column gap-3 md:flex-row">
-    <div class="flex gap-3 flex-column lg:w-7">
+    <div class="flex gap-3 align-items-center flex-column lg:w-7">
       <div
         class="flex w-full gap-2 align-items-center justify-content-start surface-ground border-round px-3 py-1"
       >
@@ -11,14 +11,29 @@
       <ng-container *ngFor="let areaData of areaDataList">
         <div
           *ngIf="area === areaData.id"
-          class="w-full flex justify-content-center align-items-center"
-        >
+          class="flex justify-content-center align-items-center relative"
+          style="max-width: max-content;"
+          >
           <img
             class="w-full max-w-max lg:max-h-30rem shadow-4"
             style="object-fit: contain"
             [src]="areaData.imagePath"
             usemap="#image-map"
           />
+          <!-- <ng-container *ngFor="let desk of areaData.desks">
+            <div
+              class="absolute bg-unavailable"
+              [ngStyle]="{
+                top: desk.indicators.top + '%',
+                left: desk.indicators.left + '%',
+                width: desk.indicators.width + '%',
+                height: desk.indicators.height + '%',
+                borderRadius: '9999px',
+                aspectRatio: '1/1',
+              }"
+              [ngClass]="getIndicatorColor(desk.deskNumber)"
+            ></div>
+          </ng-container> -->
           <map name="image-map">
             <ng-container *ngFor="let desk of areaData.desks">
               <area

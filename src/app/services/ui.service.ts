@@ -7,6 +7,8 @@ import { Inject, Injectable } from '@angular/core';
 export class UiService {
   messageShown: boolean = false;
 
+  theme!: string
+
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   switchTheme(theme: string) {
@@ -16,6 +18,7 @@ export class UiService {
 
     if (themeLink) {
       themeLink.href = theme + '.css';
+      this.theme = theme
     }
   }
 
