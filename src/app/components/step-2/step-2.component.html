@@ -34,7 +34,7 @@
               style="z-index: 1;"
               (mouseover)="desk.hovered = true"
               (mouseout)="desk.hovered = false"
-              [pTooltip]="'Hotdesk '+desk.deskNumber.toString()"
+              [pTooltip]="desk.title"
               tooltipPosition="top"
               [ngStyle]="{
                 top: desk.clickable?.top + '%',
