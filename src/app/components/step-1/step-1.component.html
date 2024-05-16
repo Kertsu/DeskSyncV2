@@ -1,14 +1,8 @@
 <div class="w-full flex flex-column gap-3">
     <div class="w-full flex-row flex gap-3">
       <div class="flex gap-3 flex-column lg:w-7">
-        <div
-          class="flex w-full gap-2 align-items-center justify-content-start surface-ground border-round px-3 py-1"
-        >
-          <i class="pi pi-info-circle" style="color: var(--primary-color)"></i>
-          <p class="text-color-secondary">
-            You can directly choose an area on the map
-          </p>
-        </div>
+        <app-inform info="You can directly choose an area on the map"/>
+
         <form
           class="w-full flex flex-column-reverse justify-content-center align-items-center gap-3 md:flex-row-reverse lg:hidden"
           [formGroup]="form"

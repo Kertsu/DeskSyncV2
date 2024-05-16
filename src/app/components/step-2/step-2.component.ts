@@ -786,6 +786,7 @@ export class Step2Component implements OnInit {
 
   // getIndicatorColor(deskNumber: number) {
   //   const desk = this.desks.find((d) => d.deskNumber == deskNumber);
+  //   console.log(desk?.status);
   //   switch (desk?.status) {
   //     case 'AVAILABLE':
   //       return 'bg-available';
@@ -794,7 +795,7 @@ export class Step2Component implements OnInit {
   //     case 'TEMPORARILY UNAVAILABLE':
   //       return 'bg-permanently-unavailable';
   //     default:
-  //       return;
+  //       return '';
   //   }
   // }
 
