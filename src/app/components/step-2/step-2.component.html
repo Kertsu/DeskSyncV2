@@ -14,9 +14,9 @@
             [src]="areaData.imagePath"
             usemap="#image-map"
           />
-          <!-- <ng-container *ngFor="let desk of areaData.desks">
+          <ng-container *ngFor="let desk of areaData.desks">
             <div
-              class="absolute bg-unavailable"
+              class="absolute"
               [ngStyle]="{
                 top: desk.indicators.top + '%',
                 left: desk.indicators.left + '%',
@@ -24,10 +24,29 @@
                 borderRadius: '9999px',
                 aspectRatio: '1/1',
               }"
-              [ngClass]="getIndicatorColor(desk.deskNumber)"
+              [ngClass]="desk.status && getIndicatorColor(desk.status)"
             ></div>
-          </ng-container> -->
-          <map name="image-map">
+          </ng-container>
+          <ng-container *ngFor="let desk of areaData.desks">
+            <div
+              class="absolute cursor-pointer"
+              (click)="handleSelectDesk(desk)"
+              style="z-index: 1;"
+              (mouseover)="desk.hovered = true"
+              (mouseout)="desk.hovered = false"
+              [pTooltip]="desk.title"
+              tooltipPosition="top"
+              [ngStyle]="{
+                top: desk.clickable?.top + '%',
+                left: desk.clickable?.left + '%',
+                height: desk.clickable?.height + '%',
+                width: desk.clickable?.width + '%',
+                backgroundColor: desk.hovered ? 'rgba(0, 0, 0, 0.125)' : 'transparent'
+              }"
+              
+            ></div>
+          </ng-container>
+          <!-- <map name="image-map">
             <ng-container *ngFor="let desk of areaData.desks">
               <area
                 class="cursor-pointer"
@@ -39,7 +58,7 @@
                 (click)="handleSelectDesk(desk)"
               />
             </ng-container>
-          </map>
+          </map> -->
         </div>
       </ng-container>
     </div>

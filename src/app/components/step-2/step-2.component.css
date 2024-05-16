@@ -2,12 +2,12 @@
     background-color: rgba(0, 255, 0, 0.5); /* Green */
   }
   
-  .bg-unavailable {
-    background-color: rgba(255, 0, 0, 0.5); /* Red */
+  .bg-temporarily-unavailable {
+    background-color: rgba(255, 145, 0, 0.5); /* Red */
   }
   
   .bg-permanently-unavailable {
-    background-color: rgba(0, 0, 0, 0.5); /* Dark */
+    background-color: rgba(255, 0, 0, 0.5); /* Dark */
   }
   
 ::ng-deep app-inform{
