@@ -923,6 +923,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 66',
           coords: '153,637,293,776',
           indicators: { top: 49.45, left: 16.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 49.25,
+            left:15.4,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 67,
@@ -930,6 +936,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 67',
           coords: '305,636,442,776',
           indicators: { top: 49.45, left: 38.5, width: 0, height: 3.5 },
+          clickable: {
+            top: 49.25,
+            left:29.75,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 68,
@@ -937,6 +949,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 68',
           coords: '445,637,583,775',
           indicators: { top: 49.45, left: 43.9, width: 0, height: 3.5 },
+          clickable: {
+            top: 49.25,
+            left:43.5,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 69,
@@ -944,6 +962,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 69',
           coords: '594,636,732,775',
           indicators: { top: 49.45, left: 66, width: 0, height: 3.5 },
+          clickable: {
+            top: 49.25,
+            left:57.3,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 70,
@@ -951,6 +975,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 70',
           coords: '735,636,873,775',
           indicators: { top: 49.45, left: 71.5, width: 0, height: 3.5 },
+          clickable: {
+            top: 49.25,
+            left:70.75,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 71,
@@ -958,6 +988,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 71',
           coords: '887,635,1021,776',
           indicators: { top: 49.45, left: 93.6, width: 0, height: 3.5 },
+          clickable: {
+            top: 49.25,
+            left:85,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 72,
@@ -965,6 +1001,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 72',
           coords: '153,788,293,927',
           indicators: { top: 67.2, left: 16.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 60.8,
+            left:15.4,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 73,
@@ -972,6 +1014,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 73',
           coords: '305,787,443,927',
           indicators: { top: 67.2, left: 38.5, width: 0, height: 3.5 },
+          clickable: {
+            top: 60.8,
+            left:29.75,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 74,
@@ -979,6 +1027,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 74',
           coords: '445,787,583,928',
           indicators: { top: 67.2, left: 43.9, width: 0, height: 3.5 },
+          clickable: {
+            top: 60.8,
+            left:43.5,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 75,
@@ -986,6 +1040,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 75',
           coords: '596,787,734,929',
           indicators: { top: 67.2, left: 66, width: 0, height: 3.5 },
+          clickable: {
+            top: 60.8,
+            left:57.3,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 76,
@@ -993,6 +1053,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 76',
           coords: '735,788,874,929',
           indicators: { top: 67.2, left: 71.5, width: 0, height: 3.5 },
+          clickable: {
+            top: 60.8,
+            left:70.75,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 77,
@@ -1000,6 +1066,12 @@ export class Step2Component implements OnInit {
           title: 'Hotdesk 77',
           coords: '885,791,1025,928',
           indicators: { top: 67.2, left: 93.6, width: 0, height: 3.5 },
+          clickable: {
+            top: 60.8,
+            left:85,
+            height: 10.5,
+            width: 13.5,
+          },
         },
         {
           deskNumber: 78,
