@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -12,7 +12,33 @@ import { Router } from '@angular/router';
 import { WebService } from '../../services/web.service';
 import { Hotdesk } from '../../models/Hotdesk';
 import { timeConvert } from '../../utils/reservation-time-converter.util';
-declare const imageMapResize: any;
+
+interface Desk {
+  deskNumber: number;
+  alt: string;
+  title: string;
+  coords: string;
+  indicators: {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  };
+  status?: string;
+  clickable?: {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  };
+  hovered?: boolean;
+}
+interface AreaData {
+  id: number;
+  imagePath: string;
+  desks: Desk[];
+}
+
 @Component({
   selector: 'app-step-2',
   templateUrl: './step-2.component.html',
@@ -29,7 +55,7 @@ export class Step2Component implements OnInit {
   formGroup!: FormGroup;
   options: any[] = [];
 
-  areaDataList = [
+  areaDataList: AreaData[] = [
     {
       id: 1,
       imagePath: '../../assets/images/map/office-area/Area 1 Numbered.png',
@@ -39,182 +65,338 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 1',
           title: 'Hotdesk 1',
           coords: '135,1348,15,1168',
-          indicators: { top: 86.5, left: 6.6, width: 5, height: 3.5 },
+          indicators: { top: 86.5, left: 6.6, width: 0, height: 3.5 },
+          clickable: {
+            top: 86.25,
+            left: 1.2,
+            height: 13,
+            width: 11.8,
+          },
         },
         {
           deskNumber: 2,
           alt: 'Hotdesk 2',
           title: 'Hotdesk 2',
           coords: '140,1168,258,1348',
-          indicators: { top: 86.5, left: 18.75, width: 5, height: 3.5 },
+          indicators: { top: 86.5, left: 18.75, width: 0, height: 3.5 },
+          clickable: {
+            top: 86.25,
+            left: 13.2,
+            height: 13,
+            width: 11.8,
+          },
         },
         {
           deskNumber: 3,
           alt: 'Hotdesk 3',
           title: 'Hotdesk 3',
           coords: '260,1169,382,1348',
-          indicators: { top: 86.5, left: 30.75, width: 5, height: 3.5 },
+          indicators: { top: 86.5, left: 30.75, width: 0, height: 3.5 },
+          clickable: {
+            top: 86.25,
+            left: 25.2,
+            height: 13,
+            width: 11.8,
+          },
         },
         {
           deskNumber: 4,
           alt: 'Hotdesk 4',
           title: 'Hotdesk 4',
           coords: '642,1168,761,1346',
-          indicators: { top: 86.5, left: 68, width: 5, height: 3.5 },
+          indicators: { top: 86.5, left: 68, width: 0, height: 3.5 },
+          clickable: {
+            top: 86.25,
+            left: 62.5,
+            height: 13,
+            width: 11.8,
+          },
         },
         {
           deskNumber: 5,
           alt: 'Hotdesk 5',
           title: 'Hotdesk 5',
           coords: '763,1169,884,1346',
-          indicators: { top: 86.5, left: 79.9, width: 5, height: 3.5 },
+          indicators: { top: 86.5, left: 79.9, width: 0, height: 3.5 },
+          clickable: {
+            top: 86.25,
+            left: 74.7,
+            height: 13,
+            width: 11.8,
+          },
         },
         {
           deskNumber: 6,
           alt: 'Hotdesk 6',
           title: 'Hotdesk 6',
           coords: '887,1171,1007,1347',
-          indicators: { top: 86.5, left: 92.05, width: 5, height: 3.5 },
+          indicators: { top: 86.5, left: 92.05, width: 0, height: 3.5 },
+          clickable: {
+            top: 86.25,
+            left: 86.9,
+            height: 13,
+            width: 11.8,
+          },
         },
         {
           deskNumber: 7,
           alt: 'Hotdesk 7',
           title: 'Hotdesk 7',
           coords: '102,12,282,153',
-          indicators: { top: 1.75, left: 10.25, width: 5, height: 3.5 },
+          indicators: { top: 1.75, left: 10.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 1.125,
+            left: 9.8,
+            height: 10.5,
+            width: 17.5,
+          },
         },
         {
           deskNumber: 8,
           alt: 'Hotdesk 8',
           title: 'Hotdesk 8',
           coords: '102,156,282,294',
-          indicators: { top: 11.75, left: 10.25, width: 5, height: 3.5 },
+          indicators: { top: 11.75, left: 10.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 11.5,
+            left: 9.8,
+            height: 10.5,
+            width: 17.5,
+          },
         },
         {
           deskNumber: 9,
           alt: 'Hotdesk 9',
           title: 'Hotdesk 9',
           coords: '102,298,282,436',
-          indicators: { top: 22.5, left: 10.25, width: 5, height: 3.5 },
+          indicators: { top: 22.5, left: 10.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 22,
+            left: 9.8,
+            height: 10.5,
+            width: 17.5,
+          },
         },
         {
           deskNumber: 10,
           alt: 'Hotdesk 10',
           title: 'Hotdesk 10',
           coords: '102,440,284,579',
-          indicators: { top: 33, left: 10.25, width: 5, height: 3.5 },
+          indicators: { top: 33, left: 10.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 32.5,
+            left: 9.8,
+            height: 10.5,
+            width: 17.5,
+          },
         },
         {
           deskNumber: 11,
           alt: 'Hotdesk 11',
           title: 'Hotdesk 11',
           coords: '285,13,465,153',
-          indicators: { top: 1.75, left: 40.25, width: 5, height: 3.5 },
+          indicators: { top: 1.75, left: 40.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 1.125,
+            left: 27.8,
+            height: 10.5,
+            width: 17.5,
+          },
         },
         {
           deskNumber: 12,
           alt: 'Hotdesk 12',
           title: 'Hotdesk 12',
           coords: '285,155,465,295',
-          indicators: { top: 11.75, left: 40.25, width: 5, height: 3.5 },
+          indicators: { top: 11.75, left: 40.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 11.5,
+            left: 27.8,
+            height: 10.5,
+            width: 17.5,
+          },
         },
         {
           deskNumber: 13,
           alt: 'Hotdesk 13',
           title: 'Hotdesk 13',
           coords: '286,297,465,437',
-          indicators: { top: 22.5, left: 40.25, width: 5, height: 3.5 },
+          indicators: { top: 22.5, left: 40.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 22,
+            left: 27.8,
+            height: 10.5,
+            width: 17.5,
+          },
         },
         {
           deskNumber: 14,
           alt: 'Hotdesk 14',
           title: 'Hotdesk 14',
           coords: '286,439,466,578',
-          indicators: { top: 33, left: 40.25, width: 5, height: 3.5 },
+          indicators: { top: 33, left: 40.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 32.5,
+            left: 27.8,
+            height: 10.5,
+            width: 17.5,
+          },
         },
         {
           deskNumber: 15,
           alt: 'Hotdesk 15',
           title: 'Hotdesk 15',
           coords: '552,14,735,155',
-          indicators: { top: 1.75, left: 54.25, width: 5, height: 3.5 },
+          indicators: { top: 1.75, left: 54.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 1.125,
+            left: 53.8,
+            height: 10.5,
+            width: 17.75,
+          },
         },
         {
           deskNumber: 16,
           alt: 'Hotdesk 16',
           title: 'Hotdesk 16',
           coords: '552,157,734,296',
-          indicators: { top: 11.75, left: 54.25, width: 5, height: 3.5 },
+          indicators: { top: 11.75, left: 54.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 11.5,
+            left: 53.8,
+            height: 10.5,
+            width: 17.75,
+          },
         },
         {
           deskNumber: 17,
           alt: 'Hotdesk 17',
           title: 'Hotdesk 17',
           coords: '552,298,734,439',
-          indicators: { top: 22.5, left: 54.25, width: 5, height: 3.5 },
+          indicators: { top: 22.5, left: 54.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 22,
+            left: 53.8,
+            height: 10.5,
+            width: 17.75,
+          },
         },
         {
           deskNumber: 18,
           alt: 'Hotdesk 18',
           title: 'Hotdesk 18',
           coords: '552,440,734,580',
-          indicators: { top: 33, left: 54.25, width: 5, height: 3.5 },
+          indicators: { top: 33, left: 54.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 32.5,
+            left: 53.8,
+            height: 10.5,
+            width: 17.75,
+          },
         },
         {
           deskNumber: 19,
           alt: 'Hotdesk 19',
           title: 'Hotdesk 19',
           coords: '736,14,917,155',
-          indicators: { top: 1.75, left: 84.25, width: 5, height: 3.5 },
+          indicators: { top: 1.75, left: 84.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 1.125,
+            left: 71.8,
+            height: 10.5,
+            width: 17.75,
+          },
         },
         {
           deskNumber: 20,
           alt: 'Hotdesk 20',
           title: 'Hotdesk 20',
           coords: '736,156,917,296',
-          indicators: { top: 11.75, left: 84.25, width: 5, height: 3.5 },
+          indicators: { top: 11.75, left: 84.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 11.5,
+            left: 71.8,
+            height: 10.5,
+            width: 17.75,
+          },
         },
         {
           deskNumber: 21,
           alt: 'Hotdesk 21',
           title: 'Hotdesk 21',
           coords: '736,299,916,439',
-          indicators: { top: 22.5, left: 84.25, width: 5, height: 3.5 },
+          indicators: { top: 22.5, left: 84.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 22,
+            left: 71.8,
+            height: 10.5,
+            width: 17.75,
+          },
         },
         {
           deskNumber: 22,
           alt: 'Hotdesk 22',
           title: 'Hotdesk 22',
           coords: '735,440,917,582',
-          indicators: { top: 33, left: 84.25, width: 5, height: 3.5 },
+          indicators: { top: 33, left: 84.25, width: 0, height: 3.5 },
+          clickable: {
+            top: 32.5,
+            left: 71.8,
+            height: 10.5,
+            width: 17.75,
+          },
         },
         {
           deskNumber: 23,
           alt: 'Hotdesk 23',
           title: 'Hotdesk 23',
           coords: '603,789,806,1031',
-          indicators: { top: 72.5, left: 65.6, width: 5, height: 3.5 },
+          indicators: { top: 72.5, left: 65.6, width: 0, height: 3.5 },
+          clickable: {
+            top: 58.5,
+            left: 59.25,
+            height: 17.5,
+            width: 19.5,
+          },
         },
         {
           deskNumber: 24,
           alt: 'Hotdesk 24',
           title: 'Hotdesk 24',
           coords: '807,791,1008,1029',
-          indicators: { top: 72.5, left: 87.6, width: 5, height: 3.5 },
+          indicators: { top: 72.5, left: 87.6, width: 0, height: 3.5 },
+          clickable: {
+            top: 58.5,
+            left: 78.8,
+            height: 17.5,
+            width: 19.5,
+          },
         },
         {
           deskNumber: 25,
           alt: 'Hotdesk 25',
           title: 'Hotdesk 25',
           coords: '214,1028,420,788',
-          indicators: { top: 72.5, left: 29.6, width: 5, height: 3.5 },
+          indicators: { top: 72.5, left: 29.6, width: 0, height: 3.5 },
+          clickable: {
+            top: 58.5,
+            left: 20.8,
+            height: 17.5,
+            width: 19.5,
+          },
         },
         {
           deskNumber: 26,
           alt: 'Hotdesk 26',
           title: 'Hotdesk 26',
           coords: '14,787,213,1028',
-          indicators: { top: 72.5, left: 7.6, width: 5, height: 3.5 },
+          indicators: { top: 72.5, left: 7.6, width: 0, height: 3.5 },
+          clickable: {
+            top: 58.5,
+            left: 1.25,
+            height: 17.5,
+            width: 19.5,
+          },
         },
       ],
     },
@@ -227,126 +409,126 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 27',
           title: 'Hotdesk 27',
           coords: '8,313,144,174',
-          indicators: { top: 14.5, left: 1.75, height: 3.5 },
+          indicators: { top: 14.5, left: 1.75, width: 0, height: 3.5 },
         },
         {
           deskNumber: 28,
           alt: 'Hotdesk 28',
           title: 'Hotdesk 28',
           coords: '296,173,158,310',
-          indicators: { top: 14.5, left: 23.8, height: 3.5 },
+          indicators: { top: 14.5, left: 23.8, width: 0, height: 3.5 },
         },
         {
           deskNumber: 29,
           alt: 'Hotdesk 29',
           title: 'Hotdesk 29',
           coords: '437,174,299,310',
-          indicators: { top: 14.5, left: 29.25, height: 3.5 },
+          indicators: { top: 14.5, left: 29.25, width: 0, height: 3.5 },
         },
         {
           deskNumber: 30,
           alt: 'Hotdesk 30',
           title: 'Hotdesk 30',
           coords: '448,173,588,312',
-          indicators: { top: 14.5, left: 51.35, height: 3.5 },
+          indicators: { top: 14.5, left: 51.35, width: 0, height: 3.5 },
         },
         {
           deskNumber: 31,
           alt: 'Hotdesk 31',
           title: 'Hotdesk 31',
           coords: '590,173,727,310',
-          indicators: { top: 14.5, left: 56.9, height: 3.5 },
+          indicators: { top: 14.5, left: 56.9, width: 0, height: 3.5 },
         },
         {
           deskNumber: 32,
           alt: 'Hotdesk 32',
           title: 'Hotdesk 32',
           coords: '739,172,880,311',
-          indicators: { top: 14.5, left: 79, height: 3.5 },
+          indicators: { top: 14.5, left: 79, width: 0, height: 3.5 },
         },
         {
           deskNumber: 33,
           alt: 'Hotdesk 33',
           title: 'Hotdesk 33',
           coords: '9,326,145,463',
-          indicators: { top: 32.2, left: 1.75, height: 3.5 },
+          indicators: { top: 32.2, left: 1.75, width: 0, height: 3.5 },
         },
         {
           deskNumber: 34,
           alt: 'Hotdesk 34',
           title: 'Hotdesk 34',
           coords: '159,323,297,463',
-          indicators: { top: 32.2, left: 23.8, height: 3.5 },
+          indicators: { top: 32.2, left: 23.8, width: 0, height: 3.5 },
         },
         {
           deskNumber: 35,
           alt: 'Hotdesk 35',
           title: 'Hotdesk 35',
           coords: '298,323,438,463',
-          indicators: { top: 32.2, left: 29.25, height: 3.5 },
+          indicators: { top: 32.2, left: 29.25, width: 0, height: 3.5 },
         },
         {
           deskNumber: 36,
           alt: 'Hotdesk 36',
           title: 'Hotdesk 36',
           coords: '449,323,587,463',
-          indicators: { top: 32.2, left: 51.35, height: 3.5 },
+          indicators: { top: 32.2, left: 51.35, width: 0, height: 3.5 },
         },
         {
           deskNumber: 37,
           alt: 'Hotdesk 37',
           title: 'Hotdesk 37',
           coords: '590,322,730,463',
-          indicators: { top: 32.2, left: 56.9, height: 3.5 },
+          indicators: { top: 32.2, left: 56.9, width: 0, height: 3.5 },
         },
         {
           deskNumber: 38,
           alt: 'Hotdesk 38',
           title: 'Hotdesk 38',
           coords: '741,324,879,465',
-          indicators: { top: 32.2, left: 79, height: 3.5 },
+          indicators: { top: 32.2, left: 79, width: 0, height: 3.5 },
         },
         {
           deskNumber: 39,
           alt: 'Hotdesk 39',
           title: 'Hotdesk 39',
           coords: '8,628,148,768',
-          indicators: { top: 49.25, left: 79, height: 3.5 },
+          indicators: { top: 49.25, left: 79, width: 0, height: 3.5 },
         },
         {
           deskNumber: 40,
           alt: 'Hotdesk 40',
           title: 'Hotdesk 40',
           coords: '159,629,297,768',
-          indicators: { top: 49.25, left: 1.75, height: 3.5 },
+          indicators: { top: 49.25, left: 1.75, width: 0, height: 3.5 },
         },
         {
           deskNumber: 41,
           alt: 'Hotdesk 41',
           title: 'Hotdesk 41',
           coords: '298,630,436,767',
-          indicators: { top: 49.25, left: 23.8, height: 3.5 },
+          indicators: { top: 49.25, left: 23.8, width: 0, height: 3.5 },
         },
         {
           deskNumber: 42,
           alt: 'Hotdesk 42',
           title: 'Hotdesk 42',
           coords: '449,629,587,767',
-          indicators: { top: 49.25, left: 29.25, height: 3.5 },
+          indicators: { top: 49.25, left: 29.25, width: 0, height: 3.5 },
         },
         {
           deskNumber: 43,
           alt: 'Hotdesk 43',
           title: 'Hotdesk 43',
           coords: '589,628,727,767',
-          indicators: { top: 49.25, left: 51.35, height: 3.5 },
+          indicators: { top: 49.25, left: 51.35, width: 0, height: 3.5 },
         },
         {
           deskNumber: 44,
           alt: 'Hotdesk 44',
           title: 'Hotdesk 44',
           coords: '739,629,878,769',
-          indicators: { top: 49.25, left: 56.9, height: 3.5 },
+          indicators: { top: 49.25, left: 56.9, width: 0, height: 3.5 },
         },
         {
           deskNumber: 45,
@@ -723,7 +905,6 @@ export class Step2Component implements OnInit {
     this.isLoading = true;
     this.webService.getReservations(params).subscribe({
       next: (res: any) => {
-        console.log('reservations', res.reservations);
         this.reservations = res.reservations;
         if (callback) {
           callback();
@@ -740,7 +921,6 @@ export class Step2Component implements OnInit {
     for (const desk of this.desks) {
       if (deskNumber == desk.deskNumber) {
         this.desk = desk;
-        console.log(desk);
       }
     }
     this.isLoading = false;
@@ -782,28 +962,41 @@ export class Step2Component implements OnInit {
         }
       }
     }
+
+    const area = this.areaDataList.find(
+      (areaData) =>
+        areaData.id == this.reservationService.getReservation()?.area
+    );
+    if (area) {
+      const updatedDesks = area.desks.map((desk) => {
+        const deskStatus = this.desks.find(
+          (d) => d.deskNumber === desk.deskNumber
+        );
+        if (deskStatus) {
+          return { ...desk, status: deskStatus.status };
+        }
+        return desk;
+      });
+      area.desks = updatedDesks;
+    }
   }
 
-  // getIndicatorColor(deskNumber: number) {
-  //   const desk = this.desks.find((d) => d.deskNumber == deskNumber);
-  //   console.log(desk?.status);
-  //   switch (desk?.status) {
-  //     case 'AVAILABLE':
-  //       return 'bg-available';
-  //     case 'PERMANENTLY UNAVAILABLE':
-  //       return 'bg-unavailable';
-  //     case 'TEMPORARILY UNAVAILABLE':
-  //       return 'bg-permanently-unavailable';
-  //     default:
-  //       return '';
-  //   }
-  // }
+  getIndicatorColor(status: string): string {
+    if (status === 'AVAILABLE') {
+      return 'bg-available';
+    } else if (status === 'PERMANENTLY UNAVAILABLE') {
+      return 'bg-permanently-unavailable';
+    } else if (
+      ['TEMPORARILY UNAVAILABLE', 'BOOKED', 'RESERVED', 'OCCUPIED'].includes(
+        status
+      )
+    ) {
+      return 'bg-temporarily-unavailable';
+    }
+    return '';
+  }
 
   initialize() {
-    setTimeout(() => {
-      imageMapResize();
-    }, 300);
-
     [this.minDate, this.maxDate] = this.getMinMax();
 
     const params = {
