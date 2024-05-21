@@ -210,9 +210,15 @@ export class LogsComponent implements OnInit {
   }
 
   loadAuditTrails(event: any) {
+    console.log(event);
     this.loading = true;
 
-    const eventParams = { mode: 0, ...event };
+    if (!event.sortField){
+      event.sortField = 'createdAt';
+      event.sortOrder = -1;
+    }
+
+    const eventParams = { mode: 0,...event};
     const params = this.paramsBuilder.buildParams(eventParams);
 
     this.webService.getTrails(params).subscribe((res: any) => {
