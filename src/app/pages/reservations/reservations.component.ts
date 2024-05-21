@@ -53,7 +53,7 @@ export class ReservationsComponent {
   }
   confirm(reservation: Reservation) {
     this.confirmationService.confirm({
-      message: `Are you sure you want to canel this reservation?`,
+      message: `Are you sure you want to cancel this reservation?`,
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
