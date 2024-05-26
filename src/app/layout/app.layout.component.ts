@@ -43,6 +43,16 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
   feedbackForm!: FormGroup;
 
   justFinished: boolean = false;
+  selectedRating: number | null = null;
+  hoveredRating: number | null = null;
+
+  ratings = [
+    { emoji: '😣', rate: 1, descripton: 'Very bad' },
+    { emoji: '🙁', rate: 2, descripton: 'Bad' },
+    { emoji: '😐', rate: 3, descripton: 'Ok' },
+    { emoji: '🙂', rate: 4, descripton: 'Good' },
+    { emoji: '😃', rate: 5, descripton: 'Excellent' },
+  ];
 
   @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
@@ -60,8 +70,8 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
     private fb: FormBuilder
   ) {
     this.feedbackForm = this.fb.group({
-      feedback: ['', [Validators.maxLength(100)]],
-      rating: new FormControl(null),
+      description: [''],
+      rating: [''],
     });
 
     this.overlayMenuOpenSubscription =
@@ -258,9 +268,27 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
       }
       this.prevNetworkStatus = res;
     });
+
+    this.socketService.reservationEnded.subscribe((res) => {
+      console.log(res);
+    });
   }
 
   onSubmit() {
     alert(JSON.stringify(this.feedbackForm.value));
+  }
+
+
+  handleRating(rating: number){
+    this.selectedRating = rating;
+    this.feedbackForm.get('rating')?.setValue(rating);
+  }
+
+  handleMouseEnter(rating: number){
+    this.hoveredRating = rating;
+  }
+
+  handleMouseLeave(){
+    this.hoveredRating = null;
   }
 }

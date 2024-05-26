@@ -49,45 +49,66 @@
   [draggable]="false"
   [(visible)]="justFinished"
   [modal]="true"
-  [breakpoints]="{ '375px': '90vw' }"
-  [style]="{ width: '30vw' }"
+  [breakpoints]="{ '2000px': '30vw', '1024px': '60vw', '500px': '90vw' }"
 >
   <ng-template pTemplate="header">
     <div class="w-full flex justify-content-start align-items-center gap-3">
-      <img class="w-1" src="../../assets/images/guest/DeskSync-logo.png" alt="" />
-      <span class="text-xl" id="logo-text">DeskSync | Feedback</span>
+      <img
+        class="w-1"
+        src="../../assets/images/guest/DeskSync-logo.png"
+        alt=""
+      />
+      <span class="text-xl" id="logo-text">Feedback</span>
     </div>
   </ng-template>
   <form
     [formGroup]="feedbackForm"
     (ngSubmit)="onSubmit()"
-    class="w-full flex flex-column gap-3 jusitfy-content-start align-items-start"
+    class="w-full flex flex-column jusitfy-content-start align-items-start gap-3"
   >
-    <div
-      class="flex gap-3 flex-row align-items-center justify-content-start mb-3"
-    >
-      <p class="text-color-secondary m-0">
-        How would you rate your experience?
-      </p>
-      <p-rating formControlName="rating"></p-rating>
-    </div>
-    <p class="text-color-secondary">
-      We'd appreciate if you leave us a comment. You can send us a feedback so
-      we can understand more 🙌
-    </p>
-    <div class="w-full flex flex-column gap-1">
-      <textarea
-        placeholder="What's on your mind?"
-        class="w-full"
-        rows="10"
-        cols="30"
-        id="feedback"
-        pInputTextarea
-        formControlName="feedback"
-      ></textarea>
-      <small style="align-self: end"
-        >{{ feedbackForm.get("feedback")?.value.length }}/100</small
+    <div class="flex flex-column w-full">
+      <p class="text-color-secondary">How would you rate your experience?</p>
+      <div
+        class="flex justify-content-between align-items-start w-full gap-3 md:grid"
       >
+        <ng-container *ngFor="let rating of ratings; let i = index">
+          <div
+            class="flex flex-column cursor-pointer gap-3 text-center border-1 surface-border border-round-md p-1 md:col"
+            (click)="handleRating(rating.rate)"
+            [ngClass]="{ 'bg-primary': selectedRating == rating.rate }"
+            (mouseenter)="handleMouseEnter(rating.rate)"
+            (mouseleave)="handleMouseLeave()"
+          >
+            <p
+              [ngClass]="{ 'shake-animation': hoveredRating == rating.rate }"
+              class="m-0 text-4xl md:text-5xl"
+            >
+              {{ rating.emoji }}
+            </p>
+            <p class="m-0 hidden md:block md:font-bold md:text-sm lg:text-base">
+              {{ rating.descripton }}
+            </p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="flex flex-column">
+      <p class="text-color-secondary">
+        We'd appreciate if you leave us a comment. You can send us a feedback so
+        we can understand more 🙌
+      </p>
+      <div class="w-full flex flex-column gap-1">
+        <textarea
+          placeholder="Leave your feedback here"
+          class="w-full"
+          rows="10"
+          cols="30"
+          id="description"
+          pInputTextarea
+          formControlName="description"
+        ></textarea>
+      </div>
     </div>
 
     <!-- <ng-template pTemplate="footer">

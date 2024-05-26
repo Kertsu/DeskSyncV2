@@ -5,6 +5,8 @@ import { Socket } from 'ngx-socket-io';
 })
 export class SocketService {
 
+  reservationEnded = this.socket.fromEvent<{reservationId:string, message: string}>('reservationEnded');
+
   constructor(private socket: Socket) { }
 
   emit(event: string, data: any){
