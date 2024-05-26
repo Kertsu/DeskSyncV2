@@ -86,6 +86,7 @@ import { ReservationsComponent } from './pages/reservations/reservations.compone
 import { HistoryComponent } from './pages/history/history.component';
 import { OtpComponent } from './pages/otp/otp.component';
 import { InformComponent } from './components/inform/inform.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
 
 const config: SocketIoConfig = {
   // url: 'https://hdbsv2-r473.onrender.com', options: {transports: ['websocket']}
@@ -128,6 +129,7 @@ const config: SocketIoConfig = {
     HistoryComponent,
     OtpComponent,
     InformComponent,
+    FeedbackComponent,
   ],
   imports: [
     BrowserModule,
