@@ -26,6 +26,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FileUploadModule } from 'primeng/fileupload';
 import { RatingModule } from 'primeng/rating';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 @NgModule({
     declarations: [
         AppMenuitemComponent,
@@ -57,6 +58,7 @@ import { RatingModule } from 'primeng/rating';
         InputTextareaModule,
         FileUploadModule,
         RatingModule,
+        DynamicDialogModule
     ],
     exports: [AppLayoutComponent]
 })

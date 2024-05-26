@@ -19,6 +19,7 @@ export class WebService {
   baseReservationURL: string = 'https://hdbsv2.onrender.com/api/reservations';
   baseSwitchUrl: string = 'https://hdbsv2.onrender.com/api/switch';
   baseTrailUrl: string = 'https://hdbsv2.onrender.com/api/trails';
+  baseFeedbackUrl: string = 'http://hdbsv2.onrender.com/api/feedbacks';
   
 
   constructor(private http: HttpClient) {}
@@ -111,12 +112,11 @@ export class WebService {
     );
   }
 
-  verifyOTP(otp: string)
-  {
+  verifyOTP(otp: string) {
     return this.http.post(`${this.baseUserURL}/otp/validate`, { otp });
   }
 
-  resendOTP(){
+  resendOTP() {
     return this.http.post(`${this.baseUserURL}/otp/resend`, {});
   }
 
@@ -163,16 +163,17 @@ export class WebService {
     );
   }
 
-  getSelfReservations(params?: any){
+  getSelfReservations(params?: any) {
     return this.http.get(`${this.baseReservationURL}/self`, { params });
-
   }
 
-  cancelReservation(reservation: Reservation){
-    return this.http.delete(`${this.baseReservationURL}/cancel/${reservation.id}`);
+  cancelReservation(reservation: Reservation) {
+    return this.http.delete(
+      `${this.baseReservationURL}/cancel/${reservation.id}`
+    );
   }
 
-  getSelfReservationHistory(params: any){
+  getSelfReservationHistory(params: any) {
     return this.http.get(`${this.baseReservationURL}/self/history`, { params });
   }
 
@@ -188,5 +189,10 @@ export class WebService {
 
   handleSwitch(autoAccepting: boolean) {
     return this.http.put(`${this.baseSwitchUrl}`, { autoAccepting });
+  }
+
+  // FEEDBACK
+  submitFeedback(feedback: { rating: number; description: string }) {
+    return this.http.post(`${this.baseFeedbackUrl}`, feedback);
   }
 }

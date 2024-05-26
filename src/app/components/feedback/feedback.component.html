@@ -1,0 +1,85 @@
+<div
+  class="w-full flex flex-column justify-content-center align-items-center gap-3"
+>
+  <form
+    [formGroup]="feedbackForm"
+    (ngSubmit)="onSubmit()"
+    class="w-full flex flex-column jusitfy-content-start align-items-start gap-3"
+  >
+    <div class="flex flex-column w-full">
+      <p class="text-color-secondary">How would you rate your experience?</p>
+      <small class="text-red-500 mb-3" *ngIf="errorMessage">{{errorMessage}}</small>
+      <div
+        class="flex justify-content-between align-items-start w-full gap-3 md:grid"
+      >
+        <ng-container *ngFor="let rating of ratings; let i = index">
+          <div
+            class="flex flex-column cursor-pointer gap-3 text-center border-1 surface-border border-round-md p-1 md:col"
+            [ngClass]="{'bg-red-500 shake-animation text-white' : hasErrors}"
+            (click)="handleRating(rating.rate)"
+            [ngClass]="{ 'bg-primary': selectedRating == rating.rate }"
+            (mouseenter)="handleMouseEnter(rating.rate)"
+            (mouseleave)="handleMouseLeave()"
+          >
+            <p
+              [ngClass]="{ 'shake-animation': hoveredRating == rating.rate }"
+              class="m-0 text-4xl md:text-5xl"
+            >
+              {{ rating.emoji }}
+            </p>
+            <p class="m-0 hidden md:block md:font-bold md:text-sm lg:text-base">
+              {{ rating.descripton }}
+            </p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="flex flex-column">
+      <p class="text-color-secondary">
+        We'd appreciate if you leave us a comment. You can send us a feedback so
+        we can understand more 🙌
+      </p>
+      <div class="w-full flex flex-column gap-1">
+        <textarea
+          placeholder="Leave your feedback here"
+          class="w-full"
+          rows="10"
+          cols="30"
+          id="description"
+          pInputTextarea
+          formControlName="description"
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- <ng-template pTemplate="footer">
+    <div
+      class="flex flex-column justify-content-center align-items-start gap-3 w-full"
+    >
+      <p-fileUpload class="w-full" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept="image/*" [maxFileSize]="1000000">
+      <ng-template pTemplate="content">
+          <ul *ngIf="uploadedFiles.length">
+              <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+          </ul>
+      </ng-template>
+  </p-fileUpload>
+      <p-button
+        class="w-full"
+        label="Submit"
+        pAutoFocus
+        type="submit"
+        [autofocus]="true"
+      ></p-button>
+    </div>
+  </ng-template> -->
+    <button
+      pButton
+      class="py-2 px-3 border-round p-button-info max-w-max align-self-end"
+      label="Submit"
+      type="submit"
+      [autofocus]="true"
+      pAutoFocus
+    ></button>
+  </form>
+</div>

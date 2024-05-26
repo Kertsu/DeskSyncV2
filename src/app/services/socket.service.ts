@@ -5,7 +5,7 @@ import { Socket } from 'ngx-socket-io';
 })
 export class SocketService {
 
-  reservationEnded = this.socket.fromEvent<{reservationId:string, message: string}>('reservationEnded');
+  reservationEnded = this.socket.fromEvent<{reservationId:string, message: string}>('reservation-expired');
 
   constructor(private socket: Socket) { }
 

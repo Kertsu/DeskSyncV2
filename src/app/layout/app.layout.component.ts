@@ -22,11 +22,18 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import {
+  DialogService,
+  DynamicDialogConfig,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
+import { FeedbackComponent } from '../components/feedback/feedback.component';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './app.layout.component.html',
   styleUrls: ['../../styles.css'],
+  providers: [DialogService],
 })
 export class AppLayoutComponent implements OnDestroy, OnInit {
   overlayMenuOpenSubscription: Subscription;
@@ -40,19 +47,8 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
 
   prevNetworkStatus: boolean | null = null;
   isLoading: boolean = false;
-  feedbackForm!: FormGroup;
 
-  justFinished: boolean = false;
-  selectedRating: number | null = null;
-  hoveredRating: number | null = null;
-
-  ratings = [
-    { emoji: '😣', rate: 1, descripton: 'Very bad' },
-    { emoji: '🙁', rate: 2, descripton: 'Bad' },
-    { emoji: '😐', rate: 3, descripton: 'Ok' },
-    { emoji: '🙂', rate: 4, descripton: 'Good' },
-    { emoji: '😃', rate: 5, descripton: 'Excellent' },
-  ];
+  ref: DynamicDialogRef | undefined = undefined;
 
   @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
@@ -67,13 +63,8 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
     private webService: WebService,
     private messageService: MessageService,
     private networkService: NetworkService,
-    private fb: FormBuilder
+    private dialogService: DialogService
   ) {
-    this.feedbackForm = this.fb.group({
-      description: [''],
-      rating: [''],
-    });
-
     this.overlayMenuOpenSubscription =
       this.layoutService.overlayOpen$.subscribe(() => {
         if (!this.menuOutsideClickListener) {
@@ -211,7 +202,6 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.feedbackForm.valueChanges.subscribe((res) => console.log(res));
 
     this.socketService.connect();
 
@@ -269,26 +259,19 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
       this.prevNetworkStatus = res;
     });
 
-    this.socketService.reservationEnded.subscribe((res) => {
-      console.log(res);
+    this.socketService.reservationEnded.subscribe((res: any) => {
+      const deskNumber = res.deskNumber;
+
+      const dialogConfig: DynamicDialogConfig = {
+        header: `Feedback on your reservation on Hotdesk #${deskNumber}`,
+        data: {
+          deskNumber,
+        },
+        modal: true,
+        closeOnEscape: true,
+        breakpoints: { '2000px': '30vw', '1440px': '60vw', '500px': '90vw' },
+      };
+      this.ref = this.dialogService.open(FeedbackComponent, dialogConfig);
     });
-  }
-
-  onSubmit() {
-    alert(JSON.stringify(this.feedbackForm.value));
-  }
-
-
-  handleRating(rating: number){
-    this.selectedRating = rating;
-    this.feedbackForm.get('rating')?.setValue(rating);
-  }
-
-  handleMouseEnter(rating: number){
-    this.hoveredRating = rating;
-  }
-
-  handleMouseLeave(){
-    this.hoveredRating = null;
   }
 }
