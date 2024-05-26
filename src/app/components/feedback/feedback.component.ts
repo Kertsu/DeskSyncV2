@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { WebService } from '../../services/web.service';
+import { MessageService } from '../../utils/message.service';
 
 @Component({
   selector: 'app-feedback',
@@ -10,9 +12,11 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 export class FeedbackComponent implements OnInit {
   feedbackForm!: FormGroup;
 
-  justFinished: boolean = false;
   selectedRating: number | null = null;
   hoveredRating: number | null = null;
+
+  errorMessage!: string
+  hasErrors: boolean = false;
 
   ratings = [
     { emoji: '😣', rate: 1, descripton: 'Very bad' },
@@ -22,22 +26,46 @@ export class FeedbackComponent implements OnInit {
     { emoji: '😃', rate: 5, descripton: 'Excellent' },
   ];
 
-  constructor(private fb: FormBuilder, protected config: DynamicDialogConfig) {}
+  constructor(
+    private fb: FormBuilder,
+    protected config: DynamicDialogConfig,
+    private webService: WebService,
+    private messageService: MessageService,
+    private dialogRef: DynamicDialogRef
+  ) {}
 
   ngOnInit(): void {
-
-    console.log(this.config.data.deskNumber)
+    console.log(this.config.data.deskNumber);
 
     this.feedbackForm = this.fb.group({
       rating: [''],
       description: [''],
-    })
+    });
 
-    this.feedbackForm.valueChanges.subscribe(res => console.log(res));
-  }  
+    this.feedbackForm.valueChanges.subscribe((res) => console.log(res));
+  }
 
   onSubmit() {
-    alert(JSON.stringify(this.feedbackForm.value));
+    const { deskNumber } = this.config.data;
+    const feedback = this.feedbackForm.value;
+    feedback.deskNumber = deskNumber;
+    console.log(feedback);
+    this.webService.submitFeedback(feedback).subscribe({
+      next: (res: any) => {},
+      error: (error) => {
+        console.log(error);
+        this.errorMessage = error.error.error;
+        this.triggerErrorEvent();
+      },
+      complete: () => {
+        this.messageService.addMessage(
+          'success',
+          'Feedback submitted',
+          'Success'
+        );
+        this.dialogRef.close();
+      },
+    });
   }
 
   handleRating(rating: number) {
@@ -51,5 +79,13 @@ export class FeedbackComponent implements OnInit {
 
   handleMouseLeave() {
     this.hoveredRating = null;
+  }
+
+  triggerErrorEvent(){
+    this.hasErrors = true;
+
+    setTimeout(() => {
+      this.hasErrors = false;
+    }, 1500);
   }
 }

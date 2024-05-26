@@ -234,17 +234,6 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
       },
     });
 
-    const dialogConfig: DynamicDialogConfig = {
-      header: `Feedback on your reservation on Hotdesk #71`,
-      data: {
-        deskNumber:71,
-      },
-      modal: true,
-      closeOnEscape: true,
-      breakpoints: { '2000px': '30vw', '1440px': '60vw', '500px': '90vw' },
-    };
-    this.ref = this.dialogService.open(FeedbackComponent, dialogConfig);
-
     this.networkService.isOnline().subscribe((res) => {
       if (this.prevNetworkStatus !== null && res !== this.prevNetworkStatus) {
         if (res) {
