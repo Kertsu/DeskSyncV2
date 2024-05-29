@@ -36,7 +36,10 @@
         <div
           class="surface-ground border-round-bottom w-full mt-5 p-3 lg:mt-6 xl:pb-8 xl:pt-5"
         >
-          <div style="max-width: 625px; word-wrap: break-word;" class="w-full bg-primary-reverse p-3 border-round">
+          <div
+            style="max-width: 625px; word-wrap: break-word"
+            class="w-full bg-primary-reverse p-3 border-round"
+          >
             <h5 class="text-color font-semibold text-lg mb-2">
               {{ informationForm.get("username")?.value }}
             </h5>
@@ -114,8 +117,18 @@
           <div
             class="flex flex-column gap-3 md:flex-row md:gap-6 md:align-items-center"
           >
-          <input #avatarUpload type="file" class="hidden" (change)="onFileSelected($event, 'avatar')">
-          <input #bannerUpload type="file" class="hidden" (change)="onFileSelected($event, 'banner')">
+            <input
+              #avatarUpload
+              type="file"
+              class="hidden"
+              (change)="onFileSelected($event, 'avatar')"
+            />
+            <input
+              #bannerUpload
+              type="file"
+              class="hidden"
+              (change)="onFileSelected($event, 'banner')"
+            />
             <button
               pButton
               class="w-8 py-2 px-3 md:w-5 lg:w-4"
@@ -199,6 +212,44 @@
 
     <p-inputSwitch [formControl]="checked"></p-inputSwitch>
   </div>
+
+  <p-divider></p-divider>
+  <p-tabView styleClass="tabview-custom" class="xl:w-6">
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2" style="height: 31px">
+          <p-avatar />
+          <i class="pi pi-fw pi-chart-line"></i>
+          <span class="font-bold white-space-nowrap m-0"> Reservations </span>
+        </div>
+      </ng-template>
+      <app-reservations></app-reservations>
+    </p-tabPanel>
+    <p-tabPanel header="Header II">
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2" style="height: 31px">
+          <p-avatar />
+          <i class="pi pi-fw pi-calendar"></i>
+          <span class="font-bold white-space-nowrap m-0"> History </span>
+        </div>
+      </ng-template>
+      <app-history></app-history>
+    </p-tabPanel>
+    <p-tabPanel header="Header III">
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2" style="height: 31px">
+          <p-avatar />
+          <i class="pi pi-fw pi-star"></i>
+          <span class="font-bold white-space-nowrap m-0"> To rate </span>
+          <p-badge
+            *ngIf="userService.getUser()?.toRate.toString() != 0"
+            [value]="userService.getUser()?.toRate.toString()"
+          />
+        </div>
+      </ng-template>
+      <app-to-rate></app-to-rate>
+    </p-tabPanel>
+  </p-tabView>
 </div>
 <p-dialog
   [@tada]="bounceState"
@@ -307,7 +358,8 @@
           *ngIf="changePasswordForm.get('newPassword')?.errors?.['pattern']"
           class="text-red-500 text-sm"
         >
-        Password should be at least 15 characters long and contain a mix of alphanumeric characters, lowercase, uppercase, and symbols.</span
+          Password should be at least 15 characters long and contain a mix of
+          alphanumeric characters, lowercase, uppercase, and symbols.</span
         >
       </div>
     </div>

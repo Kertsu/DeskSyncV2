@@ -32,12 +32,6 @@ export class AppMenuComponent implements OnInit {
           },
           { label: 'Book', icon: 'pi pi-fw pi-book', routerLink: ['book'] },
           {
-            label: 'Logs',
-            icon: 'pi pi-fw pi-comments',
-            routerLink: ['logs'],
-            visible: isAdmin,
-          },
-          {
             label: 'Manage',
             visible: isAdmin || isOfficeManager,
             icon: 'pi pi-fw pi-cog',
@@ -89,32 +83,22 @@ export class AppMenuComponent implements OnInit {
               },
             ],
           },
+          {
+            label: 'Logs',
+            icon: 'pi pi-fw pi-comments',
+            routerLink: ['logs'],
+            visible: isAdmin,
+          },
         ],
       },
       {
         label: 'Account',
         items: [
           {
-            label: 'My account',
-            icon: 'pi pi-fw pi-user',
-            items: [
-              {
-                label: 'Profile',
-                icon: 'pi pi-fw pi-user-edit',
-                routerLink: ['profile'],
-              },
-              {
-                label: 'Reservations',
-                icon: 'pi pi-fw pi-chart-line',
-                routerLink: ['reservations'],
-              },
-              {
-                label: 'History',
-                icon: 'pi pi-fw pi-calendar',
-                routerLink: ['history'],
-              },
-            ],
-          },
+            label: 'My Account',
+            icon: 'pi pi-fw pi-user-edit',
+            routerLink: ['profile'],
+          }
         ],
       },
     ];
