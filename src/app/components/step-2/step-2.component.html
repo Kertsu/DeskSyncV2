@@ -1,52 +1,53 @@
 <div class="w-full flex flex-column gap-3 md:flex-row">
-    <div class="flex gap-3 align-items-center flex-column lg:w-7">
-      <app-inform info="You can directly choose an area on the map"/>
+  <div class="flex gap-3 align-items-center flex-column lg:w-7">
+    <app-inform info="You can directly choose an area on the map" />
 
-      <ng-container *ngFor="let areaData of areaDataList">
-        <div
-          *ngIf="area === areaData.id"
-          class="flex justify-content-center align-items-center relative"
-          style="max-width: max-content;"
-          >
-          <img
-            class="w-full max-w-max lg:max-h-30rem shadow-4"
-            style="object-fit: contain"
-            [src]="areaData.imagePath"
-            usemap="#image-map"
-          />
-          <ng-container *ngFor="let desk of areaData.desks">
-            <div
-              class="absolute"
-              [ngStyle]="{
+    <ng-container *ngFor="let areaData of areaDataList">
+      <div
+        *ngIf="area === areaData.id"
+        class="flex justify-content-center align-items-center relative"
+        style="max-width: max-content"
+      >
+        <img
+          class="w-full max-w-max lg:max-h-30rem shadow-4"
+          style="object-fit: contain"
+          [src]="areaData.imagePath"
+          usemap="#image-map"
+        />
+        <ng-container *ngFor="let desk of areaData.desks">
+          <div
+            class="absolute"
+            [ngStyle]="{
                 top: desk.indicators.top + '%',
                 left: desk.indicators.left + '%',
                 height: desk.indicators.height + '%',
                 borderRadius: '9999px',
                 aspectRatio: '1/1',
               }"
-              [ngClass]="desk.status && getIndicatorColor(desk.status)"
-            ></div>
-          </ng-container>
-          <ng-container *ngFor="let desk of areaData.desks">
-            <div
-              class="absolute cursor-pointer"
-              (click)="handleSelectDesk(desk)"
-              style="z-index: 1;"
-              (mouseover)="desk.hovered = true"
-              (mouseout)="desk.hovered = false"
-              [pTooltip]="desk.title"
-              tooltipPosition="top"
-              [ngStyle]="{
-                top: desk.clickable?.top + '%',
-                left: desk.clickable?.left + '%',
-                height: desk.clickable?.height + '%',
-                width: desk.clickable?.width + '%',
-                backgroundColor: desk.hovered ? 'rgba(0, 0, 0, 0.125)' : 'transparent'
-              }"
-              
-            ></div>
-          </ng-container>
-          <!-- <map name="image-map">
+            [ngClass]="desk.status && getIndicatorColor(desk.status)"
+          ></div>
+        </ng-container>
+        <ng-container *ngFor="let desk of areaData.desks">
+          <div
+            class="absolute cursor-pointer"
+            (click)="handleSelectDesk(desk)"
+            style="z-index: 1"
+            (mouseover)="desk.hovered = true"
+            (mouseout)="desk.hovered = false"
+            [pTooltip]="desk.title"
+            tooltipPosition="top"
+            [ngStyle]="{
+              top: desk.clickable?.top + '%',
+              left: desk.clickable?.left + '%',
+              height: desk.clickable?.height + '%',
+              width: desk.clickable?.width + '%',
+              backgroundColor: desk.hovered
+                ? 'rgba(0, 0, 0, 0.125)'
+                : 'transparent'
+            }"
+          ></div>
+        </ng-container>
+        <!-- <map name="image-map">
             <ng-container *ngFor="let desk of areaData.desks">
               <area
                 class="cursor-pointer"
@@ -59,89 +60,97 @@
               />
             </ng-container>
           </map> -->
-        </div>
-      </ng-container>
-    </div>
-  
-    <p-divider styleClass="md:hidden"></p-divider>
-  
-    <div class="w-full flex flex-column gap-3 lg:w-5">
-      <app-inform info="All reservations start at 8 AM and end at 5 PM"/>
-      <div class="w-full flex flex-column gap-3">
-        <form [formGroup]="formGroup" class="w-full flex flex-column gap-3">
-          <p-dropdown
-            formControlName="selectedDesk"
-            [options]="options"
-            optionLabel="title"
-            placeholder="Select a desk"
-            styleClass="w-full"
-          ></p-dropdown>
-          <p-calendar
-            formControlName="date"
-            styleClass="w-full"
-            [touchUI]="true"
-            [showIcon]="true"
-            [maxDate]="maxDate"
-            [minDate]="minDate"
-          >
-          </p-calendar>
-        </form>
-        <div class="flex justify-content-between align-items center">
-          <button
-            pButton
-            class="py-2 px-3 p-button-info"
-            label="Back"
-            type="button"
-            (click)="back()"
-          ></button>
-          <button
-            pButton
-            class="py-2 px-3 p-button-warning"
-            label="Reset"
-            type="button"
-            (click)="reset()"
-          ></button>
-        </div>
-  
-        <!-- <div *ngIf="selectedDate && selectedDesk && isLoading"
+      </div>
+    </ng-container>
+  </div>
+
+  <p-divider styleClass="md:hidden"></p-divider>
+
+  <div class="w-full flex flex-column gap-3 lg:w-5">
+    <app-inform info="All reservations start at 8 AM and end at 5 PM" />
+    <div class="w-full flex flex-column gap-3">
+      <form [formGroup]="formGroup" class="w-full flex flex-column gap-3">
+        <p-calendar
+          formControlName="date"
+          styleClass="w-full"
+          [touchUI]="true"
+          [showIcon]="true"
+          [maxDate]="maxDate"
+          [minDate]="minDate"
+        >
+        </p-calendar>
+        <p-dropdown
+          formControlName="selectedDesk"
+          [options]="options"
+          optionLabel="title"
+          placeholder="Select a desk"
+          styleClass="w-full"
+        ></p-dropdown>
+      </form>
+      <div class="flex justify-content-between align-items center">
+        <button
+          pButton
+          class="py-2 px-3 p-button-info"
+          label="Back"
+          type="button"
+          (click)="back()"
+        ></button>
+        <button
+          pButton
+          class="py-2 px-3 p-button-warning"
+          label="Reset"
+          type="button"
+          (click)="reset()"
+        ></button>
+      </div>
+
+      <!-- <div *ngIf="selectedDate && selectedDesk && isLoading"
           class="flex flex-column w-full surface-border surface-ground border-round border-1 p-3 gap-3"
         ></div> -->
-  
-        <div *ngIf="selectedDate && selectedDesk && !isLoading"
-          class="flex flex-column w-full surface-border border-round border-1 p-3 gap-3"
+
+      <div
+        *ngIf="selectedDate && selectedDesk && !isLoading"
+        class="flex flex-column w-full surface-border border-round border-1 p-3 gap-3"
+      >
+        <div
+          class="w-full flex justify-content-between align-items-center pb-3 border-bottom-1 surface-border"
         >
-          <div
-            class="w-full flex justify-content-between align-items-center pb-3 border-bottom-1 surface-border"
-          >
-            <h5 class="text-color-secondary text-base m-0">{{desk.title}}</h5>
-            <p-tag [severity]="desk.status == 'AVAILABLE' ? 'info': 'danger'">{{desk.status}}</p-tag>
-          </div>
-          <div class="max-h-10rem h-10rem mx-auto">
-            <img
-              class="w-full shadow-4"
-              style="object-fit: contain; max-height: 100%"
-              [src]="getImage()"
-              alt="Hotdesk"
-            />
-          </div>
-  
-          <div class="w-full flex flex-column gap-3">
-            <p-accordion>
-              <p-accordionTab header="Workspace Essentials">
-                <div class="flex w-full gap-1 flex-column lg:flex-row">
-                  <p-chip styleClass="text-xs" *ngFor="let essential of desk.workspaceEssentials" [label]="essential"></p-chip>
-                </div>
-              </p-accordionTab>
-            </p-accordion>
-          </div>
-  
-          <p-button *ngIf="desk.status == 'AVAILABLE'"
-            (onClick)="confirm()"
-            styleClass="w-full py-2 px-3 p-button-info"
-            label="Book for this desk"
-            icon="pi pi-calendar-plus"
-          ></p-button>
+          <h5 class="text-color-secondary text-base m-0">{{ desk.title }}</h5>
+          <p-tag [severity]="desk.status == 'AVAILABLE' ? 'info' : 'danger'">{{
+            desk.status
+          }}</p-tag>
         </div>
+        <div class="max-h-10rem h-10rem mx-auto">
+          <img
+            class="w-full shadow-4"
+            style="object-fit: contain; max-height: 100%"
+            [src]="getImage()"
+            alt="Hotdesk"
+          />
+        </div>
+
+        <div class="w-full flex flex-column gap-3">
+          <p-accordion>
+            <p-accordionTab header="Workspace Essentials">
+              <div class="flex w-full gap-1 flex-column lg:flex-row">
+                <p-chip
+                  styleClass="text-xs"
+                  *ngFor="let essential of desk.workspaceEssentials"
+                  [label]="essential"
+                ></p-chip>
+              </div>
+            </p-accordionTab>
+          </p-accordion>
+        </div>
+
+        <p-button
+          *ngIf="desk.status == 'AVAILABLE'"
+          (onClick)="confirm()"
+          styleClass="w-full py-2 px-3 p-button-info"
+          label="Book for this desk"
+          icon="pi pi-calendar-plus"
+        ></p-button>
       </div>
     </div>
   </div>
+</div>
