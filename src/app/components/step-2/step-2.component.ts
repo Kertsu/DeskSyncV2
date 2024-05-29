@@ -565,7 +565,7 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 39',
           title: 'Hotdesk 39',
           coords: '8,628,148,768',
-          indicators: { top: 49.25, left: 79, width: 0, height: 3.5 },
+          indicators: { top: 49.25, left: 1.75, width: 0, height: 3.5 },
           clickable: {
             top: 48.9,
             left: 1.25,
@@ -578,7 +578,7 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 40',
           title: 'Hotdesk 40',
           coords: '159,629,297,768',
-          indicators: { top: 49.25, left: 1.75, width: 0, height: 3.5 },
+          indicators: { top: 49.25, left: 23.8, width: 0, height: 3.5 },
           clickable: {
             top: 48.9,
             left: 15.25,
@@ -591,7 +591,7 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 41',
           title: 'Hotdesk 41',
           coords: '298,630,436,767',
-          indicators: { top: 49.25, left: 23.8, width: 0, height: 3.5 },
+          indicators: { top: 49.25, left: 29.25, width: 0, height: 3.5 },
           clickable: {
             top: 48.9,
             left: 28.8,
@@ -604,7 +604,7 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 42',
           title: 'Hotdesk 42',
           coords: '449,629,587,767',
-          indicators: { top: 49.25, left: 29.25, width: 0, height: 3.5 },
+          indicators: { top: 49.25, left: 51.35, width: 0, height: 3.5 },
           clickable: {
             top: 48.9,
             left: 42.8,
@@ -617,10 +617,10 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 43',
           title: 'Hotdesk 43',
           coords: '589,628,727,767',
-          indicators: { top: 49.25, left: 51.35, width: 0, height: 3.5 },
+          indicators: { top: 49.25, left: 56.9, width: 0, height: 3.5 },
           clickable: {
             top: 48.9,
-            left:56.3,
+            left: 56.3,
             height: 10.5,
             width: 13.5,
           },
@@ -630,10 +630,10 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 44',
           title: 'Hotdesk 44',
           coords: '739,629,878,769',
-          indicators: { top: 49.25, left: 56.9, width: 0, height: 3.5 },
+          indicators: { top: 49.25, left: 79, width: 0, height: 3.5 },
           clickable: {
             top: 48.9,
-            left:70.3,
+            left: 70.3,
             height: 10.5,
             width: 13.5,
           },
@@ -643,7 +643,7 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 45',
           title: 'Hotdesk 45',
           coords: '6,780,146,919',
-          indicators: { top: 67, left: 79, width: 0, height: 3.5 },
+          indicators: { top: 67, left: 1.75, width: 0, height: 3.5 },
           clickable: {
             top: 60.6,
             left: 1.25,
@@ -656,7 +656,7 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 46',
           title: 'Hotdesk 46',
           coords: '158,780,296,920',
-          indicators: { top: 67, left: 1.75, width: 0, height: 3.5 },
+          indicators: { top: 67, left: 23.8, width: 0, height: 3.5 },
           clickable: {
             top: 60.6,
             left: 15.25,
@@ -669,7 +669,7 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 47',
           title: 'Hotdesk 47',
           coords: '299,780,439,920',
-          indicators: { top: 67, left: 23.8, width: 0, height: 3.5 },
+          indicators: { top: 67, left: 29.25, width: 0, height: 3.5 },
           clickable: {
             top: 60.6,
             left: 28.8,
@@ -682,7 +682,7 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 48',
           title: 'Hotdesk 48',
           coords: '450,781,588,920',
-          indicators: { top: 67, left: 29.25, width: 0, height: 3.5 },
+          indicators: { top: 67, left: 51.35, width: 0, height: 3.5 },
           clickable: {
             top: 60.6,
             left: 42.8,
@@ -695,10 +695,10 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 49',
           title: 'Hotdesk 49',
           coords: '589,781,726,919',
-          indicators: { top: 67, left: 51.35, width: 0, height: 3.5 },
+          indicators: { top: 67, left: 56.9, width: 0, height: 3.5 },
           clickable: {
             top: 60.6,
-            left:56.3,
+            left: 56.3,
             height: 10.5,
             width: 13.5,
           },
@@ -708,10 +708,10 @@ export class Step2Component implements OnInit {
           alt: 'Hotdesk 50',
           title: 'Hotdesk 50',
           coords: '740,781,880,918',
-          indicators: { top: 67, left: 56.9, width: 0, height: 3.5 },
+          indicators: { top: 67, left: 79, width: 0, height: 3.5 },
           clickable: {
             top: 60.6,
-            left:70.3,
+            left: 70.3,
             height: 10.5,
             width: 13.5,
           },
@@ -821,7 +821,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 14.6, left: 71.5, width: 0, height: 3.5 },
           clickable: {
             top: 14.5,
-            left:71,
+            left: 71,
             height: 10.5,
             width: 13.5,
           },
@@ -834,7 +834,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 14.6, left: 93.6, width: 0, height: 3.5 },
           clickable: {
             top: 14.5,
-            left:85,
+            left: 85,
             height: 10.5,
             width: 13.5,
           },
@@ -899,7 +899,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 32.35, left: 71.5, width: 0, height: 3.5 },
           clickable: {
             top: 25.95,
-            left:71,
+            left: 71,
             height: 10.5,
             width: 13.5,
           },
@@ -912,7 +912,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 32.35, left: 93.6, width: 0, height: 3.5 },
           clickable: {
             top: 25.95,
-            left:85,
+            left: 85,
             height: 10.5,
             width: 13.5,
           },
@@ -925,7 +925,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 49.45, left: 16.25, width: 0, height: 3.5 },
           clickable: {
             top: 49.25,
-            left:15.4,
+            left: 15.4,
             height: 10.5,
             width: 13.5,
           },
@@ -938,7 +938,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 49.45, left: 38.5, width: 0, height: 3.5 },
           clickable: {
             top: 49.25,
-            left:29.75,
+            left: 29.75,
             height: 10.5,
             width: 13.5,
           },
@@ -951,7 +951,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 49.45, left: 43.9, width: 0, height: 3.5 },
           clickable: {
             top: 49.25,
-            left:43.5,
+            left: 43.5,
             height: 10.5,
             width: 13.5,
           },
@@ -964,7 +964,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 49.45, left: 66, width: 0, height: 3.5 },
           clickable: {
             top: 49.25,
-            left:57.3,
+            left: 57.3,
             height: 10.5,
             width: 13.5,
           },
@@ -977,7 +977,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 49.45, left: 71.5, width: 0, height: 3.5 },
           clickable: {
             top: 49.25,
-            left:70.75,
+            left: 70.75,
             height: 10.5,
             width: 13.5,
           },
@@ -990,7 +990,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 49.45, left: 93.6, width: 0, height: 3.5 },
           clickable: {
             top: 49.25,
-            left:85,
+            left: 85,
             height: 10.5,
             width: 13.5,
           },
@@ -1003,7 +1003,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 67.2, left: 16.25, width: 0, height: 3.5 },
           clickable: {
             top: 60.8,
-            left:15.4,
+            left: 15.4,
             height: 10.5,
             width: 13.5,
           },
@@ -1016,7 +1016,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 67.2, left: 38.5, width: 0, height: 3.5 },
           clickable: {
             top: 60.8,
-            left:29.75,
+            left: 29.75,
             height: 10.5,
             width: 13.5,
           },
@@ -1029,7 +1029,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 67.2, left: 43.9, width: 0, height: 3.5 },
           clickable: {
             top: 60.8,
-            left:43.5,
+            left: 43.5,
             height: 10.5,
             width: 13.5,
           },
@@ -1042,7 +1042,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 67.2, left: 66, width: 0, height: 3.5 },
           clickable: {
             top: 60.8,
-            left:57.3,
+            left: 57.3,
             height: 10.5,
             width: 13.5,
           },
@@ -1055,7 +1055,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 67.2, left: 71.5, width: 0, height: 3.5 },
           clickable: {
             top: 60.8,
-            left:70.75,
+            left: 70.75,
             height: 10.5,
             width: 13.5,
           },
@@ -1068,7 +1068,7 @@ export class Step2Component implements OnInit {
           indicators: { top: 67.2, left: 93.6, width: 0, height: 3.5 },
           clickable: {
             top: 60.8,
-            left:85,
+            left: 85,
             height: 10.5,
             width: 13.5,
           },
@@ -1124,6 +1124,8 @@ export class Step2Component implements OnInit {
   minDate!: Date;
   maxDate!: Date;
 
+  params!: any;
+
   reservation: ReservationRequest | null | undefined;
 
   constructor(
@@ -1141,6 +1143,13 @@ export class Step2Component implements OnInit {
       date: new FormControl(null, [Validators.required]),
       selectedDesk: new FormControl(null, [Validators.required]),
     });
+    this.params = {
+      area: this.area,
+      sortField: 'deskNumber',
+      sortOrder: 1,
+    };
+
+    this.initialize();
 
     this.formGroup.valueChanges.subscribe({
       next: (res: any) => {
@@ -1152,14 +1161,16 @@ export class Step2Component implements OnInit {
           this.endTime = endTime;
 
           this.getReservations(() => {
-            self.selectedDesk = res.selectedDesk;
-            self.getDeskProperties(self.selectedDesk?.deskNumber);
+            this.getDesks(this.params);
+            this.updateDeskStatus();
+              self.selectedDesk = res.selectedDesk;
+              if (self.selectedDesk) {
+                self.getDeskProperties(self.selectedDesk?.deskNumber);
+              }
           });
         }
       },
     });
-
-    this.initialize();
   }
 
   handleSelectDesk(desk: Hotdesk) {
@@ -1241,7 +1252,6 @@ export class Step2Component implements OnInit {
   }
 
   getDeskProperties(deskNumber: any) {
-    this.updateDeskStatus();
     for (const desk of this.desks) {
       if (deskNumber == desk.deskNumber) {
         this.desk = desk;
@@ -1251,6 +1261,8 @@ export class Step2Component implements OnInit {
   }
 
   updateDeskStatus() {
+    console.log(this.desks);
+    console.log(this.reservations.length);
     for (const desk of this.desks) {
       if (desk.status === 'UNAVAILABLE') {
         desk.status = 'PERMANENTLY UNAVAILABLE';
@@ -1263,6 +1275,8 @@ export class Step2Component implements OnInit {
             ? 'PERMANENTLY UNAVAILABLE'
             : 'AVAILABLE';
       }
+
+      desk.status = desk.status === 'AVAILABLE' ? 'AVAILABLE' : desk.status;
 
       const reservation = this.reservations.find(
         (r) => r.deskNumber === desk.deskNumber
@@ -1305,14 +1319,14 @@ export class Step2Component implements OnInit {
     }
   }
 
-  getIndicatorColor(status: string): string {
-    if (status === 'AVAILABLE') {
+  getIndicatorColor(desk: any): string {
+    if (desk.status == 'AVAILABLE') {
       return 'bg-available';
-    } else if (status === 'PERMANENTLY UNAVAILABLE') {
+    } else if (desk.status == 'PERMANENTLY UNAVAILABLE') {
       return 'bg-permanently-unavailable';
     } else if (
       ['TEMPORARILY UNAVAILABLE', 'BOOKED', 'RESERVED', 'OCCUPIED'].includes(
-        status
+        desk.status
       )
     ) {
       return 'bg-temporarily-unavailable';
@@ -1323,11 +1337,26 @@ export class Step2Component implements OnInit {
   initialize() {
     [this.minDate, this.maxDate] = this.getMinMax();
 
-    const params = {
-      area: this.area,
-      sortField: 'deskNumber',
-      sortOrder: 1,
-    };
+    this.getDesks(this.params);
+  }
+
+  getSeverity(status: string) {
+    switch (status) {
+      case 'AVAILABLE':
+        return 'success';
+      case 'PERMANENTLY UNAVAILABLE':
+        return 'danger';
+      case 'TEMPORARILY UNAVAILABLE':
+      case 'BOOKED':
+      case 'RESERVED':
+      case 'OCCUPIED':
+        return 'warning';
+      default:
+        return '';
+    }
+  }
+
+  getDesks(params: any) {
     this.webService.getDesks(params).subscribe({
       next: (res: any) => {
         this.desks = res.desks;

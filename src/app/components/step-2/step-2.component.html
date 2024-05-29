@@ -24,7 +24,11 @@
                 borderRadius: '9999px',
                 aspectRatio: '1/1',
               }"
-            [ngClass]="desk.status && getIndicatorColor(desk.status)"
+            [ngClass]="
+              formGroup.get('date')?.value && desk.status
+                ? getIndicatorColor(desk)
+                : undefined
+            "
           ></div>
         </ng-container>
         <ng-container *ngFor="let desk of areaData.desks">
@@ -42,7 +46,7 @@
               height: desk.clickable?.height + '%',
               width: desk.clickable?.width + '%',
               backgroundColor: desk.hovered
-                ? 'rgba(0, 0, 0, 0.125)'
+                ? 'rgba(0, 0, 0, 0.25)'
                 : 'transparent'
             }"
           ></div>
@@ -116,7 +120,7 @@
           class="w-full flex justify-content-between align-items-center pb-3 border-bottom-1 surface-border"
         >
           <h5 class="text-color-secondary text-base m-0">{{ desk.title }}</h5>
-          <p-tag [severity]="desk.status == 'AVAILABLE' ? 'info' : 'danger'">{{
+          <p-tag [severity]="desk.status && getSeverity(desk.status)">{{
             desk.status
           }}</p-tag>
         </div>
