@@ -217,7 +217,8 @@
   <p-tabView styleClass="tabview-custom" class="xl:w-6">
     <p-tabPanel>
       <ng-template pTemplate="header">
-        <div class="flex align-items-center gap-2">
+        <div class="flex align-items-center gap-2" style="height: 31px">
+          <p-avatar />
           <i class="pi pi-fw pi-chart-line"></i>
           <span class="font-bold white-space-nowrap m-0"> Reservations </span>
         </div>
@@ -226,7 +227,8 @@
     </p-tabPanel>
     <p-tabPanel header="Header II">
       <ng-template pTemplate="header">
-        <div class="flex align-items-center gap-2">
+        <div class="flex align-items-center gap-2" style="height: 31px">
+          <p-avatar />
           <i class="pi pi-fw pi-calendar"></i>
           <span class="font-bold white-space-nowrap m-0"> History </span>
         </div>
@@ -235,12 +237,17 @@
     </p-tabPanel>
     <p-tabPanel header="Header III">
       <ng-template pTemplate="header">
-        <div class="flex align-items-center gap-2">
+        <div class="flex align-items-center gap-2" style="height: 31px">
+          <p-avatar />
           <i class="pi pi-fw pi-star"></i>
           <span class="font-bold white-space-nowrap m-0"> To rate </span>
+          <p-badge
+            *ngIf="userService.getUser()?.toRate.toString() != 0"
+            [value]="userService.getUser()?.toRate.toString()"
+          />
         </div>
       </ng-template>
-      <p>At vero eos et accusamus et iusto odio dignissimos...</p>
+      <app-to-rate></app-to-rate>
     </p-tabPanel>
   </p-tabView>
 </div>

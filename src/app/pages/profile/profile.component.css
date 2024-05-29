@@ -2,6 +2,11 @@
   justify-content: center;
 }
 
+::ng-deep p-avatar{
+    /* visibility: hidden; */
+    display: none;
+}
+
 @media screen and (min-width: 1200px) {
   ::ng-deep .tabview-custom {
     width: 85% !important;
