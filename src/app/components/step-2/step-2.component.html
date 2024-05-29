@@ -36,8 +36,6 @@
             class="absolute cursor-pointer"
             (click)="handleSelectDesk(desk)"
             style="z-index: 1"
-            (mouseover)="desk.hovered = true"
-            (mouseout)="desk.hovered = false"
             [pTooltip]="desk.title"
             tooltipPosition="top"
             [ngStyle]="{
@@ -45,9 +43,6 @@
               left: desk.clickable?.left + '%',
               height: desk.clickable?.height + '%',
               width: desk.clickable?.width + '%',
-              backgroundColor: desk.hovered
-                ? 'rgba(0, 0, 0, 0.25)'
-                : 'transparent'
             }"
           ></div>
         </ng-container>
@@ -83,13 +78,13 @@
           [minDate]="minDate"
         >
         </p-calendar>
-        <p-dropdown
+        <!-- <p-dropdown
           formControlName="selectedDesk"
           [options]="options"
           optionLabel="title"
           placeholder="Select a desk"
           styleClass="w-full"
-        ></p-dropdown>
+        ></p-dropdown> -->
       </form>
       <div class="flex justify-content-between align-items center">
         <button

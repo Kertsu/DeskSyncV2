@@ -1261,8 +1261,6 @@ export class Step2Component implements OnInit {
   }
 
   updateDeskStatus() {
-    console.log(this.desks);
-    console.log(this.reservations.length);
     for (const desk of this.desks) {
       if (desk.status === 'UNAVAILABLE') {
         desk.status = 'PERMANENTLY UNAVAILABLE';
