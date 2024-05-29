@@ -87,14 +87,6 @@ const routes: Routes = [
         path: 'profile',
         component: ProfileComponent,
       },
-      {
-        path:'reservations',
-        component: ReservationsComponent
-      },
-      {
-        path: 'history',
-        component: HistoryComponent
-      }
     ],
   },{
     path: "**", component: NotFoundComponent
