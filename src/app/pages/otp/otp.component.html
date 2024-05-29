@@ -39,7 +39,7 @@
 
       <div class="flex flex-column justify-content-center gap-1">
         <div class="flex flex-column gap-2">
-          <p-inputOtp formControlName="verificationCode" [length]="7"  />
+          <p-inputOtp inputmode="numeric" formControlName="verificationCode" [length]="7"  />
           <div
             *ngIf="
               otpForm.get('verificationCode')?.dirty &&
