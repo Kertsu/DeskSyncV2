@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Reservation } from '../../models/Reservation';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { WebService } from '../../services/web.service';
 import { ParamsBuilderService } from '../../services/params-builder.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-reservations',
@@ -22,7 +23,8 @@ export class ReservationsComponent {
     private webService: WebService,
     private messageService: MessageService,
     private paramsBuilder: ParamsBuilderService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private userService: UserService
   ) {}
 
   cancelSelectedReservations() {}
