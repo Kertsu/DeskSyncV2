@@ -19,7 +19,7 @@ export class WebService {
   baseReservationURL: string = 'https://hdbsv2.onrender.com/api/reservations';
   baseSwitchUrl: string = 'https://hdbsv2.onrender.com/api/switch';
   baseTrailUrl: string = 'https://hdbsv2.onrender.com/api/trails';
-  baseFeedbackUrl: string = 'http://hdbsv2.onrender.com/api/feedbacks';
+  baseFeedbackUrl: string = 'https://hdbsv2.onrender.com/api/feedbacks';
   
 
   constructor(private http: HttpClient) {}
