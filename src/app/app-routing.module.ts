@@ -21,40 +21,66 @@ import { SuccessResetComponent } from './pages/success-reset/success-reset.compo
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CheckEmailComponent } from './pages/check-email/check-email.component';
-import { confirmationGuard, dashboardGuard_onboarding, dashboardGuard_otp, deskAreaGuard, navigationGuard, onboardingGuard, otpGuard, passwordResetGuard, passwordResetSuccessGuard, resetPasswordGuard } from './shared/navigation.guard';
+import {
+  confirmationGuard,
+  dashboardGuard_onboarding,
+  dashboardGuard_otp,
+  deskAreaGuard,
+  navigationGuard,
+  onboardingGuard,
+  otpGuard,
+  passwordResetGuard,
+  passwordResetSuccessGuard,
+  resetPasswordGuard,
+} from './shared/navigation.guard';
 import { OnboardingComponent } from './pages/onboarding/onboarding.component';
 import { ReservationsComponent } from './pages/reservations/reservations.component';
 import { HistoryComponent } from './pages/history/history.component';
 import { OtpComponent } from './pages/otp/otp.component';
+import { ReportComponent } from './pages/report/report.component';
+import { ManageIssuesComponent } from './pages/manage-issues/manage-issues.component';
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: '/login'},
+  { path: '', pathMatch: 'full', redirectTo: '/login' },
   {
     path: 'login',
-    component: LoginComponent, canActivate:[authGuard]
+    component: LoginComponent,
+    canActivate: [authGuard],
   },
   {
-    path: 'reset-password/:token/:id', component: ResetPasswordComponent, canActivate: [authGuard, resetPasswordGuard]
+    path: 'reset-password/:token/:id',
+    component: ResetPasswordComponent,
+    canActivate: [authGuard, resetPasswordGuard],
   },
   {
-    path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [authGuard]
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    canActivate: [authGuard],
   },
   {
-    path: 'check-email', component: CheckEmailComponent, canActivate: [authGuard, passwordResetGuard]
+    path: 'check-email',
+    component: CheckEmailComponent,
+    canActivate: [authGuard, passwordResetGuard],
   },
   {
-    path: 'changed-password', component: SuccessResetComponent, canActivate: [authGuard, passwordResetSuccessGuard]
+    path: 'changed-password',
+    component: SuccessResetComponent,
+    canActivate: [authGuard, passwordResetSuccessGuard],
   },
-  {path: 'onboarding', component: OnboardingComponent, canActivate: [onboardingGuard]},
-  {path: 'verify', component: OtpComponent, canActivate:[otpGuard]},
+  {
+    path: 'onboarding',
+    component: OnboardingComponent,
+    canActivate: [onboardingGuard],
+  },
+  { path: 'verify', component: OtpComponent, canActivate: [otpGuard] },
   {
     path: 'hdbsv2',
     canActivate: [guestGuard, dashboardGuard_onboarding, dashboardGuard_otp],
-    canActivateChild:[navigationGuard],
+    canActivateChild: [navigationGuard],
     component: AppLayoutComponent,
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-      { path: 'dashboard', component: DashboardComponent},
+      { path: 'dashboard', component: DashboardComponent },
       {
         path: 'book',
         component: BookComponent,
@@ -64,22 +90,40 @@ const routes: Routes = [
           {
             path: 'desk-area',
             component: Step2Component,
-            canActivate: [deskAreaGuard]
+            canActivate: [deskAreaGuard],
           },
           {
             path: 'confirmation',
             component: Step3Component,
-            canActivate: [confirmationGuard]
+            canActivate: [confirmationGuard],
           },
         ],
       },
       { path: 'logs', component: LogsComponent, canActivate: [isAdmin] },
-      { path: 'manage-users', component: ManageUsersComponent, canActivate: [isAdmin]  },
-      { path: 'manage-reservations', component: ManageReservationsComponent, canActivate: [hasAccess]  },
-      { path: 'manage-desks', component: ManageDesksComponent, canActivate: [hasAccess]  },
+      {
+        path: 'manage-users',
+        component: ManageUsersComponent,
+        canActivate: [isAdmin],
+      },
+      {
+        path: 'manage-reservations',
+        component: ManageReservationsComponent,
+        canActivate: [hasAccess],
+      },
+      {
+        path: 'manage-desks',
+        component: ManageDesksComponent,
+        canActivate: [hasAccess],
+      },
       {
         path: 'manage-unavailabilities',
-        component: ManageDeskUnavailabilitiesComponent, canActivate: [hasAccess] 
+        component: ManageDeskUnavailabilitiesComponent,
+        canActivate: [hasAccess],
+      },
+      {
+        path: 'manage-issues',
+        component: ManageIssuesComponent,
+        canActivate: [hasAccess],
       },
       { path: 'faqs', component: FaqsComponent },
       { path: 'guides', component: GuidesComponent },
@@ -88,9 +132,11 @@ const routes: Routes = [
         component: ProfileComponent,
       },
     ],
-  },{
-    path: "**", component: NotFoundComponent
-  }
+  },
+  {
+    path: '**',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({

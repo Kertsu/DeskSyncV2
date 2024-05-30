@@ -20,7 +20,7 @@ export class AppMenuComponent implements OnInit {
 
     const isAdmin =
       (user && user.role === 'admin') || (user && user.role === 'superadmin');
-    const isOfficeManager = user && user.role === 'om'
+    const isOfficeManager = user && user.role === 'om';
     this.model = [
       {
         label: 'Home',
@@ -40,26 +40,32 @@ export class AppMenuComponent implements OnInit {
                 label: 'Users',
                 icon: 'pi pi-fw pi-users',
                 routerLink: ['manage-users'],
-                visible: isAdmin
+                visible: isAdmin,
               },
               {
                 label: 'Reservations',
                 icon: 'pi pi-fw pi-book',
                 routerLink: ['manage-reservations'],
-                visible: isAdmin || isOfficeManager
+                visible: isAdmin || isOfficeManager,
               },
               {
                 label: 'Desks',
                 icon: 'pi pi-fw pi-desktop',
                 routerLink: ['manage-desks'],
-                visible: isAdmin || isOfficeManager
+                visible: isAdmin || isOfficeManager,
               },
               {
                 label: 'Unavailabilites',
                 icon: 'pi pi-fw pi-ban',
                 routerLink: ['manage-unavailabilities'],
-                visible: isAdmin || isOfficeManager
+                visible: isAdmin || isOfficeManager,
               },
+              {
+                label: 'Issues',
+                icon: 'pi pi-fw pi-wrench',
+                routerLink: ['manage-issues'],
+                visible: isAdmin || isOfficeManager,
+              }
             ],
           },
         ],
@@ -98,7 +104,8 @@ export class AppMenuComponent implements OnInit {
             label: 'My Account',
             icon: 'pi pi-fw pi-user-edit',
             routerLink: ['profile'],
-          }
+            
+          },
         ],
       },
     ];

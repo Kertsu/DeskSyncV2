@@ -88,6 +88,8 @@ import { OtpComponent } from './pages/otp/otp.component';
 import { InformComponent } from './components/inform/inform.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { ToRateComponent } from './components/to-rate/to-rate.component';
+import { ReportComponent } from './pages/report/report.component';
+import { ManageIssuesComponent } from './pages/manage-issues/manage-issues.component';
 
 const config: SocketIoConfig = {
   // url: 'https://hdbsv2-r473.onrender.com', options: {transports: ['websocket']}
@@ -132,6 +134,8 @@ const config: SocketIoConfig = {
     InformComponent,
     FeedbackComponent,
     ToRateComponent,
+    ReportComponent,
+    ManageIssuesComponent,
   ],
   imports: [
     BrowserModule,
