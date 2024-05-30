@@ -2,13 +2,12 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ParamsBuilderService {
+  constructor() {}
 
-  constructor() { }
-
-  buildParams(event: any){
+  buildParams(event: any) {
     let params = new HttpParams();
 
     if (event.filters) {
@@ -33,6 +32,10 @@ export class ParamsBuilderService {
       params = params.set('mode', event.mode);
     }
 
-    return params
+    if (event.id !== undefined) {
+      params = params.set('id', event.id);
+    }
+
+    return params;
   }
 }

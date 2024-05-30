@@ -177,6 +177,12 @@ export class WebService {
     return this.http.get(`${this.baseReservationURL}/self/history`, { params });
   }
 
+  getSelfToRateReservations(params: any) {
+    return this.http.get(`${this.baseReservationURL}/self/to-rate`, {
+      params,
+    });
+  }
+
   // AUDIT TRAILS
   getTrails(params?: any) {
     return this.http.get(`${this.baseTrailUrl}/`, { params });
