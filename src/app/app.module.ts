@@ -90,7 +90,7 @@ import { FeedbackComponent } from './components/feedback/feedback.component';
 import { ToRateComponent } from './components/to-rate/to-rate.component';
 
 const config: SocketIoConfig = {
-  url: 'https://hdbsv2-r473.onrender.com', options: {transports: ['websocket']}
+  url: 'https://hdbsv2.onrender.com', options: {transports: ['websocket']}
   // url: 'http://localhost:5000',
   // options: { transports: ['websocket'] },
 };
