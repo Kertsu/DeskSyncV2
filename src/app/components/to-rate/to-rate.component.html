@@ -1,1 +1,33 @@
-<p>to-rate works!</p>
+<div id="grid-container">
+  @for (item of toRateReservations; track $index) {
+  <div
+    class="w-full border-1 surface-border shadow-2 border-round flex justify-content-between align-items-center p-3 cursor-pointer"
+    (click)="openDialog(item)"
+  >
+    <div class="flex align-items-center justify-content-start gap-3">
+      <img
+        class="h-4rem shadow-4"
+        style="object-fit: contain"
+        [src]="getImage(item.deskNumber)"
+        alt="Hotdesk"
+      />
+      <div
+        class="flex flex-column justify-content-center align-items-start"
+      >
+        <h6>Hotdesk #{{ item.deskNumber }}</h6>
+        <p class="text-xs">
+          {{ item.date | date : "mediumDate" }}
+        </p>
+      </div>
+    </div>
+    <div class="flex gap-3 justify-content-center align-items-center">
+      <i
+        class="pi pi-fw pi-spin pi-star-fill text-primary"
+        style="font-size: 1rem; "
+      ></i>
+    </div>
+  </div>
+  }
+
+  <p *ngIf="toRateReservations.length === 0">There's nothing in here...</p>
+</div>

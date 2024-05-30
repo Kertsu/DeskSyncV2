@@ -15,7 +15,7 @@ export class FeedbackComponent implements OnInit {
   selectedRating: number | null = null;
   hoveredRating: number | null = null;
 
-  errorMessage!: string
+  errorMessage!: string;
   hasErrors: boolean = false;
 
   ratings = [
@@ -46,9 +46,11 @@ export class FeedbackComponent implements OnInit {
   }
 
   onSubmit() {
-    const { deskNumber } = this.config.data;
+    const { deskNumber, reservation } = this.config.data;
     const feedback = this.feedbackForm.value;
     feedback.deskNumber = deskNumber;
+    feedback.reservation = reservation;
+
     console.log(feedback);
     this.webService.submitFeedback(feedback).subscribe({
       next: (res: any) => {},
@@ -63,7 +65,7 @@ export class FeedbackComponent implements OnInit {
           'Feedback submitted',
           'Success'
         );
-        this.dialogRef.close();
+        this.dialogRef.close(feedback);
       },
     });
   }
@@ -81,7 +83,7 @@ export class FeedbackComponent implements OnInit {
     this.hoveredRating = null;
   }
 
-  triggerErrorEvent(){
+  triggerErrorEvent() {
     this.hasErrors = true;
 
     setTimeout(() => {

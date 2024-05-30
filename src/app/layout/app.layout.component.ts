@@ -17,17 +17,9 @@ import { Message } from 'primeng/api';
 import { MessageService } from '../utils/message.service';
 import { NetworkService } from '../services/network.service';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
   DialogService,
-  DynamicDialogConfig,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
-import { FeedbackComponent } from '../components/feedback/feedback.component';
 
 @Component({
   selector: 'app-layout',
@@ -48,8 +40,6 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
   prevNetworkStatus: boolean | null = null;
   isLoading: boolean = false;
 
-  ref: DynamicDialogRef | undefined = undefined;
-
   @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
   @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
@@ -63,7 +53,6 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
     private webService: WebService,
     private messageService: MessageService,
     private networkService: NetworkService,
-    private dialogService: DialogService
   ) {
     this.overlayMenuOpenSubscription =
       this.layoutService.overlayOpen$.subscribe(() => {
@@ -259,19 +248,5 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
       this.prevNetworkStatus = res;
     });
 
-    this.socketService.reservationEnded.subscribe((res: any) => {
-      const deskNumber = res.deskNumber;
-
-      const dialogConfig: DynamicDialogConfig = {
-        header: `Feedback on your reservation on Hotdesk #${deskNumber}`,
-        data: {
-          deskNumber,
-        },
-        modal: true,
-        closeOnEscape: true,
-        breakpoints: { '2000px': '30vw', '1440px': '60vw', '500px': '90vw' },
-      };
-      this.ref = this.dialogService.open(FeedbackComponent, dialogConfig);
-    });
   }
 }
