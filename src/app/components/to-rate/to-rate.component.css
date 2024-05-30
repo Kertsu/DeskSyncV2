@@ -15,4 +15,7 @@
     #grid-container{
         grid-template-columns: repeat(3, 1fr);
     }
+    .pi-star-fill{
+        font-size: 1.5rem !important;
+    }
 }
