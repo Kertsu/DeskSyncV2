@@ -7,6 +7,10 @@
     display: none;
 }
 
+::ng-deep .p-tabview-panels{
+  padding: 1.25rem 0 0 0;
+}
+
 @media screen and (min-width: 1200px) {
   ::ng-deep .tabview-custom {
     width: 85% !important;
