@@ -1,0 +1,63 @@
+<div class="w-full flex flex-column">
+  <img
+    src="../../../assets/images/authenticated/report.svg"
+    class="w-6 mx-auto"
+  />
+  <h5 class="text-center">Encountered some problems?</h5>
+  <p class="text-center">
+    We're sorry for the inconvenience. Could you please give us the details so
+    we could understand more?
+  </p>
+
+  <form
+  (ngSubmit)="submitReport()"
+    [formGroup]="formGroup"
+    class="w-full flex flex-column gap-3 justify-content-center align-items-center card surface-ground"
+  >
+    <div class="w-full flex flex-column gap-2">
+      <label for="selectedDesk">Which desk had problems?</label>
+      <p-dropdown
+        formControlName="selectedDesk"
+        [options]="options"
+        optionLabel="title"
+        placeholder="Select a desk"
+        styleClass="w-full"
+        appendTo="body"
+      ></p-dropdown>
+    </div>
+    <div class="w-full flex flex-column gap-2">
+      <label for="date">When did you encounter it?</label>
+      <p-calendar
+        formControlName="date"
+        styleClass="w-full"
+        [showIcon]="true"
+        appendTo="body"
+        placeholder="Select a date"
+      >
+      </p-calendar>
+    </div>
+
+    <div class="w-full flex flex-column gap-2">
+      <label for="report">What can we improve on?</label>
+      <textarea
+        placeholder="Help us understand the situation better..."
+        class="w-full"
+        appendTo="body"
+        rows="10"
+        cols="30"
+        id="description"
+        pInputTextarea
+        formControlName="report"
+      ></textarea>
+    </div>
+
+    <button
+      pButton
+      class="py-2 px-3 border-round p-button-info max-w-max align-self-end"
+      label="Submit"
+      type="submit"
+      [autofocus]="true"
+      pAutoFocus
+    ></button>
+  </form>
+</div>

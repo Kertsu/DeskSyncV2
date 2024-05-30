@@ -34,15 +34,15 @@
               <i class="pi pi-calendar"></i>
               <span>Calendar</span>
           </button> -->
-      <button class="p-link layout-topbar-button">
-        <i
+      <button class="p-link layout-topbar-button" type="button" (click)="openReportDialog()">
+        <!-- <i
           class="pi pi-bell"
           *ngIf="notifications.length != 0"
           [value]="notifications.length.toString()"
           pBadge
-        ></i>
-        <i class="pi pi-bell" *ngIf="notifications.length == 0"></i>
-        <span class="piText">Notifications</span>
+        ></i> -->
+        <i class="pi pi-exclamation-circle"></i>
+        <span class="piText">Submit a report</span>
       </button>
       <!-- <button
         class="p-link layout-topbar-button"

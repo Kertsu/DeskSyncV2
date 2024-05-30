@@ -137,6 +137,10 @@ export class WebService {
     return this.http.delete(`${this.baseHotdeskURL}/${desk.id}`);
   }
 
+  submitReport(data: {date? : string, selectedDesk: {deskNumber: number, title: string}, report: string}){
+    return this.http.post(`${this.baseHotdeskURL}/report`, data);
+  }
+
   // RESERVATION
   onReserve(data: ReservationRequest) {
     return this.http.post(`${this.baseReservationURL}/reserve`, data);

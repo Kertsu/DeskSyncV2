@@ -1,0 +1,4 @@
+::ng-deep p-dropdown,
+::ng-deep p-calendar{
+    width: 100%;
+}
