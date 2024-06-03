@@ -128,6 +128,16 @@
   }
 </div>
 
+<div class="w-full card mb-3">
+  <p-calendar
+    styleClass="w-full"
+    class="w-full max-w-full"
+    [formControl]="date"
+    [inline]="true"
+    [showWeek]="false"
+  ></p-calendar>
+</div>
+
 <div class="w-full mb-3 gap-3 flex flex-column md:flex-row align-stretch">
   <div class="card md:w-4 m-0">
     <h3>Your bookings</h3>
@@ -158,5 +168,42 @@
   <div class="card md:w-8">
     <h3>Your reservation trend</h3>
     <p-chart type="line" [data]="lineData" [options]="options"></p-chart>
+  </div>
+</div>
+<p-divider></p-divider>
+
+<div
+  class="w-full mb-3 gap-3 flex flex-column md:flex-row-reverse align-stretch"
+>
+  <div class="card md:w-5 m-0">
+    <h3>Recent activities</h3>
+    @if (recentActivities.length !== 0) { @for (activity of recentActivities;
+    track $index) {
+
+    <div class="flex flex-column gap-1">
+      <div class="flex justify-content-between">
+        <div class="flex flex-column gap-2">
+          <p
+            class="m-0 overflow-ellipsis xl:max-w-full"
+            style="max-width: 200px"
+          >
+            {{ activity.email }}
+          </p>
+          <p class="text-xs text-color-secondary m-0">
+            {{ activity.actionDetails }}
+          </p>
+        </div>
+        <p-tag [severity]="getSeverity(activity.status)">{{
+          activity.status
+        }}</p-tag>
+      </div>
+      <p-divider></p-divider>
+    </div>
+    } }
+  </div>
+
+  <div class="card md:w-7">
+    <h3>Users reservation trend</h3>
+    <p-chart type="bar" [data]="data" [options]="options" />
   </div>
 </div>

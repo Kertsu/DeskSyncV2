@@ -70,21 +70,6 @@ export class DashboardComponent implements OnInit {
     this.recentActivities = [
       {
         _id: {
-          $oid: '658f9035e2c5e80245651d14',
-        },
-        user: null,
-        email: 'marjorieanito@student.laverdad.edu.ph',
-        actionType: 'Login',
-        actionDetails: 'Login failed',
-        ipAddress: '64.224.122.135',
-        status: 'failure',
-        additionalContext: 'Invalid credentials',
-        createdAt: '2023-12-30T03:36:21.836Z',
-        updatedAt: '2023-12-30T03:36:21.836Z',
-        __v: 0,
-      },
-      {
-        _id: {
           $oid: '658f9038e2c5e80245651d17',
         },
         user: null,
@@ -162,14 +147,16 @@ export class DashboardComponent implements OnInit {
       this.documentStyle.getPropertyValue('--surface-border');
 
     this.data = {
-      labels: this.getNextTwoWeeks(),
+      labels: this.getPastTwoWeeks(),
       datasets: [
         {
-          label: 'Reservation Trend',
+          label: 'User Reservations',
           data: [2, 59, 80, 81, 56, 55, 40],
-          fill: false,
-          borderColor: this.documentStyle.getPropertyValue('--blue-500'),
+          fill: true,
+          borderColor: this.documentStyle.getPropertyValue('--primary-color'),
           tension: 0.4,
+          backgroundColor:
+            this.documentStyle.getPropertyValue('--primary-200'),
         },
       ],
     };
@@ -243,21 +230,20 @@ export class DashboardComponent implements OnInit {
       },
     };
 
-    this.lineData = 
-    {
+    this.lineData = {
       labels: this.getPastTwoWeeks(),
       datasets: [
         {
           label: 'Reservation Trend',
           data: [2, 59, 80, 81, 56, 55, 40],
-          fill: false,
-          borderColor: this.documentStyle.getPropertyValue('--blue-500'),
+          fill: true,
+          borderColor: this.documentStyle.getPropertyValue('--primary-color'),
           tension: 0.4,
+          backgroundColor:
+            this.documentStyle.getPropertyValue('--primary-200'),
         },
       ],
-    }
-
-    
+    };
   }
 
   getNextTwoWeeks() {
