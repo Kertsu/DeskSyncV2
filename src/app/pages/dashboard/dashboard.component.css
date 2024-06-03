@@ -1,0 +1,23 @@
+::ng-deep p-chart > div > canvas {
+  height: 100%;
+}
+
+.gradient {
+  background: linear-gradient(
+    35deg,
+    var(--primary-color),
+    transparent,
+    transparent
+  );
+}
+@media screen and (min-width: 1024px) {
+  ::ng-deep p-chart > div {
+    height: 13.5rem !important;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  ::ng-deep p-chart > div {
+    height: 18rem !important;
+  }
+}

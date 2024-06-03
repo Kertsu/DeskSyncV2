@@ -1,4 +1,4 @@
-<div class="flex flex-column mb-2 md:flex-row md:gap-2 lg:gap-3 max-w-full">
+<!-- <div class="flex flex-column mb-2 md:flex-row md:gap-2 lg:gap-3 max-w-full">
     @for (item of cardContent; track $index) {
     <div
       class="card shadow-1 flex flex-column justify-content-between mb-3 md:w-3"
@@ -75,4 +75,88 @@
       }
   
     </div>
+  </div> -->
+
+<div class="w-full flex flex-column-reverse gap-3 md:grid md:flex-row mb-3">
+  <div class="card flex m-0 md:col-6 md:p-5 lg:col-8">
+    <div
+      class="w-full flex flex-column gap-3 justify-content-center align-items-start md:align-items-center md:flex-row"
+    >
+      <img
+        class="h-6rem xl:h-16rem border-round"
+        style="aspect-ratio: 1/1; object-fit: cover"
+        [src]="userService.getUser()?.avatar"
+        alt="avatar"
+      />
+      <div
+        class="w-full flex flex-column justify-content-center align-items-start gap-3"
+      >
+        <h4 class="m-0 xl:text-7xl">
+          Welcome, {{ userService.getUser()?.username }}!
+        </h4>
+        <p class="xl:text-xl">
+          Ready to start your day? Let's start by being productive.
+        </p>
+      </div>
+    </div>
   </div>
+  <div
+    class="card hidden justify-content-center flex flex-column md:align-items-center md:col-6 md:p-5 lg:col-4"
+  >
+    <h3>Desks today</h3>
+    <p-chart type="pie" [data]="pieData" [options]="pieOptions" />
+  </div>
+</div>
+
+<div class="flex flex-column md:flex-row md:gap-2 lg:gap-3 max-w-full">
+  @for (item of cardContent; track $index) {
+  <div
+    class="gradient card flex flex-column justify-content-between mb-3 md:w-3"
+  >
+    <div>
+      <h5 class="text-normal text-color-secondary">{{ item.title }}</h5>
+    </div>
+    <div class="flex justify-content-between">
+      <h5 class="m-0">{{ item.count }}</h5>
+      <p-avatar
+        styleClass="bg-primary text-color-primary"
+        icon="pi pi-{{ item.icon }}"
+        size="normal"
+      ></p-avatar>
+    </div>
+  </div>
+  }
+</div>
+
+<div class="w-full mb-3 gap-3 flex flex-column md:flex-row align-stretch">
+  <div class="card md:w-4 m-0">
+    <h3>Your bookings</h3>
+    <div class="w-full flex flex-column gap-1">
+      @for (item of [1,2,3]; track $index) {
+      <div
+        class="w-full flex justify-content-between align-items-center surface-border surface-ground p-3 border-1 border-round"
+      >
+        <div class="div flex gap-3 align-items-center">
+          <img
+            [src]="'../../../assets/images/map/desk-area/' + item + '.png'"
+            alt="desk"
+            style="aspect-ratio: 1/1; object-fit: contain"
+            class="h-4rem"
+          />
+          <div class="w-full flex flex-column gap-3 justify-content-center">
+            <p class="m-0">Hotdesk 5</p>
+            <p class="m-0">June 3, 2024</p>
+          </div>
+        </div>
+
+        <p>APPROVED</p>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div class="card md:w-8">
+    <h3>Your reservation trend</h3>
+    <p-chart type="line" [data]="lineData" [options]="options"></p-chart>
+  </div>
+</div>
