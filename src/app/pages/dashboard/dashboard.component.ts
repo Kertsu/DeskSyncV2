@@ -235,7 +235,7 @@ export class DashboardComponent implements OnInit {
       datasets: [
         {
           label: 'Reservation Trend',
-          data: [2, 59, 80, 81, 56, 55, 40],
+          data: [2, 34, 21, 52, 12, 43, 22, 4, 16],
           fill: true,
           borderColor: this.documentStyle.getPropertyValue('--primary-color'),
           tension: 0.4,

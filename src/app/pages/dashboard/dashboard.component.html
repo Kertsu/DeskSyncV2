@@ -129,20 +129,15 @@
 </div>
 
 <div class="w-full card mb-3">
-  <p-calendar
-    styleClass="w-full"
-    class="w-full max-w-full"
-    [formControl]="date"
-    [inline]="true"
-    [showWeek]="false"
-  ></p-calendar>
+  <h3>Your reservation trend</h3>
+  <p-chart type="line" [data]="lineData" [options]="options"></p-chart>
 </div>
 
 <div class="w-full mb-3 gap-3 flex flex-column md:flex-row align-stretch">
   <div class="card md:w-4 m-0">
     <h3>Your bookings</h3>
     <div class="w-full flex flex-column gap-1">
-      @for (item of [1,2,3]; track $index) {
+      @for (item of [1,2,3,4]; track $index) {
       <div
         class="w-full flex justify-content-between align-items-center surface-border surface-ground p-3 border-1 border-round"
       >
@@ -166,8 +161,14 @@
   </div>
 
   <div class="card md:w-8">
-    <h3>Your reservation trend</h3>
-    <p-chart type="line" [data]="lineData" [options]="options"></p-chart>
+    <h3>Your calendar</h3>
+    <p-calendar
+      styleClass="w-full"
+      class="w-full max-w-full"
+      [formControl]="date"
+      [inline]="true"
+      [showWeek]="false"
+    ></p-calendar>
   </div>
 </div>
 <p-divider></p-divider>
