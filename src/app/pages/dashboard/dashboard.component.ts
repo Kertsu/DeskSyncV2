@@ -2,6 +2,10 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { FormControl } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { ReservationService } from '../../services/reservation.service';
+import { timeConvert } from '../../utils/reservation-time-converter.util';
+import { Hotdesk } from '../../models/Hotdesk';
+import { Avatar } from 'primeng/avatar';
 
 interface ActiveUser {
   id: string;
@@ -63,9 +67,8 @@ export class DashboardComponent implements OnInit {
   // activeUsers: ActiveUser[] = []
 
   constructor(
-    private socket: Socket,
-    private cdr: ChangeDetectorRef,
-    protected userService: UserService
+    protected userService: UserService,
+    private reservationService: ReservationService
   ) {
     this.recentActivities = [
       {
@@ -116,134 +119,94 @@ export class DashboardComponent implements OnInit {
         __v: 0,
       },
     ];
-
-    this.cardContent = [
-      {
-        title: 'Total Desks',
-        count: 6,
-        icon: 'user',
-      },
-      {
-        title: 'Available Desks',
-        count: 6,
-        icon: 'tablet',
-      },
-      {
-        title: 'Occupied Desks',
-        count: 6,
-        icon: 'desktop',
-      },
-      { title: 'Under Maintenance', count: 6, icon: 'book' },
-    ];
   }
 
   ngOnInit() {
-    this.documentStyle = getComputedStyle(document.documentElement);
-    this.textColor = this.documentStyle.getPropertyValue('--text-color');
-    this.textColorSecondary = this.documentStyle.getPropertyValue(
-      '--text-color-secondary'
+    const now = new Date();
+    const { date } = timeConvert(now);
+
+    const dateReset = date.split('T')[0] + 'T00:00:00.000Z';
+
+    this.reservationService.getDesksAndReservations(
+      { sortOrder: 1, sortField: 'deskNumber' },
+      { date: dateReset },
+      () => {
+        const reservations = this.reservationService.reservations;
+        const desks = this.reservationService.desks;
+        const { updatedDesks } = this.reservationService.updateDesksStatus(
+          reservations,
+          desks
+        );
+
+        console.log(updatedDesks);
+
+        const availableDesksCount = updatedDesks.filter(
+          (desk) => desk.status === 'AVAILABLE'
+        ).length;
+        const unavailableDesksCount = updatedDesks.filter((desk) => {
+          switch (desk.status) {
+            case 'PERMANENTLY UNAVAILABLE':
+            case 'BOOKED':
+            case 'RESERVED':
+            case 'OCCUPIED':
+              return true;
+            default:
+              return false;
+          }
+        }).length;
+        const underMaintenanceDesksCount = updatedDesks.filter(
+          (desk) => desk.status === 'TEMPORARILY UNAVAILABLE'
+        ).length;
+
+        this.cardContent = [
+          {
+            title: 'Total Desks',
+            count: updatedDesks.length,
+            icon: 'user',
+          },
+          {
+            title: 'Available Desks',
+            count: availableDesksCount,
+            icon: 'tablet',
+          },
+          {
+            title: 'Unavailable Desks',
+            count: unavailableDesksCount,
+            icon: 'desktop',
+          },
+          {
+            title: 'Under Maintenance',
+            count: underMaintenanceDesksCount,
+            icon: 'book',
+          },
+        ];
+
+        this.pieData = {
+          labels: ['Available Desks', 'Unavailable Desks', 'Under Maintenance'],
+          datasets: [
+            {
+              data: [
+                availableDesksCount,
+                unavailableDesksCount,
+                underMaintenanceDesksCount,
+              ],
+              backgroundColor: [
+                this.documentStyle.getPropertyValue('--primary-400'),
+                this.documentStyle.getPropertyValue('--primary-700'),
+                this.documentStyle.getPropertyValue('--primary-900'),
+              ],
+              hoverBackgroundColor: [
+                this.documentStyle.getPropertyValue('--primary-200'),
+                this.documentStyle.getPropertyValue('--primary-600'),
+                this.documentStyle.getPropertyValue('--primary-800'),
+              ],
+            },
+          ],
+        };
+      }
     );
-    this.surfaceBorder =
-      this.documentStyle.getPropertyValue('--surface-border');
 
-    this.data = {
-      labels: this.getPastTwoWeeks(),
-      datasets: [
-        {
-          label: 'User Reservations',
-          data: [2, 59, 80, 81, 56, 55, 40],
-          fill: true,
-          borderColor: this.documentStyle.getPropertyValue('--primary-color'),
-          tension: 0.4,
-          backgroundColor:
-            this.documentStyle.getPropertyValue('--primary-200'),
-        },
-      ],
-    };
-
-    this.options = {
-      maintainAspectRatio: false,
-      aspectRatio: 0.6,
-      plugins: {
-        legend: {
-          labels: {
-            color: this.textColor,
-          },
-        },
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: this.textColorSecondary,
-          },
-          grid: {
-            color: this.surfaceBorder,
-            drawBorder: false,
-          },
-        },
-        y: {
-          ticks: {
-            color: this.textColorSecondary,
-          },
-          grid: {
-            color: this.surfaceBorder,
-            drawBorder: false,
-          },
-        },
-      },
-    };
-
-    this.pieData = {
-      labels: [
-        'Total Desks',
-        'Available Desks',
-        'Occupied Desks',
-        'Under Maintenance',
-      ],
-      datasets: [
-        {
-          data: [540, 325, 702, 102],
-          backgroundColor: [
-            this.documentStyle.getPropertyValue('--primary-200'),
-            this.documentStyle.getPropertyValue('--primary-500'),
-            this.documentStyle.getPropertyValue('--primary-800'),
-            this.documentStyle.getPropertyValue('--primary-900'),
-          ],
-          hoverBackgroundColor: [
-            this.documentStyle.getPropertyValue('--primary-100'),
-            this.documentStyle.getPropertyValue('--primary-400'),
-            this.documentStyle.getPropertyValue('--primary-700'),
-            this.documentStyle.getPropertyValue('--primary-800'),
-          ],
-        },
-      ],
-    };
-
-    this.pieOptions = {
-      plugins: {
-        legend: {
-          labels: {
-            usePointStyle: true,
-            color: this.textColor,
-          },
-        },
-      },
-    };
-
-    this.lineData = {
-      labels: this.getPastTwoWeeks(),
-      datasets: [
-        {
-          label: 'Reservation Trend',
-          data: [2, 34, 21, 52, 12, 43, 22, 4, 16],
-          fill: true,
-          borderColor: this.documentStyle.getPropertyValue('--primary-color'),
-          tension: 0.4,
-          backgroundColor:
-            this.documentStyle.getPropertyValue('--primary-200'),
-        },
-      ],
-    };
+    this.initialize();
   }
 
   getNextTwoWeeks() {
@@ -294,5 +257,86 @@ export class DashboardComponent implements OnInit {
   getDateNow() {
     const currentDate = new Date();
     return currentDate.toLocaleDateString();
+  }
+
+  initialize() {
+    this.documentStyle = getComputedStyle(document.documentElement);
+    this.textColor = this.documentStyle.getPropertyValue('--text-color');
+    this.textColorSecondary = this.documentStyle.getPropertyValue(
+      '--text-color-secondary'
+    );
+    this.surfaceBorder =
+      this.documentStyle.getPropertyValue('--surface-border');
+
+    this.data = {
+      labels: this.getPastTwoWeeks(),
+      datasets: [
+        {
+          label: 'User Reservations',
+          data: [2, 59, 80, 81, 56, 55, 40],
+          fill: true,
+          borderColor: this.documentStyle.getPropertyValue('--primary-color'),
+          tension: 0.4,
+          backgroundColor: this.documentStyle.getPropertyValue('--primary-200'),
+        },
+      ],
+    };
+
+    this.options = {
+      maintainAspectRatio: false,
+      aspectRatio: 0.6,
+      plugins: {
+        legend: {
+          labels: {
+            color: this.textColor,
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: this.textColorSecondary,
+          },
+          grid: {
+            color: this.surfaceBorder,
+            drawBorder: false,
+          },
+        },
+        y: {
+          ticks: {
+            color: this.textColorSecondary,
+          },
+          grid: {
+            color: this.surfaceBorder,
+            drawBorder: false,
+          },
+        },
+      },
+    };
+
+    this.pieOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: this.textColor,
+          },
+        },
+      },
+    };
+
+    this.lineData = {
+      labels: this.getPastTwoWeeks(),
+      datasets: [
+        {
+          label: 'Reservation Trend',
+          data: [2, 34, 21, 52, 12, 43, 22, 4, 16],
+          fill: true,
+          borderColor: this.documentStyle.getPropertyValue('--primary-color'),
+          tension: 0.4,
+          backgroundColor: this.documentStyle.getPropertyValue('--primary-200'),
+        },
+      ],
+    };
   }
 }
