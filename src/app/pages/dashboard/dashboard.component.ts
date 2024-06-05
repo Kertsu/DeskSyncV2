@@ -59,6 +59,7 @@ export class DashboardComponent implements OnInit {
   date = new FormControl();
 
   recentActivities: any[] = [];
+  recentReservations: any[] = [];
 
   activeUsers: ActiveUser[] = [
     {
@@ -132,6 +133,16 @@ export class DashboardComponent implements OnInit {
         first: 0
       }
       this.getMostRecentActivities(params)
+    } 
+
+    if(this.userService.getUser()?.role === "om"){
+      const params = {
+        sortOrder: -1,
+        sortField: 'createdAt',
+        rows: 3,
+        first: 0
+      }
+      this.getMostRecentReservations(params)
     }
   }
 
@@ -478,6 +489,18 @@ export class DashboardComponent implements OnInit {
     this.webService.getTrails(params).subscribe({
       next: (res: any) => {
         this.recentActivities = res.trails;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    })
+  }
+
+  getMostRecentReservations(params:any){
+    params = this.paramsBuilder.buildParams(params);
+    this.webService.getReservations(params).subscribe({
+      next: (res: any) => {
+        this.recentReservations = res.reservations;
       },
       error: (err) => {
         console.log(err);
