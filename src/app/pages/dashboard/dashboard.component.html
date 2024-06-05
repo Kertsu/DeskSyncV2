@@ -150,7 +150,7 @@
             class="h-4rem"
           />
           <div class="w-full flex flex-column gap-3 justify-content-center">
-            <p class="m-0 text-bold">Hotdesk #{{ reservation.deskNumber }}</p>
+            <p class="m-0 font-bold">Hotdesk #{{ reservation.deskNumber }}</p>
             <p class="m-0">{{ reservation.date | date : "mediumDate" }}</p>
           </div>
         </div>
@@ -164,7 +164,9 @@
   </div>
 
   <div class="card md:w-8">
-    <div class="flex flex-column mb-3 w-full justify-content-between align-items-start md:flex-row md:m-0">
+    <div
+      class="flex flex-column mb-3 w-full justify-content-between align-items-start md:flex-row md:m-0"
+    >
       <h3 class="w-full">Your calendar</h3>
       <div class="flex w-full align-items-center md:justify-content-end">
         <p-tag styleClass="mr-3" severity="info">APPROVED</p-tag>
@@ -191,6 +193,7 @@
 </div>
 <p-divider></p-divider>
 
+<!-- ADMIN -->
 <div
   *ngIf="
     userService.getUser()?.role == 'admin' ||
@@ -200,29 +203,34 @@
 >
   <div class="card md:w-5 m-0">
     <h3>Recent activities</h3>
-    @if (recentActivities.length !== 0) { @for (activity of recentActivities;
-    track $index) {
-
-    <div class="flex flex-column gap-1">
-      <div class="flex justify-content-between">
-        <div class="flex flex-column gap-2">
-          <p
-            class="m-0 overflow-ellipsis xl:max-w-full"
-            style="max-width: 200px"
-          >
-            {{ activity.email }}
-          </p>
-          <p class="text-xs text-color-secondary m-0">
-            {{ activity.actionDetails }}
-          </p>
+    <ng-container *ngIf="recentActivities.length; else noActivities">
+      <ng-container
+        *ngFor="let activity of recentActivities;"
+      >
+        <div class="flex flex-column gap-1">
+          <div class="flex justify-content-between">
+            <div class="flex flex-column gap-2">
+              <p
+                class="m-0 overflow-ellipsis xl:max-w-full"
+                style="max-width: 200px"
+              >
+                {{ activity.email }}
+              </p>
+              <p class="text-xs font-semibold text-color-secondary m-0">
+                {{ activity.actionDetails }}
+              </p>
+            </div>
+            <p-tag [severity]="getSeverity(activity.status, 'activity')">
+              {{ activity.status.toUpperCase() }}
+            </p-tag>
+          </div>
+          <p-divider></p-divider>
         </div>
-        <p-tag [severity]="getSeverity(activity.status, 'activity')">{{
-          activity.status
-        }}</p-tag>
-      </div>
-      <p-divider></p-divider>
-    </div>
-    } }
+      </ng-container>
+    </ng-container>
+    <ng-template #noActivities>
+      <p>It's quiet in here...</p>
+    </ng-template>
   </div>
 
   <div class="card md:w-7">
@@ -230,6 +238,8 @@
     <p-chart type="line" [data]="lineData" [options]="options"></p-chart>
   </div>
 </div>
+
+<!-- OM -->
 <div
   *ngIf="userService.getUser()?.role == 'om'"
   class="w-full mb-3 gap-3 flex flex-column md:flex-row-reverse align-stretch"

@@ -97,55 +97,6 @@ export class DashboardComponent implements OnInit {
     private webService: WebService,
     private paramsBuilder: ParamsBuilderService
   ) {
-    this.recentActivities = [
-      {
-        _id: {
-          $oid: '658f9038e2c5e80245651d17',
-        },
-        user: null,
-        email: 'marjorieanito@student.laverdad.edu.ph',
-        actionType: 'Login',
-        actionDetails: 'Login failed',
-        ipAddress: '64.224.122.135',
-        status: 'failure',
-        additionalContext: 'Invalid credentials',
-        createdAt: '2023-12-30T03:36:24.274Z',
-        updatedAt: '2023-12-30T03:36:24.274Z',
-        __v: 0,
-      },
-      {
-        _id: {
-          $oid: '658f96f83a3771b3440c406a',
-        },
-        user: {
-          $oid: '65671517eec8a4d2d7c7cf56',
-        },
-        email: 'kurtddbigtas@gmail.com',
-        actionType: 'Logout',
-        actionDetails: 'kd logged out',
-        ipAddress: '64.224.99.19',
-        status: 'success',
-        createdAt: '2023-12-30T04:05:12.814Z',
-        updatedAt: '2023-12-30T04:05:12.814Z',
-        __v: 0,
-      },
-      {
-        _id: {
-          $oid: '658f96f83a3771b3440c406a',
-        },
-        user: {
-          $oid: '65671517eec8a4d2d7c7cf56',
-        },
-        email: 'kurtddbigtas@gmail.com',
-        actionType: 'Logout',
-        actionDetails: 'kd logged out',
-        ipAddress: '64.224.99.19',
-        status: 'success',
-        createdAt: '2023-12-30T04:05:12.814Z',
-        updatedAt: '2023-12-30T04:05:12.814Z',
-        __v: 0,
-      },
-    ];
   }
 
   ngOnInit() {
@@ -172,6 +123,16 @@ export class DashboardComponent implements OnInit {
 
     this.initialize();
     this.getReservationStatistics();
+
+    if(this.userService.getUser()?.role === "admin" || this.userService.getUser()?.role === "superadmin"){
+      const params = {
+        sortOrder: -1,
+        sortField: 'createdAt',
+        rows: 3,
+        first: 0
+      }
+      this.getMostRecentActivities(params)
+    }
   }
 
   getNextTwoWeeks() {
@@ -509,5 +470,18 @@ export class DashboardComponent implements OnInit {
     }
 
     return '';
+  }
+
+  getMostRecentActivities(params:any){
+    params = this.paramsBuilder.buildParams(params);
+
+    this.webService.getTrails(params).subscribe({
+      next: (res: any) => {
+        this.recentActivities = res.trails;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    })
   }
 }
