@@ -204,9 +204,7 @@
   <div class="card md:w-5 m-0">
     <h3>Recent activities</h3>
     <ng-container *ngIf="recentActivities.length; else noActivities">
-      <ng-container
-        *ngFor="let activity of recentActivities;"
-      >
+      <ng-container *ngFor="let activity of recentActivities">
         <div class="flex flex-column gap-1">
           <div class="flex justify-content-between">
             <div class="flex flex-column gap-2">
@@ -245,27 +243,31 @@
   class="w-full mb-3 gap-3 flex flex-column md:flex-row-reverse align-stretch"
 >
   <div class="card md:w-5 m-0">
-    <h3>Desk recommendation</h3>
-    @for (item of [1,2,3]; track $index) {
-    <div
-      class="w-full flex justify-content-between align-items-center surface-border surface-ground p-3 border-1 border-round"
-    >
-      <div class="div flex gap-3 align-items-center">
-        <img
-          [src]="'../../../assets/images/map/desk-area/' + item + '.png'"
-          alt="desk"
-          style="aspect-ratio: 1/1; object-fit: contain"
-          class="h-4rem"
-        />
-        <div class="w-full flex flex-column gap-3 justify-content-center">
-          <p class="m-0">Hotdesk 5</p>
-          <p class="m-0">June 3, 2024</p>
+    <h3>Most recent reservations</h3>
+    <div class="w-full flex flex-column gap-1">
+      @for (reservation of recentReservations; track $index) {
+      <div
+        class="w-full flex justify-content-between align-items-center surface-border surface-ground p-3 border-1 border-round"
+      >
+        <div class="div flex gap-3 align-items-center">
+          <img
+            [src]="getImage(reservation)"
+            alt="desk"
+            style="aspect-ratio: 1/1; object-fit: contain"
+            class="h-4rem"
+          />
+          <div class="w-full flex flex-column gap-3 justify-content-center">
+            <p class="m-0 font-bold">Hotdesk #{{ reservation.deskNumber }}</p>
+            <p class="m-0">{{ reservation.date | date : "mediumDate" }}</p>
+          </div>
         </div>
-      </div>
 
-      <p-tag>Area: 2</p-tag>
+        <p-tag [severity]="getSeverity(reservation.status, 'reservations')">{{
+          reservation.status
+        }}</p-tag>
+      </div>
+      }
     </div>
-    }
   </div>
 
   <div class="card md:w-7">
