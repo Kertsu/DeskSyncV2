@@ -6,7 +6,30 @@ import { ReservationService } from '../../services/reservation.service';
 import { timeConvert } from '../../utils/reservation-time-converter.util';
 import { Hotdesk } from '../../models/Hotdesk';
 import { Avatar } from 'primeng/avatar';
+import { WebService } from '../../services/web.service';
+import { ParamsBuilderService } from '../../services/params-builder.service';
+import { forkJoin } from 'rxjs';
 
+type ReservationHistoryType =
+  | 'REJECTED'
+  | 'CANCELED'
+  | 'COMPLETED'
+  | 'EXPIRED'
+  | 'ABORTED';
+
+interface ReservationHistory {
+  id: string;
+  _id: string;
+  reservation: string;
+  user: string;
+  deskNumber: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  type: ReservationHistoryType;
+  mode: number;
+  __v: number;
+}
 interface ActiveUser {
   id: string;
   username: string;
@@ -64,11 +87,15 @@ export class DashboardComponent implements OnInit {
     },
   ];
 
+  selfReservations: any[] = [];
+
   // activeUsers: ActiveUser[] = []
 
   constructor(
     protected userService: UserService,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
+    private webService: WebService,
+    private paramsBuilder: ParamsBuilderService
   ) {
     this.recentActivities = [
       {
@@ -138,75 +165,13 @@ export class DashboardComponent implements OnInit {
           desks
         );
 
-        console.log(updatedDesks);
-
-        const availableDesksCount = updatedDesks.filter(
-          (desk) => desk.status === 'AVAILABLE'
-        ).length;
-        const unavailableDesksCount = updatedDesks.filter((desk) => {
-          switch (desk.status) {
-            case 'PERMANENTLY UNAVAILABLE':
-            case 'BOOKED':
-            case 'RESERVED':
-            case 'OCCUPIED':
-              return true;
-            default:
-              return false;
-          }
-        }).length;
-        const underMaintenanceDesksCount = updatedDesks.filter(
-          (desk) => desk.status === 'TEMPORARILY UNAVAILABLE'
-        ).length;
-
-        this.cardContent = [
-          {
-            title: 'Total Desks',
-            count: updatedDesks.length,
-            icon: 'user',
-          },
-          {
-            title: 'Available Desks',
-            count: availableDesksCount,
-            icon: 'tablet',
-          },
-          {
-            title: 'Unavailable Desks',
-            count: unavailableDesksCount,
-            icon: 'desktop',
-          },
-          {
-            title: 'Under Maintenance',
-            count: underMaintenanceDesksCount,
-            icon: 'book',
-          },
-        ];
-
-        this.pieData = {
-          labels: ['Available Desks', 'Unavailable Desks', 'Under Maintenance'],
-          datasets: [
-            {
-              data: [
-                availableDesksCount,
-                unavailableDesksCount,
-                underMaintenanceDesksCount,
-              ],
-              backgroundColor: [
-                this.documentStyle.getPropertyValue('--primary-400'),
-                this.documentStyle.getPropertyValue('--primary-700'),
-                this.documentStyle.getPropertyValue('--primary-900'),
-              ],
-              hoverBackgroundColor: [
-                this.documentStyle.getPropertyValue('--primary-200'),
-                this.documentStyle.getPropertyValue('--primary-600'),
-                this.documentStyle.getPropertyValue('--primary-800'),
-              ],
-            },
-          ],
-        };
+        this.getDesksStatistics(updatedDesks);
+        console.log(this.getPastTwoWeeks().dates);
       }
     );
 
     this.initialize();
+    this.getReservationStatistics();
   }
 
   getNextTwoWeeks() {
@@ -230,20 +195,36 @@ export class DashboardComponent implements OnInit {
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const currentDate = new Date();
     const pastTwoWeeks = [];
+    const dates = [];
 
     for (let i = 0; i < 14; i++) {
       const pastDate = new Date(
         currentDate.getTime() - i * 24 * 60 * 60 * 1000
       );
+      const { date } = timeConvert(pastDate);
+      const resetDate = date.split('T')[0] + 'T00:00:00.000Z';
       const dayOfWeek = daysOfWeek[pastDate.getDay()];
       const dayOfMonth = pastDate.getDate();
+      dates.push(resetDate);
       pastTwoWeeks.unshift(`${dayOfWeek}, ${dayOfMonth}`);
     }
 
-    return pastTwoWeeks;
+    return { pastTwoWeeks, dates };
   }
 
-  getSeverity(status: string) {
+  getSeverity(status: string, mode: string) {
+    if (mode === 'reservations') {
+      switch (status) {
+        case 'PENDING':
+          return 'danger';
+        case 'APPROVED':
+          return 'info';
+        case 'STARTED':
+          return 'success';
+        default:
+          return;
+      }
+    }
     switch (status) {
       case 'failure':
         return 'danger';
@@ -269,10 +250,10 @@ export class DashboardComponent implements OnInit {
       this.documentStyle.getPropertyValue('--surface-border');
 
     this.data = {
-      labels: this.getPastTwoWeeks(),
+      labels: this.getPastTwoWeeks().pastTwoWeeks,
       datasets: [
         {
-          label: 'User Reservations',
+          label: 'Reservations',
           data: [2, 59, 80, 81, 56, 55, 40],
           fill: true,
           borderColor: this.documentStyle.getPropertyValue('--primary-color'),
@@ -324,19 +305,209 @@ export class DashboardComponent implements OnInit {
         },
       },
     };
+  }
 
-    this.lineData = {
-      labels: this.getPastTwoWeeks(),
+  getDesksStatistics(desks: Hotdesk[]) {
+    const availableDesksCount = desks.filter(
+      (desk) => desk.status === 'AVAILABLE'
+    ).length;
+    const unavailableDesksCount = desks.filter((desk) => {
+      switch (desk.status) {
+        case 'PERMANENTLY UNAVAILABLE':
+        case 'BOOKED':
+        case 'RESERVED':
+        case 'OCCUPIED':
+          return true;
+        default:
+          return false;
+      }
+    }).length;
+    const underMaintenanceDesksCount = desks.filter(
+      (desk) => desk.status === 'TEMPORARILY UNAVAILABLE'
+    ).length;
+
+    this.cardContent = [
+      {
+        title: 'Total Desks',
+        count: desks.length,
+        icon: 'user',
+      },
+      {
+        title: 'Available Desks',
+        count: availableDesksCount,
+        icon: 'tablet',
+      },
+      {
+        title: 'Unavailable Desks',
+        count: unavailableDesksCount,
+        icon: 'desktop',
+      },
+      {
+        title: 'Under Maintenance',
+        count: underMaintenanceDesksCount,
+        icon: 'book',
+      },
+    ];
+
+    this.pieData = {
+      labels: ['Available Desks', 'Unavailable Desks', 'Under Maintenance'],
       datasets: [
         {
-          label: 'Reservation Trend',
-          data: [2, 34, 21, 52, 12, 43, 22, 4, 16],
-          fill: true,
-          borderColor: this.documentStyle.getPropertyValue('--primary-color'),
-          tension: 0.4,
-          backgroundColor: this.documentStyle.getPropertyValue('--primary-200'),
+          data: [
+            availableDesksCount,
+            unavailableDesksCount,
+            underMaintenanceDesksCount,
+          ],
+          backgroundColor: [
+            this.documentStyle.getPropertyValue('--primary-400'),
+            this.documentStyle.getPropertyValue('--primary-700'),
+            this.documentStyle.getPropertyValue('--primary-900'),
+          ],
+          hoverBackgroundColor: [
+            this.documentStyle.getPropertyValue('--primary-200'),
+            this.documentStyle.getPropertyValue('--primary-600'),
+            this.documentStyle.getPropertyValue('--primary-800'),
+          ],
         },
       ],
     };
+  }
+
+  getReservationStatistics() {
+    const dates = this.getPastTwoWeeks().dates;
+    const startDate = dates[0];
+    const endDate = dates[dates.length - 1];
+
+    const masterParams = this.paramsBuilder.buildParams({
+      startDate,
+      endDate,
+      mode: 0,
+    });
+
+    const selfParams = this.paramsBuilder.buildParams({
+      sortOrder: -1,
+      sortField: 'createdAt',
+      mode: 0,
+      first: 0,
+      rows: 15,
+    });
+    if (this.userService.getUser()?.role == 'user') {
+      this.webService.getSelfReservations(selfParams).subscribe({
+        next: (res: any) => {
+          this.selfReservations = res.reservations;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
+
+    forkJoin([
+      this.webService.getSelfReservations(selfParams),
+      this.webService.getHistory(masterParams),
+    ]).subscribe({
+      next: ([selfReservationRes, masterHistoryRes]: [any, any]) => {
+        console.log(selfReservationRes);
+        const selfReservations: any = selfReservationRes.reservations;
+        const masterHistory: ReservationHistory[] =
+          masterHistoryRes.reservations;
+
+        this.selfReservations = selfReservations;
+
+        const typeCounts: Record<ReservationHistoryType, number[]> = {
+          REJECTED: Array(14).fill(0),
+          CANCELED: Array(14).fill(0),
+          COMPLETED: Array(14).fill(0),
+          EXPIRED: Array(14).fill(0),
+          ABORTED: Array(14).fill(0),
+        };
+
+        dates.forEach((date, index) => {
+          masterHistory.forEach((reservation: ReservationHistory) => {
+            const reservationDate =
+              new Date(reservation.date).toISOString().split('T')[0] +
+              'T00:00:00.000Z';
+            if (reservationDate === date) {
+              const type: ReservationHistoryType = reservation.type;
+              typeCounts[type][index]++;
+            }
+          });
+        });
+
+        this.lineData = {
+          labels: this.getPastTwoWeeks().pastTwoWeeks,
+          datasets: [
+            {
+              label: 'REJECTED',
+              data: typeCounts.REJECTED,
+              borderColor: this.documentStyle.getPropertyValue('--primary-100'),
+              tension: 0.4,
+              backgroundColor:
+                this.documentStyle.getPropertyValue('--primary-100'),
+            },
+            {
+              label: 'CANCELED',
+              data: typeCounts.CANCELED,
+              borderColor: this.documentStyle.getPropertyValue('--primary-200'),
+              tension: 0.4,
+              backgroundColor:
+                this.documentStyle.getPropertyValue('--primary-200'),
+            },
+            {
+              label: 'COMPLETED',
+              data: typeCounts.COMPLETED,
+              borderColor: this.documentStyle.getPropertyValue('--primary-300'),
+              tension: 0.4,
+              backgroundColor:
+                this.documentStyle.getPropertyValue('--primary-300'),
+            },
+            {
+              label: 'EXPIRED',
+              data: typeCounts.EXPIRED,
+              borderColor: this.documentStyle.getPropertyValue('--primary-400'),
+              tension: 0.4,
+              backgroundColor:
+                this.documentStyle.getPropertyValue('--primary-400'),
+            },
+            {
+              label: 'ABORTED',
+              data: typeCounts.ABORTED,
+              borderColor: this.documentStyle.getPropertyValue('--primary-500'),
+              tension: 0.4,
+              backgroundColor:
+                this.documentStyle.getPropertyValue('--primary-500'),
+            },
+          ],
+        };
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  getImage(reservation: any) {
+    return `../../assets/images/map/desk-area/${reservation.deskNumber}.png`;
+  }
+
+  getStyleForDate(date: any): string {
+    const reservation = this.selfReservations.find(
+      (reservation) =>
+        new Date(reservation.startTime).getDate() === date.day &&
+        new Date(reservation.startTime).getMonth() === date.month &&
+        new Date(reservation.startTime).getFullYear() === date.year
+    );
+
+    if (reservation) {
+      if (reservation.status === 'PENDING') {
+        return 'bg-red-100 line-through text-red-500';
+      } else if (reservation.status === 'STARTED') {
+        return 'bg-green-100 line-through text-green-500';
+      } else if (reservation.status === 'APPROVED') {
+        return 'bg-primary-100 line-through text-primary-500';
+      }
+    }
+
+    return '';
   }
 }

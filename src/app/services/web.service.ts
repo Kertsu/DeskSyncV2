@@ -180,6 +180,10 @@ export class WebService {
     return this.http.get(`${this.baseReservationURL}/self/history`, { params });
   }
 
+  getHistory(params: any){
+    return this.http.get(`${this.baseReservationURL}/history`, { params });
+  }
+
   getSelfToRateReservations(params: any) {
     return this.http.get(`${this.baseReservationURL}/self/to-rate`, {
       params,

@@ -128,47 +128,65 @@
   }
 </div>
 
-<div class="w-full card mb-3">
+<!-- <div class="w-full card mb-3">
   <h3>Your reservation trend</h3>
-  <p-chart type="line" [data]="lineData" [options]="options"></p-chart>
-</div>
+  <p-chart type="bar" [data]="data" [options]="options" />
+</div> -->
 
 <div class="w-full mb-3 gap-3 flex flex-column md:flex-row align-stretch">
   <div class="card md:w-4 m-0">
     <h3>Your bookings</h3>
+
     <div class="w-full flex flex-column gap-1">
-      @for (item of [1,2,3,4]; track $index) {
+      @for (reservation of selfReservations.slice(0, 4); track $index) {
       <div
         class="w-full flex justify-content-between align-items-center surface-border surface-ground p-3 border-1 border-round"
       >
         <div class="div flex gap-3 align-items-center">
           <img
-            [src]="'../../../assets/images/map/desk-area/' + item + '.png'"
+            [src]="getImage(reservation)"
             alt="desk"
             style="aspect-ratio: 1/1; object-fit: contain"
             class="h-4rem"
           />
           <div class="w-full flex flex-column gap-3 justify-content-center">
-            <p class="m-0">Hotdesk 5</p>
-            <p class="m-0">June 3, 2024</p>
+            <p class="m-0 text-bold">Hotdesk #{{ reservation.deskNumber }}</p>
+            <p class="m-0">{{ reservation.date | date : "mediumDate" }}</p>
           </div>
         </div>
 
-        <p>APPROVED</p>
+        <p-tag [severity]="getSeverity(reservation.status, 'reservations')">{{
+          reservation.status
+        }}</p-tag>
       </div>
       }
     </div>
   </div>
 
   <div class="card md:w-8">
-    <h3>Your calendar</h3>
+    <div class="flex flex-column mb-3 w-full justify-content-between align-items-start md:flex-row md:m-0">
+      <h3 class="w-full">Your calendar</h3>
+      <div class="flex w-full align-items-center md:justify-content-end">
+        <p-tag styleClass="mr-3" severity="info">APPROVED</p-tag>
+        <p-tag styleClass="mr-3" severity="danger">PENDING</p-tag>
+        <p-tag styleClass="mr-3" severity="success">STARTED</p-tag>
+      </div>
+    </div>
     <p-calendar
-      styleClass="w-full"
-      class="w-full max-w-full"
-      [formControl]="date"
       [inline]="true"
-      [showWeek]="false"
-    ></p-calendar>
+      styleClass="w-full"
+      [formControl]="date"
+      #calendar
+    >
+      <ng-template pTemplate="date" let-date>
+        <span
+          class="border-round h-full w-full flex justify-content-center align-items-center"
+          [ngClass]="getStyleForDate(date)"
+        >
+          {{ date.day }}
+        </span>
+      </ng-template></p-calendar
+    >
   </div>
 </div>
 <p-divider></p-divider>
@@ -198,7 +216,7 @@
             {{ activity.actionDetails }}
           </p>
         </div>
-        <p-tag [severity]="getSeverity(activity.status)">{{
+        <p-tag [severity]="getSeverity(activity.status, 'activity')">{{
           activity.status
         }}</p-tag>
       </div>
@@ -209,7 +227,7 @@
 
   <div class="card md:w-7">
     <h3>Users reservation trend</h3>
-    <p-chart type="bar" [data]="data" [options]="options" />
+    <p-chart type="line" [data]="lineData" [options]="options"></p-chart>
   </div>
 </div>
 <div
@@ -236,13 +254,13 @@
       </div>
 
       <p-tag>Area: 2</p-tag>
-
     </div>
-    } 
+    }
   </div>
 
   <div class="card md:w-7">
     <h3>Users reservation trend</h3>
-    <p-chart type="bar" [data]="data" [options]="options" />
+
+    <p-chart type="line" [data]="lineData" [options]="options"></p-chart>
   </div>
 </div>

@@ -4,7 +4,7 @@
 
 .gradient {
   background: linear-gradient(
-    35deg,
+    -35deg,
     var(--primary-color),
     transparent,
     transparent
