@@ -35,6 +35,12 @@ export class ParamsBuilderService {
     if (event.id !== undefined) {
       params = params.set('id', event.id);
     }
+    if (event.startDate !== undefined) {
+      params = params.set('startDate', event.startDate);
+    }
+    if (event.endDate !== undefined) {
+      params = params.set('endDate', event.endDate);
+    }
 
     return params;
   }

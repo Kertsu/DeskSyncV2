@@ -99,6 +99,7 @@ export class ManageDeskUnavailabilitiesComponent {
     this.loading = true;
     const eventParams = { mode: 1, ...event };
     const params = this.paramsBuilder.buildParams(eventParams);
+    console.log('Request Parameters:', params.toString()); 
     this.webService.getUnavailabilities(params).subscribe({
       next: (res: any) => {
         this.unavailabilities = res.reservations;
