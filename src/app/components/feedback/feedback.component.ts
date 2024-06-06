@@ -18,6 +18,8 @@ export class FeedbackComponent implements OnInit {
   errorMessage!: string;
   hasErrors: boolean = false;
 
+  isProcessing: boolean = false;
+
   ratings = [
     { emoji: '😣', rate: 1, descripton: 'Very bad' },
     { emoji: '🙁', rate: 2, descripton: 'Bad' },
@@ -52,12 +54,14 @@ export class FeedbackComponent implements OnInit {
     feedback.reservation = reservation;
 
     console.log(feedback);
+    this.isProcessing = true;
     this.webService.submitFeedback(feedback).subscribe({
       next: (res: any) => {},
       error: (error) => {
         console.log(error);
         this.errorMessage = error.error.error;
         this.triggerErrorEvent();
+        this.isProcessing = false; 
       },
       complete: () => {
         this.messageService.addMessage(
@@ -66,6 +70,7 @@ export class FeedbackComponent implements OnInit {
           'Success'
         );
         this.dialogRef.close(feedback);
+        this.isProcessing = false;
       },
     });
   }

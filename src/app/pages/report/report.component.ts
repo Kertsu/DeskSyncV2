@@ -22,6 +22,8 @@ export class ReportComponent implements OnInit {
 
   options: any[] = [];
 
+  isProcessing: boolean = false;
+
   constructor(private fb: FormBuilder, private webService: WebService, private dialogRef: DynamicDialogRef, private messageService: MessageService) {}
   ngOnInit() {
     this.formGroup = this.fb.group({
@@ -65,6 +67,7 @@ export class ReportComponent implements OnInit {
 
   submitReport(){
     if(this.formGroup.valid){
+      this.isProcessing = true;
       this.webService.submitReport(this.formGroup.value).subscribe({
         next: (res: any) => {
           console.log(res);
@@ -72,10 +75,12 @@ export class ReportComponent implements OnInit {
         },
         error: (err: any) => {
           console.log(err);
+          this.isProcessing = false;
         },
         complete: () => {
           this.dialogRef.close(this.formGroup.value);
           this.formGroup.reset();
+          this.isProcessing = false;
         }
       })
     }

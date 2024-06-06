@@ -41,6 +41,8 @@ export class ProfileComponent implements OnInit {
 
   oldValue!: boolean;
 
+  isProcessing: boolean = false;
+
   constructor(
     protected userService: UserService,
     private fb: FormBuilder,
@@ -155,7 +157,7 @@ export class ProfileComponent implements OnInit {
 
   removeAvatar() {
     this.avatarSource =
-      'http://res.cloudinary.com/drlztlr1m/image/upload/v1706979188/oxbsppubd3rsabqwfxsr.jpg';
+      'https://res.cloudinary.com/drlztlr1m/image/upload/v1706979188/oxbsppubd3rsabqwfxsr.jpg';
     this.checkForChanges();
   }
 
@@ -176,6 +178,7 @@ export class ProfileComponent implements OnInit {
       confirmPassword: this.changePasswordForm.value.confirmPassword,
     };
 
+    this.isProcessing = true
     this.webService.changePassword(data).subscribe({
       next: (res: any) => {
         console.log(res);
@@ -193,11 +196,13 @@ export class ProfileComponent implements OnInit {
           'Error',
           3000
         );
-        this.visible = false;
+        // this.visible = false;
+        this.isProcessing = false
       },
       complete: () => {
         this.visible = false;
         this.successShown = true;
+        this.isProcessing = false
         confetti({
           particleCount: 100,
           spread: 70,
@@ -230,12 +235,13 @@ export class ProfileComponent implements OnInit {
 
     if (
       this.avatarSource ==
-      'http://res.cloudinary.com/drlztlr1m/image/upload/v1706979188/oxbsppubd3rsabqwfxsr.jpg'
+      'https://res.cloudinary.com/drlztlr1m/image/upload/v1706979188/oxbsppubd3rsabqwfxsr.jpg'
     ) {
       formData.append('defaultAvatar', this.avatarSource);
       formData.delete('avatar');
     }
 
+    this.isProcessing = true
     this.webService.updateProfile(formData).subscribe({
       next: (res: any) => {
         console.log(res);
@@ -254,12 +260,13 @@ export class ProfileComponent implements OnInit {
           'Error',
           3000
         );
+        this.isProcessing = false
       },
       complete: () => {
         this.messageShown = false;
         this.uiService.setMessageShown(this.messageShown);
         this.messageService.clear('bc');
-
+        this.isProcessing = false
         this.selectedAvatarImage = undefined;
         this.selectedBannerImage = undefined;
       },

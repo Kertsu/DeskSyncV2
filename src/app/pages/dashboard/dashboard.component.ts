@@ -412,18 +412,18 @@ export class DashboardComponent implements OnInit {
             {
               label: 'REJECTED',
               data: typeCounts.REJECTED,
-              borderColor: this.documentStyle.getPropertyValue('--primary-100'),
+              borderColor: this.documentStyle.getPropertyValue('--red-300'),
               tension: 0.4,
               backgroundColor:
-                this.documentStyle.getPropertyValue('--primary-100'),
+                this.documentStyle.getPropertyValue('--red-300'),
             },
             {
               label: 'CANCELED',
               data: typeCounts.CANCELED,
-              borderColor: this.documentStyle.getPropertyValue('--primary-200'),
+              borderColor: this.documentStyle.getPropertyValue('--orange-200'),
               tension: 0.4,
               backgroundColor:
-                this.documentStyle.getPropertyValue('--primary-200'),
+                this.documentStyle.getPropertyValue('--orange-200'),
             },
             {
               label: 'COMPLETED',
@@ -436,18 +436,18 @@ export class DashboardComponent implements OnInit {
             {
               label: 'EXPIRED',
               data: typeCounts.EXPIRED,
-              borderColor: this.documentStyle.getPropertyValue('--primary-400'),
+              borderColor: this.documentStyle.getPropertyValue('--purple-300'),
               tension: 0.4,
               backgroundColor:
-                this.documentStyle.getPropertyValue('--primary-400'),
+                this.documentStyle.getPropertyValue('--purple-300'),
             },
             {
               label: 'ABORTED',
               data: typeCounts.ABORTED,
-              borderColor: this.documentStyle.getPropertyValue('--primary-500'),
+              borderColor: this.documentStyle.getPropertyValue('--pink-300'),
               tension: 0.4,
               backgroundColor:
-                this.documentStyle.getPropertyValue('--primary-500'),
+                this.documentStyle.getPropertyValue('--pink-300'),
             },
           ],
         };

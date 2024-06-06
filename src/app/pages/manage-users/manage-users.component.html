@@ -142,7 +142,10 @@
     <ng-template pTemplate="body" let-user>
       <tr>
         <td>
-          <p-tableCheckbox *ngIf="userService.getUser().id != user.id" [value]="user"></p-tableCheckbox>
+          <p-tableCheckbox
+            *ngIf="userService.getUser().id != user.id"
+            [value]="user"
+          ></p-tableCheckbox>
         </td>
         <!-- <td>
             <p-avatar image="{{ user.avatar }}" shape="circle"></p-avatar>
@@ -172,7 +175,7 @@
         </td>
         <td>
           <button
-            [disabled]="userService.getUser().id == user.id"
+            [disabled]="userService.getUser()._id == user.id"
             pButton
             pRipple
             icon="pi pi-trash"
@@ -278,13 +281,15 @@
       pRipple
       label="Cancel"
       icon="pi pi-times"
+      [disabled]="isProcessing"
       class="p-button-text"
       (click)="hideDialog()"
     ></button>
     <button
       pButton
       pRipple
-      label="Save"
+      [disabled]="isProcessing"
+      [label]="isProcessing ? 'Saving...' : 'Save'"
       icon="pi pi-check"
       class="p-button-text"
       (click)="saveUser(user)"
@@ -335,12 +340,14 @@
       label="Cancel"
       icon="pi pi-times"
       class="p-button-text"
+      [disabled]="isProcessing"
       (click)="hideCreateUserDialog()"
     ></button>
     <button
       pButton
       pRipple
-      label="Save"
+      [disabled]="isProcessing"
+      [label]="isProcessing ? 'Creating...' : 'Create'"
       icon="pi pi-check"
       class="p-button-text"
       (click)="createUser()"
