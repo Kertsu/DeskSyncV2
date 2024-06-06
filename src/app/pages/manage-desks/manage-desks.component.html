@@ -209,6 +209,7 @@
         <button
           pButton
           pRipple
+          [disabled]="isProcessing"
           label="Cancel"
           icon="pi pi-times"
           class="p-button-text"
@@ -217,9 +218,9 @@
         <button
           pButton
           pRipple
-          [disabled]="createForm.invalid"
+          [disabled]="createForm.invalid || isProcessing"
           type="submit"
-          label="Save"
+          [label]="isProcessing ? 'Saving...' : 'Save'"
           icon="pi pi-check"
           class="p-button-text"
         ></button>
@@ -286,15 +287,16 @@
           pRipple
           label="Cancel"
           icon="pi pi-times"
+          [disabled]="isProcessing"
           class="p-button-text"
           (click)="hideDialog()"
         ></button>
         <button
           pButton
           pRipple
-          [disabled]="editForm.invalid"
+          [disabled]="editForm.invalid || isProcessing"
           type="submit"
-          label="Save"
+          [label]="isProcessing ? 'Saving...' : 'Save'"
           icon="pi pi-check"
           class="p-button-text"
         ></button>

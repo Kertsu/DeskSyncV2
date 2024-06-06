@@ -34,6 +34,8 @@ export class ManageDesksComponent {
   totalRecords!: number;
   selectAll: boolean = false;
 
+  isProcessing: boolean = false;
+
   minDate!: Date;
 
   wsEssentials = [
@@ -201,6 +203,7 @@ export class ManageDesksComponent {
         mode: 1,
       };
 
+      this.isProcessing = true
       this.webService.onReserve(data).subscribe({
         next: (res) => {
           console.log(res);
@@ -213,6 +216,7 @@ export class ManageDesksComponent {
             detail: error.error.error,
             life: 3000,
           });
+          this.isProcessing = false
         },
         complete: () => {
           this.editDialog = false;
@@ -223,6 +227,7 @@ export class ManageDesksComponent {
             life: 3000,
           });
           this.desk = {};
+          this.isProcessing = false
         },
       });
     } else {
@@ -232,6 +237,7 @@ export class ManageDesksComponent {
           .get('essentials')
           ?.value.map((essential: { label: string }) => essential.label),
       };
+      this.isProcessing = true
       this.webService.updateHotdesk(this.desk, data).subscribe({
         next: (res: any) => {},
         error: (error) => {
@@ -241,6 +247,7 @@ export class ManageDesksComponent {
             detail: error.error.error,
             life: 3000,
           });
+          this.isProcessing = false
         },
         complete: () => {
           this.editDialog = false;
@@ -250,6 +257,7 @@ export class ManageDesksComponent {
             detail: 'Desk Updated',
             life: 3000,
           });
+          this.isProcessing = false;
 
           for (const desk of this.desks) {
             if (desk.id == this.desk.id) {
@@ -327,6 +335,7 @@ export class ManageDesksComponent {
         deskNumber,
         essentials: essentials.map((essential: any) => essential.label),
       };
+      this.isProcessing = true
       this.webService.createHotdesk(desk).subscribe({
         next: (res: any) => {
           console.log(res);
@@ -339,6 +348,7 @@ export class ManageDesksComponent {
             detail: err.error.error,
             life: 3000,
           });
+          this.isProcessing = false
         },
         complete: () => {
           this.createForm.reset();
@@ -350,6 +360,7 @@ export class ManageDesksComponent {
             detail: 'Desk Created',
             life: 3000,
           });
+          this.isProcessing = false
         },
       });
     } else {

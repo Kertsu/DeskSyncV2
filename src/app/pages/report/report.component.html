@@ -10,7 +10,7 @@
   </p>
 
   <form
-  (ngSubmit)="submitReport()"
+    (ngSubmit)="submitReport()"
     [formGroup]="formGroup"
     class="w-full flex flex-column gap-3 justify-content-center align-items-center card surface-ground"
   >
@@ -54,7 +54,8 @@
     <button
       pButton
       class="py-2 px-3 border-round p-button-info max-w-max align-self-end"
-      label="Submit"
+      [label]="isProcessing ? 'Processing...' : 'Submit'"
+      [disabled]="isProcessing"
       type="submit"
       [autofocus]="true"
       pAutoFocus

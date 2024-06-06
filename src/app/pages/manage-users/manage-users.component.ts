@@ -44,6 +44,8 @@ export class ManageUsersComponent {
   totalRecords!: number;
   selectAll: boolean = false;
 
+  isProcessing: boolean = false;
+
   editForm = this.fb.group({
     username: [''],
     email: [
@@ -155,6 +157,7 @@ export class ManageUsersComponent {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        this.isProcessing = true;
         this.webService.deleteUser(user).subscribe({
           next: (res: any) => {
             console.log(res);
@@ -166,6 +169,7 @@ export class ManageUsersComponent {
               detail: err.error.error,
               life: 3000,
             });
+            this.isProcessing = false;
           },
           complete: () => {
             this.users = this.users.filter((val) => val.id !== user.id);
@@ -178,6 +182,7 @@ export class ManageUsersComponent {
               detail: 'User Deleted',
               life: 3000,
             });
+            this.isProcessing = false;
           },
         });
       },
@@ -201,6 +206,7 @@ export class ManageUsersComponent {
     const email = this.createForm.get('email')?.value;
 
     if (email && this.createForm.valid) {
+      this.isProcessing = true;
       this.webService.registerUser(email).subscribe({
         next: (res: any) => {
           console.log(res);
@@ -221,14 +227,17 @@ export class ManageUsersComponent {
 
           this.messageService.add({
             severity: 'error',
-            summary: `${error.error.error}`,
-            detail: '',
+            detail: `${error.error.error}`,
+            summary: 'Error',
             life: 3000,
           });
+
+          this.isProcessing = false;
         },
         complete: () => {
           this.submitted = false;
           this.createUserDialog = false;
+          this.isProcessing = false
         },
       });
     }
@@ -244,6 +253,7 @@ export class ManageUsersComponent {
 
     console.log(data);
 
+    this.isProcessing = true;
     this.webService.updateUser(user, data).subscribe({
       next: (res: any) => {
         this.users = this.users.map((u) => (u.id === user.id ? res.updatedUser : u));
@@ -256,7 +266,7 @@ export class ManageUsersComponent {
           life: 3000,
         });
         this.userDialog = false;
-
+        this.isProcessing  = false;
       },
       complete: () => {
         this.messageService.add({
@@ -265,7 +275,7 @@ export class ManageUsersComponent {
           detail: `You updated ${user.username}`,
           life: 3000,
         });
-
+        this.isProcessing = false;
         this.userDialog = false;
       }
     });
