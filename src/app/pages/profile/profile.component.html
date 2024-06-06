@@ -386,8 +386,9 @@
   <ng-template pTemplate="footer">
     <p-button
       (click)="changePassword()"
-      label="Done"
+      [label]="isProcessing ? 'Saving...' : 'Done'"
       pAutoFocus
+      [disabled]="isProcessing"
       [autofocus]="true"
     ></p-button>
   </ng-template>
@@ -444,13 +445,15 @@
             pButton
             style="background: transparent; border: none; transition: none"
             label="Reset"
+            [disabled]="isProcessing"
             class="text-color p-0 alert-section-reset"
             (click)="closeFn($event)"
           ></button>
           <button
             pButton
             class="py-2 px-3 p-button-success"
-            label="Save Changes"
+            [disabled]="isProcessing"
+            [label]="isProcessing? 'Saving...': 'Save Changes'"
             type="button"
             (click)="saveChanges()"
           ></button>

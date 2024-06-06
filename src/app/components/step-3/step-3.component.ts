@@ -18,6 +18,8 @@ export class Step3Component implements OnInit{
   desk!: Hotdesk
   reservation!: ReservationRequest
 
+  isLoading: boolean = false;
+
   constructor(private router: Router, private reservationService: ReservationService, private messageService: MessageService, private confirmationService: ConfirmationService, private webService: WebService) { }
 
   ngOnInit(): void {
@@ -67,6 +69,7 @@ export class Step3Component implements OnInit{
   }
 
   reserve(){
+    this.isLoading = true;
     const data: ReservationRequest = this.reservationService.getReservation() as ReservationRequest
     this.webService.onReserve(data).subscribe({
       next: (res) => {
@@ -76,6 +79,9 @@ export class Step3Component implements OnInit{
       },
       error: (err) => {
         this.messageService.addMessage('error', '', err.error.error, 3000);
+        this.isLoading = false;
+      }, complete: () => {
+        this.isLoading = false;
       }
     })
   }
