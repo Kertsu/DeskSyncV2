@@ -363,7 +363,7 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
             description: `You can directly choose your preferred desk on this area`,
             onNextClick: () => {
               const desk = document.querySelector(
-                '[ng-reflect-content="Hotdesk 1"]'
+                '[title="Hotdesk 1"]'
               ) as HTMLElement;
 
               desk.click();
