@@ -33,6 +33,7 @@
         </ng-container>
         <ng-container *ngFor="let desk of areaData.desks">
           <div
+          [title]="desk.title"
             class="absolute cursor-pointer"
             (click)="handleSelectDesk(desk)"
             style="z-index: 1"
