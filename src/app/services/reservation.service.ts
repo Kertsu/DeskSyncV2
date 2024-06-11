@@ -39,7 +39,6 @@ export class ReservationService {
         // console.log(reservationsRes.reservations);
       },
       error: (err) => {
-        console.log(err);
       },
       complete: () => {
         if (callback) {

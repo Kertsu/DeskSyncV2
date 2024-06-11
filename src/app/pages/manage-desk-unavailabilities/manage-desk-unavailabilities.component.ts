@@ -70,10 +70,8 @@ export class ManageDeskUnavailabilitiesComponent {
       accept: () => {
         this.webService.onAbort(unavailability).subscribe({
           next: (res: any) => {
-            console.log(res);
           },
           error: (error) => {
-            console.log(error);
           },
           complete: () => {
             this.selectedUnavailabilities = null;
@@ -99,7 +97,6 @@ export class ManageDeskUnavailabilitiesComponent {
     this.loading = true;
     const eventParams = { mode: 1, ...event };
     const params = this.paramsBuilder.buildParams(eventParams);
-    console.log('Request Parameters:', params.toString()); 
     this.webService.getUnavailabilities(params).subscribe({
       next: (res: any) => {
         this.unavailabilities = res.reservations;
@@ -107,7 +104,6 @@ export class ManageDeskUnavailabilitiesComponent {
         this.loading = false;
       },
       error: (error) => {
-        console.log(error);
         this.loading = false;
       },
       complete: () => {
@@ -116,9 +112,7 @@ export class ManageDeskUnavailabilitiesComponent {
     });
   }
   onSelectionChange(event: any) {
-    console.log(event);
   }
   onSelectAllChange(event: any) {
-    console.log(event);
   }
 }

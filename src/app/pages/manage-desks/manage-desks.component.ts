@@ -138,7 +138,6 @@ export class ManageDesksComponent {
 
     this.desk = { ...desk };
     this.editDialog = true;
-    console.log(this.desk);
   }
 
   deleteDesk(desk: Hotdesk) {
@@ -206,10 +205,8 @@ export class ManageDesksComponent {
       this.isProcessing = true
       this.webService.onReserve(data).subscribe({
         next: (res) => {
-          console.log(res);
         },
         error: (error) => {
-          console.log(error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -275,11 +272,9 @@ export class ManageDesksComponent {
   }
 
   loadDesks(event: any) {
-    console.log(event);
     this.loading = true;
     const params = this.paramsBuilder.buildParams(event);
     this.webService.getDesks(params).subscribe((res: any) => {
-      console.log(res.desks);
       this.desks = res.desks;
       this.totalRecords = res.totalDocuments;
       this.loading = false;
@@ -299,7 +294,6 @@ export class ManageDesksComponent {
         .getDesks('http://localhost:8000/api/hotdesks')
         .subscribe((res: any) => {
           if (res.success) {
-            console.log(res);
             this.selectedDesks = res.desks;
             this.selectAll = true;
           }
@@ -338,7 +332,6 @@ export class ManageDesksComponent {
       this.isProcessing = true
       this.webService.createHotdesk(desk).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.desks.unshift(res.desk);
         },
         error: (err) => {
@@ -364,7 +357,6 @@ export class ManageDesksComponent {
         },
       });
     } else {
-      console.log('Form is invalid!');
     }
   }
 

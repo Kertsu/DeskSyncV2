@@ -70,7 +70,6 @@ loading: boolean = false;
       accept: () => {
         this.webService.handleReport(report.id, 'resolve').subscribe({
           next: (res: any) => {
-            console.log(res)
             this.messageService.add({
               severity: 'success',
               summary: 'Successful',
@@ -79,7 +78,6 @@ loading: boolean = false;
             });
           },
           error: (error) => {
-            console.log(error);
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
@@ -108,17 +106,14 @@ loading: boolean = false;
     this.loading = true;
     const eventParams = { mode: 1, ...event };
     const params = this.paramsBuilder.buildParams(eventParams);
-    console.log('Request Parameters:', params.toString()); 
 
     this.webService.getReports(params).subscribe({
       next: (res: any) => {
-        console.log(res)
         this.deskReports = res.reports;
         this.totalRecords = res.totalDocuments;
         this.loading = false;
       },
       error: (error) => {
-        console.log(error);
         this.loading = false;
       },
       complete: () => {
@@ -127,9 +122,7 @@ loading: boolean = false;
     });
   }
   onSelectionChange(event: any) {
-    console.log(event);
   }
   onSelectAllChange(event: any) {
-    console.log(event);
   }
 }

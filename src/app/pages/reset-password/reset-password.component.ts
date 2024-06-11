@@ -58,7 +58,6 @@ export class ResetPasswordComponent {
     }
     this.webService.onResetPassword(params as {token: string, id: string}, data).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.resetPasswordForm.reset();
         this.errorMessage = null;
         this.passwordResetService.setPasswordResetSuccessStatus(true);

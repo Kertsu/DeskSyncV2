@@ -110,7 +110,6 @@ export class ManageUsersComponent {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.users = this.users.filter((val) => {
-          console.log(val);
           return this.selectedUsers?.includes(val);
         });
         this.selectedUsers = [];
@@ -151,7 +150,6 @@ export class ManageUsersComponent {
   }
 
   deleteUser(user: any) {
-    console.log(user);
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + user.username + '?',
       header: 'Confirm',
@@ -160,7 +158,6 @@ export class ManageUsersComponent {
         this.isProcessing = true;
         this.webService.deleteUser(user).subscribe({
           next: (res: any) => {
-            console.log(res);
           },
           error: (err) => {
             this.messageService.add({
@@ -209,7 +206,6 @@ export class ManageUsersComponent {
       this.isProcessing = true;
       this.webService.registerUser(email).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.submitted = false;
           this.users.push(res.user);
           this.totalRecords = this.users.length;
@@ -251,7 +247,6 @@ export class ManageUsersComponent {
       role: this.editForm.get('role')?.value?.value,
     };
 
-    console.log(data);
 
     this.isProcessing = true;
     this.webService.updateUser(user, data).subscribe({
@@ -282,7 +277,6 @@ export class ManageUsersComponent {
   }
 
   loadUsers(event: any) {
-    console.log(event);
     const params = this.paramsBuilder.buildParams(event);
     this.loading = true;
     this.webService.getUsers(params).subscribe((res: any) => {
@@ -305,7 +299,6 @@ export class ManageUsersComponent {
     if (checked) {
       this.webService.getUsers().subscribe((res: any) => {
         if (res.success) {
-          console.log(res);
           this.selectedUsers = res.users;
           this.selectAll = true;
         }
@@ -324,7 +317,6 @@ export class ManageUsersComponent {
       accept: () => {
         this.webService.handleUser(user, action).subscribe({
           next: (res: any) => {
-            console.log(res);
 
             this.messageService.add({
               severity: 'success',

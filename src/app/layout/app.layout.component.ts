@@ -123,7 +123,6 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
     this.messageSubscription = this.messageService
       .onAddMessage()
       .subscribe((res) => {
-        console.log(res);
         this.messages = res;
       });
   }
@@ -450,12 +449,30 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
             description: `Easy as that. Go start booking now!`,
             onNextClick: () => {
               this.router.navigate(['/hdbsv2/'])
+              this.webService.onboard().subscribe({
+                next: (res:any) => {
+                },
+                error: (error) => {
+                  if (error)
+                    this.messageService.addMessage(
+                      'error',
+                      'Token has expired',
+                      'Error',
+                      1500
+                    );
+                  setTimeout(() => {
+                    this.userService.logout();
+                  }, 300);
+                },
+                complete: () => {
+                },
+              });
 
               setTimeout(() => {
-                this.driverObj.destroy()
-                sessionStorage.clear()
+                this.driverObj.destroy();
+                sessionStorage.clear();
               }, 100);
-            }
+            },
           },
         },
       ],

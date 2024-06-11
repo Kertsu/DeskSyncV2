@@ -24,8 +24,6 @@ export class ForgotPasswordComponent implements OnInit{
 
   ngOnInit(): void {
 
-    this.forgotPasswordForm.valueChanges.subscribe(res => console.log(res))
-
     this.errorService.errorMessage$.subscribe(
       res => {
         this.errorMessage = res
@@ -45,7 +43,6 @@ export class ForgotPasswordComponent implements OnInit{
 
     this.webService.onForgotPassword(formData.email).subscribe({
       next: (res: any) => {
-        console.log(res);
         
       },
       error: (error) => {

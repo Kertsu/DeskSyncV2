@@ -1246,7 +1246,6 @@ export class Step2Component implements OnInit {
         }
       },
       error: (err: any) => {
-        console.log(err);
       },
     });
   }
@@ -1360,7 +1359,6 @@ export class Step2Component implements OnInit {
         this.desks = res.desks;
       },
       error: (err: any) => {
-        console.log(err);
       },
       complete: () => {
         this.getOptions();

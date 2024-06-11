@@ -36,9 +36,7 @@ export class OtpComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-      this.otpForm.valueChanges.subscribe({
-        next: (res) => console.log(res)
-      })
+    
   }
 
   verify() {
@@ -48,13 +46,11 @@ export class OtpComponent implements OnInit {
     if (otp){
       this.webService.verifyOTP(otp).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.errorMessage = null
           this.isLoading = false;
           this.router.navigate(['/hdbsv2/dashboard']);
         },
         error: (err: any) => {
-          console.log(err);
           this.errorMessage = err.error.error
           this.infoMessage = null
           this.isLoading = false;

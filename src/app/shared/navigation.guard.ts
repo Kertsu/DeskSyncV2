@@ -12,14 +12,12 @@ export const navigationGuard: CanActivateChildFn = (route, state) => {
   const uiService = inject(UiService);
 
   if (uiService.getMessageShown()) {
-    console.log('Message shown, preventing routing and shaking the screen.');
     const alertSection = document.querySelector('.alert-section');
     const alertSectionText = document.querySelector('.alert-section-text');
     const resetButton = document.querySelector(
       'button.alert-section-reset[label="Reset"]'
     );
 
-    console.log(alertSection);
     if (alertSection) {
       alertSection.classList.remove('surface-ground');
       alertSection.classList.add('bg-red-500');
@@ -86,7 +84,6 @@ export const resetPasswordGuard: CanActivateFn = (route, state) => {
     return webService.validateToken(token, id).pipe(
       map((res: any) => true),
       catchError((err) => {
-        console.log(err);
         errorService.setErrorMessage(err.error.error);
         router.navigate(['/forgot-password']);
         return of(false);
@@ -105,7 +102,6 @@ export const dashboardGuard_onboarding: CanActivateFn = (route, state) => {
 
   return webService.getSelf().pipe(
     map((res: any) => {
-      console.log(res);
       if (!res.user.registeredDeviceToken) {
         router.navigate(['/onboarding']);
         return false;
@@ -157,7 +153,6 @@ export const onboardingGuard: CanActivateFn = (route, state) => {
 
   return webService.getSelf().pipe(
     map((res: any) => {
-      console.log(res);
       if (res.user.registeredDeviceToken) {
         router.navigate(['/hdbsv2/dashboard']);
         return false;
@@ -183,7 +178,6 @@ export const otpGuard: CanActivateFn = (route, state) => {
 
   return webService.getSelf().pipe(
     map((res: any) => {
-      console.log(res.user.otpRequired);
       if (!res.user.otpRequired) {
         router.navigate(['/hdbsv2/dashboard']);
         return false;
@@ -209,7 +203,6 @@ export const dashboardGuard_otp: CanActivateFn = (route, state) => {
 
   return webService.getSelf().pipe(
     map((res: any) => {
-      console.log(res.user.otpRequired);
       if (res.user.otpRequired) {
         router.navigate(['/verify']);
         return false;

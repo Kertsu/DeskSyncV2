@@ -70,15 +70,12 @@ export class ToRateComponent implements OnInit, OnDestroy {
     const params = this.paramsBuilder.buildParams(eventParams);
     this.webService.getSelfToRateReservations(params).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.toRateReservations = res.toRateReservations;
         this.totalRecords = res.totalDocuments;
       },
       error: (err) => {
-        console.log(err);
       },
       complete: () => {
-        console.log('complete');
       },
     });
 
@@ -113,17 +110,14 @@ export class ToRateComponent implements OnInit, OnDestroy {
     };
     this.webService.getSelfToRateReservations(eventParams).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.toRateReservations = this.toRateReservations.concat(
           res.toRateReservations
         );
         this.totalRecords = res.totalDocuments;
       },
       error: (err) => {
-        console.log(err);
       },
       complete: () => {
-        console.log('complete');
       },
     });
   }
