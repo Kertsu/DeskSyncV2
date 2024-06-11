@@ -370,7 +370,7 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
 
               setTimeout(() => {
                 this.driverObj.moveNext();
-              }, 300);
+              }, 500);
             },
           },
         },
