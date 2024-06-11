@@ -15,6 +15,7 @@ export interface User {
     receivingEmail?: boolean
     description?: string
     passwordChangedAt?: string
+    hasOnboard?: boolean
   }
   
   export interface PasswordResetToken {

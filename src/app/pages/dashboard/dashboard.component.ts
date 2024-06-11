@@ -198,7 +198,7 @@ export class DashboardComponent implements OnInit {
       }
     }
     switch (status) {
-      case 'failure':
+      case 'failed':
         return 'danger';
       case 'success':
         return 'success';

@@ -7,6 +7,8 @@
 /* @import "primeng/resources/themes/lara-dark-blue/theme.css"; */
 @import "primeng/resources/primeng.css";
 
+@import "assets/styles/driver.css";
+
 /* html {
   font-size: 14px;
 }
