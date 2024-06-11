@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -1132,7 +1132,7 @@ export class Step2Component implements OnInit {
     private reservationService: ReservationService,
     private router: Router,
     private webService: WebService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -1246,7 +1246,6 @@ export class Step2Component implements OnInit {
         }
       },
       error: (err: any) => {
-        console.log(err);
       },
     });
   }
@@ -1360,7 +1359,6 @@ export class Step2Component implements OnInit {
         this.desks = res.desks;
       },
       error: (err: any) => {
-        console.log(err);
       },
       complete: () => {
         this.getOptions();

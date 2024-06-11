@@ -97,8 +97,7 @@ export class DashboardComponent implements OnInit {
     private reservationService: ReservationService,
     private webService: WebService,
     private paramsBuilder: ParamsBuilderService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     const now = new Date();
@@ -118,31 +117,33 @@ export class DashboardComponent implements OnInit {
         );
 
         this.getDesksStatistics(updatedDesks);
-        console.log(this.getPastTwoWeeks().dates);
       }
     );
 
     this.initialize();
     this.getReservationStatistics();
 
-    if(this.userService.getUser()?.role === "admin" || this.userService.getUser()?.role === "superadmin"){
+    if (
+      this.userService.getUser()?.role === 'admin' ||
+      this.userService.getUser()?.role === 'superadmin'
+    ) {
       const params = {
         sortOrder: -1,
         sortField: 'createdAt',
         rows: 3,
-        first: 0
-      }
-      this.getMostRecentActivities(params)
-    } 
+        first: 0,
+      };
+      this.getMostRecentActivities(params);
+    }
 
-    if(this.userService.getUser()?.role === "om"){
+    if (this.userService.getUser()?.role === 'om') {
       const params = {
         sortOrder: -1,
         sortField: 'createdAt',
         rows: 3,
-        first: 0
-      }
-      this.getMostRecentReservations(params)
+        first: 0,
+      };
+      this.getMostRecentReservations(params);
     }
   }
 
@@ -198,7 +199,7 @@ export class DashboardComponent implements OnInit {
       }
     }
     switch (status) {
-      case 'failure':
+      case 'failed':
         return 'danger';
       case 'success':
         return 'success';
@@ -369,93 +370,93 @@ export class DashboardComponent implements OnInit {
           this.selfReservations = res.reservations;
         },
         error: (err) => {
-          console.log(err);
+        },
+      });
+    } else {
+      forkJoin([
+        this.webService.getSelfReservations(selfParams),
+        this.webService.getHistory(masterParams),
+      ]).subscribe({
+        next: ([selfReservationRes, masterHistoryRes]: [any, any]) => {
+          const selfReservations: any = selfReservationRes.reservations;
+          const masterHistory: ReservationHistory[] =
+            masterHistoryRes.reservations;
+
+          this.selfReservations = selfReservations;
+
+          const typeCounts: Record<ReservationHistoryType, number[]> = {
+            REJECTED: Array(14).fill(0),
+            CANCELED: Array(14).fill(0),
+            COMPLETED: Array(14).fill(0),
+            EXPIRED: Array(14).fill(0),
+            ABORTED: Array(14).fill(0),
+          };
+
+          dates.forEach((date, index) => {
+            masterHistory.forEach((reservation: ReservationHistory) => {
+              const reservationDate =
+                new Date(reservation.date).toISOString().split('T')[0] +
+                'T00:00:00.000Z';
+              if (reservationDate === date) {
+                const type: ReservationHistoryType = reservation.type;
+                typeCounts[type][index]++;
+              }
+            });
+          });
+
+          this.lineData = {
+            labels: this.getPastTwoWeeks().pastTwoWeeks,
+            datasets: [
+              {
+                label: 'REJECTED',
+                data: typeCounts.REJECTED,
+                borderColor: this.documentStyle.getPropertyValue('--red-300'),
+                tension: 0.4,
+                backgroundColor:
+                  this.documentStyle.getPropertyValue('--red-300'),
+              },
+              {
+                label: 'CANCELED',
+                data: typeCounts.CANCELED,
+                borderColor:
+                  this.documentStyle.getPropertyValue('--orange-200'),
+                tension: 0.4,
+                backgroundColor:
+                  this.documentStyle.getPropertyValue('--orange-200'),
+              },
+              {
+                label: 'COMPLETED',
+                data: typeCounts.COMPLETED,
+                borderColor:
+                  this.documentStyle.getPropertyValue('--primary-300'),
+                tension: 0.4,
+                backgroundColor:
+                  this.documentStyle.getPropertyValue('--primary-300'),
+              },
+              {
+                label: 'EXPIRED',
+                data: typeCounts.EXPIRED,
+                borderColor:
+                  this.documentStyle.getPropertyValue('--purple-300'),
+                tension: 0.4,
+                backgroundColor:
+                  this.documentStyle.getPropertyValue('--purple-300'),
+              },
+              {
+                label: 'ABORTED',
+                data: typeCounts.ABORTED,
+                borderColor: this.documentStyle.getPropertyValue('--pink-300'),
+                tension: 0.4,
+                backgroundColor:
+                  this.documentStyle.getPropertyValue('--pink-300'),
+              },
+            ],
+          };
+        },
+        error: (err) => {
         },
       });
     }
-
-    forkJoin([
-      this.webService.getSelfReservations(selfParams),
-      this.webService.getHistory(masterParams),
-    ]).subscribe({
-      next: ([selfReservationRes, masterHistoryRes]: [any, any]) => {
-        console.log(selfReservationRes);
-        const selfReservations: any = selfReservationRes.reservations;
-        const masterHistory: ReservationHistory[] =
-          masterHistoryRes.reservations;
-
-        this.selfReservations = selfReservations;
-
-        const typeCounts: Record<ReservationHistoryType, number[]> = {
-          REJECTED: Array(14).fill(0),
-          CANCELED: Array(14).fill(0),
-          COMPLETED: Array(14).fill(0),
-          EXPIRED: Array(14).fill(0),
-          ABORTED: Array(14).fill(0),
-        };
-
-        dates.forEach((date, index) => {
-          masterHistory.forEach((reservation: ReservationHistory) => {
-            const reservationDate =
-              new Date(reservation.date).toISOString().split('T')[0] +
-              'T00:00:00.000Z';
-            if (reservationDate === date) {
-              const type: ReservationHistoryType = reservation.type;
-              typeCounts[type][index]++;
-            }
-          });
-        });
-
-        this.lineData = {
-          labels: this.getPastTwoWeeks().pastTwoWeeks,
-          datasets: [
-            {
-              label: 'REJECTED',
-              data: typeCounts.REJECTED,
-              borderColor: this.documentStyle.getPropertyValue('--red-300'),
-              tension: 0.4,
-              backgroundColor:
-                this.documentStyle.getPropertyValue('--red-300'),
-            },
-            {
-              label: 'CANCELED',
-              data: typeCounts.CANCELED,
-              borderColor: this.documentStyle.getPropertyValue('--orange-200'),
-              tension: 0.4,
-              backgroundColor:
-                this.documentStyle.getPropertyValue('--orange-200'),
-            },
-            {
-              label: 'COMPLETED',
-              data: typeCounts.COMPLETED,
-              borderColor: this.documentStyle.getPropertyValue('--primary-300'),
-              tension: 0.4,
-              backgroundColor:
-                this.documentStyle.getPropertyValue('--primary-300'),
-            },
-            {
-              label: 'EXPIRED',
-              data: typeCounts.EXPIRED,
-              borderColor: this.documentStyle.getPropertyValue('--purple-300'),
-              tension: 0.4,
-              backgroundColor:
-                this.documentStyle.getPropertyValue('--purple-300'),
-            },
-            {
-              label: 'ABORTED',
-              data: typeCounts.ABORTED,
-              borderColor: this.documentStyle.getPropertyValue('--pink-300'),
-              tension: 0.4,
-              backgroundColor:
-                this.documentStyle.getPropertyValue('--pink-300'),
-            },
-          ],
-        };
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
   }
 
   getImage(reservation: any) {
@@ -483,7 +484,7 @@ export class DashboardComponent implements OnInit {
     return '';
   }
 
-  getMostRecentActivities(params:any){
+  getMostRecentActivities(params: any) {
     params = this.paramsBuilder.buildParams(params);
 
     this.webService.getTrails(params).subscribe({
@@ -491,20 +492,18 @@ export class DashboardComponent implements OnInit {
         this.recentActivities = res.trails;
       },
       error: (err) => {
-        console.log(err);
       },
-    })
+    });
   }
 
-  getMostRecentReservations(params:any){
+  getMostRecentReservations(params: any) {
     params = this.paramsBuilder.buildParams(params);
     this.webService.getReservations(params).subscribe({
       next: (res: any) => {
         this.recentReservations = res.reservations;
       },
       error: (err) => {
-        console.log(err);
       },
-    })
+    });
   }
 }

@@ -120,6 +120,10 @@ export class WebService {
     return this.http.post(`${this.baseUserURL}/otp/resend`, {});
   }
 
+  onboard(){
+    return this.http.patch(`${this.baseUserURL}/self/onboard`, {});
+  }
+
   // DESK
   getDesks(params?: any) {
     return this.http.get(`${this.baseHotdeskURL}`, { params });

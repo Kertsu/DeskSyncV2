@@ -35,13 +35,11 @@ export class ReservationsComponent {
 
     this.webService.getSelfReservations(params).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.reservations = res.reservations;
         this.totalRecords = res.totalDocuments;
         this.loading = false;
       },
       error: (error) => {
-        console.log(error);
         this.loading = false;
       },
       complete: () => {},
@@ -67,7 +65,6 @@ export class ReservationsComponent {
   cancelReservation(reservation: Reservation) {
     this.webService.cancelReservation(reservation).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.messageService.add({
           severity: 'success',
           summary: 'Successful',

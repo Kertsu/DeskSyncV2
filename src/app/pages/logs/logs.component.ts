@@ -210,7 +210,6 @@ export class LogsComponent implements OnInit {
   }
 
   loadAuditTrails(event: any) {
-    console.log(event);
     this.loading = true;
 
     if (!event.sortField){
@@ -222,7 +221,6 @@ export class LogsComponent implements OnInit {
     const params = this.paramsBuilder.buildParams(eventParams);
 
     this.webService.getTrails(params).subscribe((res: any) => {
-      console.log(res.trails);
       this.trails = res.trails;
       this.totalRecords = res.totalDocuments;
       this.loading = false;

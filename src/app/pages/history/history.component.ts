@@ -34,13 +34,11 @@ export class HistoryComponent {
 
     this.webService.getSelfReservationHistory(params).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.reservations = res.reservations;
         this.totalRecords = res.totalDocuments;
         this.loading = false;
       },
       error: (error) => {
-        console.log(error);
         this.loading = false;
       },
       complete: () => {},

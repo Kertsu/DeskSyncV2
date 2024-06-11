@@ -35,7 +35,6 @@ export class ReportComponent implements OnInit {
     this.getHotdesks();
 
     this.formGroup.valueChanges.subscribe((res) => {
-      console.log(res);
     });
   }
 
@@ -50,7 +49,6 @@ export class ReportComponent implements OnInit {
           this.desks = res.desks;
         },
         error: (err: any) => {
-          console.log(err);
         },
         complete: () => {
           this.getOptions();
@@ -70,11 +68,9 @@ export class ReportComponent implements OnInit {
       this.isProcessing = true;
       this.webService.submitReport(this.formGroup.value).subscribe({
         next: (res: any) => {
-          console.log(res);
           this.messageService.addMessage('success', res.message, 'Success')
         },
         error: (err: any) => {
-          console.log(err);
           this.isProcessing = false;
         },
         complete: () => {

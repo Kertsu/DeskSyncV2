@@ -82,12 +82,10 @@ export class ProfileComponent implements OnInit {
     this.checked.valueChanges.subscribe({
       next: (newValue) => {
         if (newValue !== null) {
-          console.log(newValue, 'vc');
           this.confirmChange(this.oldValue, newValue);
         }
       },
       error: (error) => {
-        console.log(error);
       },
     });
 
@@ -181,7 +179,6 @@ export class ProfileComponent implements OnInit {
     this.isProcessing = true
     this.webService.changePassword(data).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.layoutMessageService.addMessage(
           'success',
           res.message,
@@ -244,7 +241,6 @@ export class ProfileComponent implements OnInit {
     this.isProcessing = true
     this.webService.updateProfile(formData).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.userService.setUser(res.user);
         this.layoutMessageService.addMessage(
           'success',
@@ -281,15 +277,11 @@ export class ProfileComponent implements OnInit {
           this.selectedAvatarUrl = URL.createObjectURL(file);
           this.selectedAvatarImage = file;
           this.avatarSource = this.selectedAvatarUrl;
-          console.log(this.selectedAvatarImage, 'a-image');
-          console.log(this.selectedAvatarUrl, 'a-url');
           break;
         case 'banner':
           this.selectedBannerUrl = URL.createObjectURL(file);
           this.selectedBannerImage = file;
           this.bannerSource = this.selectedBannerUrl;
-          console.log(this.selectedBannerImage, 'b-image');
-          console.log(this.selectedBannerUrl, 'b-url');
           break;
         default:
           break;

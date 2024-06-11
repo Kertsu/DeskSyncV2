@@ -41,7 +41,6 @@ export class LoginComponent {
 
     this.webService.onLoginUser(data).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.changeStatus(false);
         this.userService.setToken(res.user.token);
         if (res.OTP && res.deviceToken) {
@@ -50,7 +49,6 @@ export class LoginComponent {
         this.router.navigate(['/hdbsv2/dashboard']);
       },
       error: (error) => {
-        console.log(error);
         this.errorMessage = error.error.error || error.error;
         this.changeStatus(false);
 

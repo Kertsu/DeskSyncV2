@@ -86,26 +86,22 @@ export class ManageReservationsComponent {
   ngOnInit() {
     this.webService.getSwitchValue().subscribe({
       next: (res: any) => {
-        console.log(res);
         const switchValue = res.autoAcceptSwitch.autoAccepting;
 
         this.checked.setValue(switchValue, {emitEvent: false});
         this.oldValue = switchValue
       },
       error: (error) => {
-        console.log(error);
       },
     });
 
     this.checked.valueChanges.subscribe({
       next: (newValue) => {
         if (newValue !== null) {
-          console.log(newValue, 'vc')
           this.confirmChange(this.oldValue,newValue);
         }
       },
       error: (error) => {
-        console.log(error);
       },
     });
   }
@@ -169,8 +165,6 @@ export class ManageReservationsComponent {
     ]).subscribe({
       next: ([users, reservations]: [any, any]) => {
         this.loading = false;
-        console.log('USERS', users);
-        console.log('RESERVATIONS', reservations);
         this.users = users.users;
         this.reservations = reservations.reservations;
         this.totalRecords = reservations.totalDocuments;
@@ -192,10 +186,8 @@ export class ManageReservationsComponent {
   }
 
   onSelectionChange(event: any) {
-    console.log(event);
   }
   onSelectAllChange(event: any) {
-    console.log(event);
   }
 
   matchUserId() {
@@ -305,7 +297,6 @@ export class ManageReservationsComponent {
             }
           },
           error: (error) => {
-            console.log(error)
           },
           complete: () => {
           },

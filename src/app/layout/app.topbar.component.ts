@@ -66,7 +66,7 @@ export class AppTopBarComponent implements OnInit {
     this.ref = this.dialogService.open(ReportComponent, dialogConfig);
 
     this.ref.onClose.subscribe((data) => {
-     console.log(data)
+     
     });
   }
 }

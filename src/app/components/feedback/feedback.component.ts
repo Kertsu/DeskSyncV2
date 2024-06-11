@@ -37,14 +37,12 @@ export class FeedbackComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.config.data.deskNumber);
 
     this.feedbackForm = this.fb.group({
       rating: [''],
       description: [''],
     });
 
-    this.feedbackForm.valueChanges.subscribe((res) => console.log(res));
   }
 
   onSubmit() {
@@ -53,12 +51,10 @@ export class FeedbackComponent implements OnInit {
     feedback.deskNumber = deskNumber;
     feedback.reservation = reservation;
 
-    console.log(feedback);
     this.isProcessing = true;
     this.webService.submitFeedback(feedback).subscribe({
       next: (res: any) => {},
       error: (error) => {
-        console.log(error);
         this.errorMessage = error.error.error;
         this.triggerErrorEvent();
         this.isProcessing = false; 
