@@ -141,6 +141,14 @@ export class WebService {
     return this.http.post(`${this.baseHotdeskURL}/report`, data);
   }
 
+  getReports(params: any){
+    return this.http.get(`${this.baseHotdeskURL}/reports`, { params });
+  }
+
+  handleReport(id: string, action: string){
+    return this.http.patch(`${this.baseHotdeskURL}/reports/${id}/action/${action}`, {})
+  }
+
   // RESERVATION
   onReserve(data: ReservationRequest) {
     return this.http.post(`${this.baseReservationURL}/reserve`, data);
