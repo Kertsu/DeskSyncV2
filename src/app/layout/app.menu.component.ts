@@ -64,7 +64,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'Issues',
                 icon: 'pi pi-fw pi-wrench',
                 routerLink: ['manage-issues'],
-                visible: isAdmin || isOfficeManager,
+                visible: isAdmin,
               }
             ],
           },

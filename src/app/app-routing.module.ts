@@ -123,7 +123,7 @@ const routes: Routes = [
       {
         path: 'manage-issues',
         component: ManageIssuesComponent,
-        canActivate: [hasAccess],
+        canActivate: [isAdmin],
       },
       { path: 'faqs', component: FaqsComponent },
       { path: 'guides', component: GuidesComponent },

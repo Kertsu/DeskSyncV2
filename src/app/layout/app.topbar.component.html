@@ -34,7 +34,7 @@
               <i class="pi pi-calendar"></i>
               <span>Calendar</span>
           </button> -->
-      <button class="p-link layout-topbar-button" type="button" (click)="openReportDialog()">
+      <button pTooltip="Report" tooltipPosition="left" class="p-link layout-topbar-button" type="button" (click)="openReportDialog()">
         <!-- <i
           class="pi pi-bell"
           *ngIf="notifications.length != 0"
@@ -51,7 +51,7 @@
         <i class="pi pi-{{ isDark ? 'sun' : 'moon' }}"></i>
         <span class="piText">Theme</span>
       </button> -->
-      <button class="p-link layout-topbar-button" (click)="logout()">
+      <button pTooltip="Logout" tooltipPosition="left" class="p-link layout-topbar-button" (click)="logout()">
         <i class="pi pi-sign-out"></i>
         <span class="piText">Logout</span>
       </button>
