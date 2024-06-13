@@ -139,11 +139,14 @@ export class ToRateComponent implements OnInit, OnDestroy {
 
     let self = this;
     this.ref.onClose.subscribe((feedback) => {
-      this.toRateReservations = this.toRateReservations.filter((r) => {
-        self.user.toRate -= 1;
-        self.userService.setUser(self.user)
-        return r.reservation !== feedback.reservation;
-      });
+      if (feedback){
+
+        this.toRateReservations = this.toRateReservations.filter((r) => {
+          self.user.toRate -= 1;
+          self.userService.setUser(self.user)
+          return r.reservation !== feedback.reservation;
+        });
+      }
     });
   }
 }
