@@ -43,7 +43,6 @@ interface ActiveUser {
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
-  data: any;
   options: any;
   pieData: any;
   pieOptions: any;
@@ -90,6 +89,9 @@ export class DashboardComponent implements OnInit {
 
   selfReservations: any[] = [];
 
+
+  deskStatisSticsIsLoading: boolean = false;
+  reservationStatisticsIsLoading: boolean = false;
   // activeUsers: ActiveUser[] = []
 
   constructor(
@@ -100,6 +102,9 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.deskStatisSticsIsLoading = true
+    this.reservationStatisticsIsLoading = true
+
     const now = new Date();
     const { date } = timeConvert(now);
 
@@ -222,20 +227,6 @@ export class DashboardComponent implements OnInit {
     this.surfaceBorder =
       this.documentStyle.getPropertyValue('--surface-border');
 
-    this.data = {
-      labels: this.getPastTwoWeeks().pastTwoWeeks,
-      datasets: [
-        {
-          label: 'Reservations',
-          data: [2, 59, 80, 81, 56, 55, 40],
-          fill: true,
-          borderColor: this.documentStyle.getPropertyValue('--primary-color'),
-          tension: 0.4,
-          backgroundColor: this.documentStyle.getPropertyValue('--primary-200'),
-        },
-      ],
-    };
-
     this.options = {
       maintainAspectRatio: false,
       aspectRatio: 0.6,
@@ -344,6 +335,7 @@ export class DashboardComponent implements OnInit {
         },
       ],
     };
+    this.deskStatisSticsIsLoading = false;
   }
 
   getReservationStatistics() {
@@ -371,6 +363,9 @@ export class DashboardComponent implements OnInit {
         },
         error: (err) => {
         },
+        complete: () => {
+          this.reservationStatisticsIsLoading = false;
+        }
       });
     } else {
       forkJoin([
@@ -454,6 +449,10 @@ export class DashboardComponent implements OnInit {
           };
         },
         error: (err) => {
+          
+        },
+        complete: () => {
+          this.reservationStatisticsIsLoading = false;
         },
       });
     }

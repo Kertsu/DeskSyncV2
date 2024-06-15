@@ -108,7 +108,10 @@
     </div>
   </div>
 
-  <div class="flex flex-column md:flex-row md:gap-2 lg:gap-3 max-w-full">
+  <div
+    *ngIf="!deskStatisSticsIsLoading; else desksStatsLoading"
+    class="flex flex-column md:flex-row md:gap-2 lg:gap-3 max-w-full"
+  >
     @for (item of cardContent; track $index) {
     <div
       class="gradient card flex flex-column justify-content-between mb-3 md:w-3"
@@ -128,6 +131,13 @@
     }
   </div>
 
+  <ng-template #desksStatsLoading>
+    <div class="flex flex-column md:flex-row md:gap-2 lg:gap-3 max-w-full">
+      @for (item of [1,2,3,4]; track $index) {
+      <p-skeleton height="8rem" class="w-full md:w-3" styleClass="mb-3" /> }
+    </div>
+  </ng-template>
+
   <!-- <div class="w-full card mb-3">
   <h3>Your reservation trend</h3>
   <p-chart type="bar" [data]="data" [options]="options" />
@@ -137,7 +147,7 @@
     <div class="card md:w-4 m-0">
       <h3>Your bookings</h3>
 
-      <div class="w-full flex flex-column gap-1">
+      <div *ngIf="!reservationStatisticsIsLoading; else reservationsStatsLoading" class="w-full flex flex-column gap-1">
         @for (reservation of selfReservations.slice(0, 4); track $index) {
         <div
           class="w-full flex justify-content-between align-items-center surface-border surface-ground p-3 border-1 border-round"
@@ -160,7 +170,18 @@
           }}</p-tag>
         </div>
         }
+        <p *ngIf="selfReservations.length < 4"  class="text-center font-bold">
+          No more reservations...
+        </p>
       </div>
+
+      <ng-template #reservationsStatsLoading>
+        <div class="w-full flex flex-column gap-1">
+          @for (reservation of [1,2,3]; track $index) {
+          <p-skeleton height="6rem" class="w-full"/>
+          }
+        </div>
+      </ng-template>
     </div>
 
     <div class="card md:w-8">
@@ -187,8 +208,8 @@
           >
             {{ date.day }}
           </span>
-        </ng-template></p-calendar
-      >
+        </ng-template>
+      </p-calendar>
     </div>
   </div>
   <p-divider></p-divider>
