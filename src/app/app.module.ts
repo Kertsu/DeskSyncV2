@@ -50,6 +50,7 @@ import { PanelModule } from 'primeng/panel';
 import { AccordionModule } from 'primeng/accordion';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { InputOtpModule } from 'primeng/inputotp';
+import { SkeletonModule } from 'primeng/skeleton';
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
@@ -182,6 +183,7 @@ const config: SocketIoConfig = {
     PanelModule,
     AccordionModule,
     MultiSelectModule,
+    SkeletonModule,
     InputOtpModule,
     SocketIoModule.forRoot(config),
   ],

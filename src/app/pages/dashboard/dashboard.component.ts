@@ -90,6 +90,8 @@ export class DashboardComponent implements OnInit {
 
   selfReservations: any[] = [];
 
+
+  deskStatisSticsIsLoading: boolean = false;
   // activeUsers: ActiveUser[] = []
 
   constructor(
@@ -100,6 +102,8 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.deskStatisSticsIsLoading = true
+
     const now = new Date();
     const { date } = timeConvert(now);
 
@@ -344,6 +348,7 @@ export class DashboardComponent implements OnInit {
         },
       ],
     };
+    this.deskStatisSticsIsLoading = false;
   }
 
   getReservationStatistics() {

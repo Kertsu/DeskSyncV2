@@ -108,7 +108,10 @@
     </div>
   </div>
 
-  <div class="flex flex-column md:flex-row md:gap-2 lg:gap-3 max-w-full">
+  <div
+    *ngIf="!deskStatisSticsIsLoading; else desksStatsLoading"
+    class="flex flex-column md:flex-row md:gap-2 lg:gap-3 max-w-full"
+  >
     @for (item of cardContent; track $index) {
     <div
       class="gradient card flex flex-column justify-content-between mb-3 md:w-3"
@@ -127,6 +130,13 @@
     </div>
     }
   </div>
+
+  <ng-template #desksStatsLoading>
+    <div class="flex flex-column md:flex-row md:gap-2 lg:gap-3 max-w-full">
+      @for (item of [1,2,3,4]; track $index) {
+      <p-skeleton height="8rem" class="w-full md:w-3" styleClass="mb-3" /> }
+    </div>
+  </ng-template>
 
   <!-- <div class="w-full card mb-3">
   <h3>Your reservation trend</h3>
