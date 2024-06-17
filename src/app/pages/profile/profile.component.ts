@@ -33,6 +33,7 @@ export class ProfileComponent implements OnInit {
   bannerSource: string = this.userService.getUser()?.banner;
   bounceState: any;
   successShown: boolean = false;
+  moreInfoShown: boolean = false;
 
   selectedAvatarUrl: string | ArrayBuffer | null = null;
   selectedAvatarImage!: File | undefined;
@@ -326,5 +327,9 @@ export class ProfileComponent implements OnInit {
         this.checked.setValue(oldValue);
       },
     });
+  }
+
+  showMoreInfoDialog(){
+    this.moreInfoShown = true;
   }
 }

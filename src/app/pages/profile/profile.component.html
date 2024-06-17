@@ -207,7 +207,14 @@
         the system by default. You can turn off this feature if you prefer not
         to receive notifications.</span
       >
-      <span class="text-sm my-3 block">e.g. Your reservation has started</span>
+      <div>
+        <span
+          (click)="showMoreInfoDialog()"
+          class="cursor-pointer text-sm font-bold my-3 text-primary"
+          >Click here</span
+        >
+        <span class="text-sm my-3"> for a more detailed explanation.</span>
+      </div>
     </div>
 
     <p-inputSwitch [formControl]="checked"></p-inputSwitch>
@@ -418,6 +425,42 @@
   </div>
 </p-dialog>
 
+<p-dialog
+  header="Notification Preferences"
+  [draggable]="false"
+  [(visible)]="moreInfoShown"
+  [modal]="true"
+  [breakpoints]="{ '375px': '90vw' }"
+  [style]="{ width: '25vw' }"
+>
+  <div class="flex flex-column gap-3 justify-content-center align-items-start">
+    <h6 class="text-base m-0">
+      By default, your account will receive important system emails and updates,
+      including:
+    </h6>
+    <div>
+      <p class="m-0">System emails:</p>
+      <ul class="m-0 list-disc">
+        <li>Credentials</li>
+        <li>Password reset links</li>
+        <li>Successful password reset</li>
+        <li>One-Time Passwords (OTPs)</li>
+      </ul>
+    </div>
+    <div>
+      <p class="m-0">
+        Some of these emails are reservation-related and these notifications can be turned on or off as per your preference:
+      </p>
+      <ul class="m-0 list-disc">
+        <li>Reservation applications</li>
+        <li>
+          Reservation status updates (approved, rejected, aborted, started)
+        </li>
+      </ul>
+    </div>
+  </div>
+</p-dialog>
+
 <p-toast
   position="bottom-center"
   key="bc"
@@ -453,7 +496,7 @@
             pButton
             class="py-2 px-3 p-button-success"
             [disabled]="isProcessing"
-            [label]="isProcessing? 'Saving...': 'Save Changes'"
+            [label]="isProcessing ? 'Saving...' : 'Save Changes'"
             type="button"
             (click)="saveChanges()"
           ></button>
