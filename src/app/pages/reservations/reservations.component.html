@@ -91,13 +91,14 @@
         <!-- <td>{{ reservation.startTime | date : "shortTime" }}</td>
         <td>{{ reservation.endTime | date : "shortTime" }}</td> -->
         <td>{{ reservation.status }}</td>
-        <td *ngIf="reservation.status != 'STARTED'">
+        <td>
           <button
             pButton
             pRipple
             pTooltip="Cancel"
             tooltipPosition="bottom"
             icon="pi pi-times"
+            [disabled]="reservation.status == 'STARTED'"
             class="p-button-rounded p-button-danger"
             (click)="confirm(reservation)"
           ></button>
