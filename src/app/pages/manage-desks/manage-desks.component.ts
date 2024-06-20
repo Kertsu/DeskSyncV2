@@ -273,6 +273,10 @@ export class ManageDesksComponent {
 
   loadDesks(event: any) {
     this.loading = true;
+    event = {
+      ...event,sortField: 'deskNumber'
+    }
+    console.log(event)
     const params = this.paramsBuilder.buildParams(event);
     this.webService.getDesks(params).subscribe((res: any) => {
       this.desks = res.desks;
