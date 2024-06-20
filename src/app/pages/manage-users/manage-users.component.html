@@ -10,7 +10,7 @@
         class="p-button-success mr-2"
         (click)="openNew()"
       ></button>
-      <button
+      <!-- <button
         pButton
         pRipple
         label="Delete"
@@ -18,7 +18,7 @@
         class="p-button-danger"
         (click)="deleteSelectedUsers()"
         [disabled]="!selectedUsers || !selectedUsers.length"
-      ></button>
+      ></button> -->
     </ng-template>
   </p-toolbar>
 
@@ -62,9 +62,9 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 4rem">
+        <!-- <th style="width: 4rem">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
+        </th> -->
         <!-- <th>Avatar</th> -->
         <th pSortableColumn="username">
           Name <p-sortIcon field="username"></p-sortIcon>
@@ -78,11 +78,10 @@
         <th pSortableColumn="isDisabled">
           Status <p-sortIcon field="isDisabled"></p-sortIcon>
         </th>
-        <th></th>
-        <th></th>
+        <th>Actions</th>
       </tr>
       <tr>
-        <th style="width: 4rem"></th>
+        <!-- <th style="width: 4rem"></th> -->
         <th>
           <p-columnFilter type="text" field="username"></p-columnFilter>
         </th>
@@ -136,17 +135,16 @@
           </p-columnFilter>
         </th>
         <th></th>
-        <th></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-user>
       <tr>
-        <td>
+        <!-- <td>
           <p-tableCheckbox
             *ngIf="userService.getUser().id != user.id"
             [value]="user"
           ></p-tableCheckbox>
-        </td>
+        </td> -->
         <!-- <td>
             <p-avatar image="{{ user.avatar }}" shape="circle"></p-avatar>
           </td> -->
@@ -172,18 +170,16 @@
             pTooltip="Edit"
             tooltipPosition="top"
           ></button>
-        </td>
-        <td>
           <button
-            [disabled]="userService.getUser()._id == user.id"
-            pButton
-            pRipple
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-warning"
-            (click)="deleteUser(user)"
-            pTooltip="Delete"
-            tooltipPosition="top"
-          ></button>
+          [disabled]="userService.getUser()._id == user.id"
+          pButton
+          pRipple
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-warning"
+          (click)="deleteUser(user)"
+          pTooltip="Delete"
+          tooltipPosition="top"
+        ></button>
         </td>
       </tr>
     </ng-template>
