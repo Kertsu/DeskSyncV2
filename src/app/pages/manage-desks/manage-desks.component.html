@@ -10,7 +10,7 @@
           class="p-button-success mr-2"
           (click)="openNew()"
         ></button>
-        <button
+        <!-- <button
           pButton
           pRipple
           label="Delete"
@@ -18,7 +18,7 @@
           class="p-button-danger"
           (click)="deleteSelectedDesks()"
           [disabled]="!selectedDesks || !selectedDesks.length"
-        ></button>
+        ></button> -->
       </ng-template>
       <!-- <ng-template pTemplate="right">
           <form [formGroup]="areaForm">
@@ -75,9 +75,9 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 4rem">
+          <!-- <th style="width: 4rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-          </th>
+          </th> -->
           <th pSortableColumn="deskNumber">
             Desk <p-sortIcon field="deskNumber"></p-sortIcon>
           </th>
@@ -88,14 +88,14 @@
               Rating
             </th> -->
           <th>Status</th>
-          <th></th>
+          <th>Actions</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-desk>
         <tr>
-          <td>
+          <!-- <td>
             <p-tableCheckbox [value]="desk"></p-tableCheckbox>
-          </td>
+          </td> -->
           <td>
             {{ desk.title }}
           </td>
