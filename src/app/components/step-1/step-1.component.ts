@@ -40,6 +40,12 @@ export class Step1Component implements OnInit, OnDestroy {
       title: 'Workstation',
       coords: '1024,33,2037,1684',
       shape: 'rect',
+      clickable: {
+        top: 1.3,
+        left: 25.95,
+        height: 43.9,
+        width: 24.525,
+      },
     },
     {
       id: 2,
@@ -47,6 +53,12 @@ export class Step1Component implements OnInit, OnDestroy {
       title: 'Left-Wing Main Office',
       coords: '29,1698,1067,2984',
       shape: 'rect',
+      clickable: {
+        top: 56.25,
+        left: 1,
+        width: 25.54,
+        height: 42.6,
+      },
     },
     {
       id: 3,
@@ -54,6 +66,12 @@ export class Step1Component implements OnInit, OnDestroy {
       title: 'Right-Wing Main Office',
       coords: '1952,1694,2979,2984',
       shape: 'rect',
+      clickable: {
+        top: 56.25,
+        left: 49,
+        height: 42.6,
+        width: 25.25,
+      },
     },
   ];
 
