@@ -1,28 +1,49 @@
 <div class="w-full flex flex-column gap-3">
-    <div class="w-full flex-row flex gap-3">
-      <div class="flex gap-3 flex-column lg:w-7">
-        <app-inform info="You can directly choose an area on the map"/>
+  <div class="w-full flex-row flex gap-3">
+    <div class="flex gap-3 flex-column lg:w-7">
+      <app-inform info="You can directly choose an area on the map" />
 
-        <form
-          class="w-full flex flex-column-reverse justify-content-center align-items-center gap-3 md:flex-row-reverse lg:hidden"
-          [formGroup]="form"
-        >
-          <p-dropdown
-            class="w-full"
-            formControlName="selectedArea"
-            [options]="areas"
-            optionLabel="name"
-            placeholder="Select an Area"
-          ></p-dropdown>
-        </form>
-  
+      <form
+        class="w-full flex flex-column-reverse justify-content-center align-items-center gap-3 md:flex-row-reverse lg:hidden"
+        [formGroup]="form"
+      >
+        <p-dropdown
+          class="w-full"
+          formControlName="selectedArea"
+          [options]="areas"
+          optionLabel="name"
+          placeholder="Select an Area"
+        ></p-dropdown>
+      </form>
+
+      <div
+        class="flex justify-content-center align-items-center relative mx-auto"
+        style="max-width: max-content"
+      >
         <img
           src="../../../assets/images/map/office-area/floor-map.png"
-          usemap="#image-map"
-          class="w-full shadow-4"
+          class="w-full max-w-max lg:max-h-30rem shadow-4"
+          style="object-fit: contain"
         />
-  
-        <map name="image-map">
+        <ng-container *ngFor="let area of mapAreas">
+          <div
+            [title]="area.title"
+            class="absolute cursor-pointer hover:bg-primary-200"
+            style="z-index: 1; opacity: .5;"
+            (click)="handleSelectArea(area.id)"
+            [pTooltip]="area.title"
+            tooltipPosition="top"
+            [ngStyle]="{
+                top: area.clickable.top + '%',
+                left: area.clickable.left + '%',
+                height: area.clickable.height + '%',
+                width: area.clickable.width + '%',
+              }"
+          ></div>
+        </ng-container>
+      </div>
+
+      <!-- <map name="image-map">
           <area
             *ngFor="let area of mapAreas"
             (click)="handleSelectArea(area.id)"
@@ -33,64 +54,66 @@
             [coords]="area.coords"
             shape="{{ area.shape }}"
           />
-        </map>
-      </div>
-      <div class="flex flex-column gap-3 w-full lg:w-5">
-        <div
-          style="height: 97%"
-          [ngStyle]="{ 'height: 95%': areaNumber == 1 }"
-          class="hidden lg:flex justify-content-center align-items-center p-3 w-full border-1 surface-border border-round"
-        >
-          <img
-            style="max-width: 90%; object-fit: contain"
-            *ngIf="areaNumber !== undefined"
-            class="max-h-full mx-auto shadow-4"
-            [src]="
-              '../../../assets/images/map/office-area/Area ' + areaNumber + ' Numbered.png'
-            "
-            alt=""
-          />
-          <img
-            style="max-width: 90%"
-            *ngIf="areaNumber === undefined"
-            class="mx-auto shadow-4"
-            [src]="'../../../assets/images/map/office-area/no-image.jpg'"
-            alt=""
-          />
-        </div>
-      </div>
+        </map> -->
     </div>
-  
-    <div class="flex flex-column w-full surface-border border-round border-1 p-3">
-      <h3 class="m-0 text-color-secondary text-base">Area Info</h3>
-      <p-divider></p-divider>
-  
-      <div class="flex flex-column gap-3">
-        <div class="flex flex-column gap-3">
-          <h5 class="text-color-secondary text-base m-0">Area:</h5>
-          <h3
-            class="text-base text-color-secondary m-0 surface-ground border-round p-2"
-          >
-            {{ area ? area : "Select an area above" }}
-          </h3>
-        </div>
-  
-        <div class="flex justify-content-between align-items center">
-          <button
-            pButton
-            class="py-2 px-3 p-button-warning"
-            label="Reset"
-            type="button"
-            (click)="reset()"
-          ></button>
-          <button
-            pButton
-            class="py-2 px-3 p-button-success"
-            label="Next"
-            type="button"
-            (click)="next()"
-          ></button>
-        </div>
+    <div class="hidden lg:flex flex-column gap-3 lg:w-full lg:w-5">
+      <div
+        style="height: 97%"
+        [ngStyle]="{ 'height: 95%': areaNumber == 1 }"
+        class="hidden lg:flex justify-content-center align-items-center p-3 w-full border-1 surface-border border-round"
+      >
+        <img
+          style="max-width: 90%; object-fit: contain"
+          *ngIf="areaNumber !== undefined"
+          class="max-h-full mx-auto shadow-4"
+          [src]="
+            '../../../assets/images/map/office-area/Area ' +
+            areaNumber +
+            ' Numbered.png'
+          "
+          alt=""
+        />
+        <img
+          style="max-width: 90%"
+          *ngIf="areaNumber === undefined"
+          class="mx-auto shadow-4"
+          [src]="'../../../assets/images/map/office-area/no-image.jpg'"
+          alt=""
+        />
       </div>
     </div>
   </div>
+
+  <div class="flex flex-column w-full surface-border border-round border-1 p-3">
+    <h3 class="m-0 text-color-secondary text-base">Area Info</h3>
+    <p-divider></p-divider>
+
+    <div class="flex flex-column gap-3">
+      <div class="flex flex-column gap-3">
+        <h5 class="text-color-secondary text-base m-0">Area:</h5>
+        <h3
+          class="text-base text-color-secondary m-0 surface-ground border-round p-2"
+        >
+          {{ area ? area : "Select an area above" }}
+        </h3>
+      </div>
+
+      <div class="flex justify-content-between align-items center">
+        <button
+          pButton
+          class="py-2 px-3 p-button-warning"
+          label="Reset"
+          type="button"
+          (click)="reset()"
+        ></button>
+        <button
+          pButton
+          class="py-2 px-3 p-button-success"
+          label="Next"
+          type="button"
+          (click)="next()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>
