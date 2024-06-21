@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -1132,7 +1132,7 @@ export class Step2Component implements OnInit {
     private reservationService: ReservationService,
     private router: Router,
     private webService: WebService,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -1163,10 +1163,10 @@ export class Step2Component implements OnInit {
           this.getReservations(() => {
             this.getDesks(this.params);
             this.updateDeskStatus();
-              self.selectedDesk = res.selectedDesk;
-              if (self.selectedDesk) {
-                self.getDeskProperties(self.selectedDesk?.deskNumber);
-              }
+            self.selectedDesk = res.selectedDesk;
+            if (self.selectedDesk) {
+              self.getDeskProperties(self.selectedDesk?.deskNumber);
+            }
           });
         }
       },
@@ -1245,8 +1245,7 @@ export class Step2Component implements OnInit {
           callback();
         }
       },
-      error: (err: any) => {
-      },
+      error: (err: any) => {},
     });
   }
 
@@ -1358,8 +1357,7 @@ export class Step2Component implements OnInit {
       next: (res: any) => {
         this.desks = res.desks;
       },
-      error: (err: any) => {
-      },
+      error: (err: any) => {},
       complete: () => {
         this.getOptions();
       },
