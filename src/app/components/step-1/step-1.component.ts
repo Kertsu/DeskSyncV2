@@ -1,10 +1,7 @@
 import {
-  AfterViewInit,
   Component,
-  ElementRef,
   OnDestroy,
   OnInit,
-  ViewChild,
 } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +10,6 @@ import { Subscription } from 'rxjs';
 import { MessageService } from '../../utils/message.service';
 import { ReservationService } from '../../services/reservation.service';
 import { ReservationRequest } from '../../requests/ReservationRequest';
-declare const imageMapResize: any;
 
 interface Area {
   name: string;
@@ -93,7 +89,6 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.resizeMap();
 
     this.formSubscription = this.form.valueChanges.subscribe((res) => {
       if (res.selectedArea) {
@@ -125,12 +120,6 @@ export class Step1Component implements OnInit, OnDestroy {
     this.form
       .get('selectedArea')
       ?.setValue({ name: this.area, number: this.areaNumber });
-  }
-
-  resizeMap() {
-    setTimeout(() => {
-      imageMapResize();
-    }, 300);
   }
 
   reset() {
