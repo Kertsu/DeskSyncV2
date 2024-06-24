@@ -1,5 +1,5 @@
   <p-toast></p-toast>
-  <p-toolbar styleClass="mb-4 gap-2">
+  <!-- <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
       <button
         pButton
@@ -11,7 +11,7 @@
         [disabled]="!selectedReservations || !selectedReservations.length"
       ></button>
     </ng-template>
-  </p-toolbar>
+  </p-toolbar> -->
 
   <p-table
     styleClass="p-datatable-gridlines"
@@ -55,9 +55,9 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 4rem">
+        <!-- <th style="width: 4rem">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
+        </th> -->
         <th>Desk</th>
         <th>Desk Image</th>
         <th pSortableColumn="date">
@@ -75,9 +75,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-reservation>
       <tr>
-        <td>
+        <!-- <td>
           <p-tableCheckbox [value]="reservation"></p-tableCheckbox>
-        </td>
+        </td> -->
         <td>{{ reservation.deskNumber }}</td>
         <td>
           <img
