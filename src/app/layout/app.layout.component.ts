@@ -286,10 +286,23 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
                 this.driverObj.moveNext();
               }, 200);
             },
+            onPrevClick: () => {
+              if (
+                this.router.routerState.snapshot.url ===
+                '/hdbsv2/book/office-area'
+              ) {
+                this.router.navigate(['/hdbsv2']);
+                setTimeout(() => {
+                  this.driverObj.movePrevious();
+                }, 200);
+                return;
+              }
+              this.driverObj.movePrevious();
+            },
           },
         },
         {
-          element: '[usemap="#image-map"]',
+          element: '#office-map',
           popover: {
             title: 'Office map',
             description: `You can directly choose your preferred area on this map`,
@@ -325,14 +338,17 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
             title: 'Calendar',
             description: `Open the calendar first`,
             onNextClick: () => {
-              const button = document.querySelector(
-                '[formcontrolname="date"] > span > button'
-              ) as HTMLButtonElement;
-              button.click();
-
+              this.openCalendar(() => {
+                setTimeout(() => {
+                  this.driverObj.moveNext();
+                }, 150);
+              });
+            },
+            onPrevClick: () => {
+              this.router.navigate(['hdbsv2/book/office-area']);
               setTimeout(() => {
-                this.driverObj.moveNext();
-              }, 150);
+                this.driverObj.movePrevious();
+              }, 200);
             },
           },
         },
@@ -345,14 +361,30 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
               const date = currentDate.getDate();
               dateToSelect = date + 3;
 
-              const button = document.querySelector(
+              const btnElements = document.querySelectorAll(
                 `td[aria-label="${dateToSelect}"] > span`
-              ) as HTMLElement;
-              button.click();
+              );
+
+              let btn;
+
+              if (btnElements.length > 1) {
+                btn = btnElements[btnElements.length - 1] as HTMLElement;
+                btn.click();
+              }
+
+              btn = btnElements[0] as HTMLElement;
+              btn.click();
 
               setTimeout(() => {
                 this.driverObj.moveNext();
-              }, 200);
+              }, 380);
+            },
+            onPrevClick: () => {
+              this.openCalendar(() => {
+                setTimeout(() => {
+                  this.driverObj.movePrevious();
+                }, 200);
+              });
             },
           },
         },
@@ -370,7 +402,14 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
 
               setTimeout(() => {
                 this.driverObj.moveNext();
-              }, 500);
+              }, 550);
+            },
+            onPrevClick: () => {
+              this.openCalendar(() => {
+                setTimeout(() => {
+                  this.driverObj.movePrevious();
+                }, 150);
+              });
             },
           },
         },
@@ -433,6 +472,12 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
           popover: {
             title: 'Back to previous step',
             description: `You can go back to the previous step`,
+            onPrevClick: () => {
+              this.router.navigate(['/hdbsv2/book/desk-area']);
+              setTimeout(() => {
+                this.driverObj.moveTo(5);
+              }, 200);
+            }
           },
         },
         {
@@ -448,10 +493,9 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
             title: 'Final step',
             description: `Easy as that. Go start booking now!`,
             onNextClick: () => {
-              this.router.navigate(['/hdbsv2/'])
+              this.router.navigate(['/hdbsv2/']);
               this.webService.onboard().subscribe({
-                next: (res:any) => {
-                },
+                next: (res: any) => {},
                 error: (error) => {
                   if (error)
                     this.messageService.addMessage(
@@ -464,8 +508,7 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
                     this.userService.logout();
                   }, 300);
                 },
-                complete: () => {
-                },
+                complete: () => {},
               });
 
               setTimeout(() => {
@@ -480,6 +523,17 @@ export class AppLayoutComponent implements OnDestroy, OnInit, AfterViewInit {
 
     if (!user.hasOnboard) {
       this.driverObj.drive();
+    }
+  }
+
+  openCalendar(callback?: () => void) {
+    const button = document.querySelector(
+      '[formcontrolname="date"] > span > button'
+    ) as HTMLButtonElement;
+    button.click();
+
+    if (callback) {
+      callback();
     }
   }
 }
