@@ -1,1 +1,50 @@
-<p>faqs works!</p>
+<div class="card">
+  <div class="w-full flex flex-column gap-3">
+    <div class="flex flex-column gap-3 lg:flex-row w-full lg:align-items-center">
+      <div class="flex flex-column w-full gap-3 lg:w-6">
+        <h1 class="text-color-secondary font-semibold m-0 text-5xl lg:text-7xl">
+          Frequently Asked Questions
+        </h1>
+
+        <h5 class="m-0">
+          Need a hand? We've got your back. We're here to answer all your
+          questions.
+        </h5>
+        <p class="m-0">
+          If you're new to DeskSync, this will help you understand more about
+          the platform.
+        </p>
+      </div>
+      <div
+        class="flex flex-column gap-3 justify-content-center align-items-center w-full lg:w-6"
+      >
+        <img
+          class="w-full md:w-6"
+          style="aspect-ratio: 1/1; object-fit: contain"
+          src="../../../assets/images/authenticated/faq.svg"
+          alt="Questions"
+        />
+      </div>
+    </div>
+    <div class="flex flex-column lg:gap-3 lg:flex-row w-full">
+      <div class="flex flex-column gap-3 w-full lg:w-6">
+        <p-accordion>
+          @for (item of faqs.slice(0, 5); track $index) {
+          <p-accordionTab [header]="item.title">
+            <p>{{ item.description }}</p>
+          </p-accordionTab>
+          }
+        </p-accordion>
+      </div>
+      <div class="flex flex-column gap-3 w-full lg:w-6">
+        <p-accordion>
+          @for (item of faqs.slice(5, faqs.length); track $index) {
+          <p-accordionTab [header]="item.title">
+            <p>{{ item.description }}</p>
+          </p-accordionTab>
+          }
+        </p-accordion>
+      </div>
+    </div>
+  </div>
+</div>
