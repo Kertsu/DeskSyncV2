@@ -82,11 +82,11 @@ export class AppMenuComponent implements OnInit {
                 icon: 'pi pi-fw pi-question',
                 routerLink: ['faqs'],
               },
-              {
-                label: 'Guides',
-                icon: 'pi pi-fw pi-tablet',
-                routerLink: ['guides'],
-              },
+              // {
+              //   label: 'Guides',
+              //   icon: 'pi pi-fw pi-tablet',
+              //   routerLink: ['guides'],
+              // },
             ],
           },
           {
