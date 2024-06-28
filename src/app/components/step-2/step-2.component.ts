@@ -1165,6 +1165,7 @@ export class Step2Component implements OnInit {
             this.updateDeskStatus();
             self.selectedDesk = res.selectedDesk;
             if (self.selectedDesk) {
+              this.isLoading = true;
               self.getDeskProperties(self.selectedDesk?.deskNumber);
             }
           });
@@ -1362,5 +1363,9 @@ export class Step2Component implements OnInit {
         this.getOptions();
       },
     });
+  }
+
+  deskExist(deskNumber: number): boolean {
+    return this.desks.some((desk) => desk.deskNumber === deskNumber);
   }
 }
