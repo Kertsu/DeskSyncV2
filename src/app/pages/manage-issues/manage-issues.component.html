@@ -87,9 +87,9 @@
               </div>
           </td>
           <td>
-           {{deskReport.desk.deskNumber}}
+           {{deskReport.desk ? deskReport.desk.deskNumber : "No desk assigned to this report"}}
           </td>
-          <td><img class="h-4rem shadow-4" style="object-fit: contain;" [src]="getImage(deskReport.desk)" alt="Hotdesk"></td>
+          <td><img *ngIf="deskReport.desk" class="h-4rem shadow-4" style="object-fit: contain;" [src]="getImage(deskReport.desk)" alt="Hotdesk"></td>
           <td>{{deskReport.report}}</td>
           <td>{{deskReport.status}}</td>
           <td>{{ deskReport.date | date : "mediumDate" }}</td>
