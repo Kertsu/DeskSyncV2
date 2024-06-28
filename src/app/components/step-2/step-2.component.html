@@ -16,6 +16,7 @@
         />
         <ng-container *ngFor="let desk of areaData.desks">
           <div
+            *ngIf="deskExist(desk.deskNumber)"
             class="absolute"
             [ngStyle]="{
                 top: desk.indicators.top + '%',
@@ -33,7 +34,8 @@
         </ng-container>
         <ng-container *ngFor="let desk of areaData.desks">
           <div
-          [title]="desk.title"
+            *ngIf="deskExist(desk.deskNumber)"
+            [title]="desk.title"
             class="absolute cursor-pointer"
             (click)="handleSelectDesk(desk)"
             style="z-index: 1"
@@ -44,6 +46,18 @@
               left: desk.clickable?.left + '%',
               height: desk.clickable?.height + '%',
               width: desk.clickable?.width + '%',
+            }"
+          ></div>
+          <div
+            *ngIf="!deskExist(desk.deskNumber)"
+            class="absolute"
+            style="z-index: 1"
+            [ngStyle]="{
+              top: desk.clickable?.top + '%',
+              left: desk.clickable?.left + '%',
+              height: desk.clickable?.height + '%',
+              width: desk.clickable?.width + '%',
+              backgroundColor: 'white'
             }"
           ></div>
         </ng-container>
@@ -71,7 +85,7 @@
     <div class="w-full flex flex-column gap-3">
       <form [formGroup]="formGroup" class="w-full flex flex-column gap-3">
         <p-calendar
-        #calendar
+          #calendar
           formControlName="date"
           styleClass="w-full"
           [touchUI]="true"
@@ -108,6 +122,24 @@
       <!-- <div *ngIf="selectedDate && selectedDesk && isLoading"
           class="flex flex-column w-full surface-border surface-ground border-round border-1 p-3 gap-3"
         ></div> -->
+
+      <div
+        *ngIf="selectedDate && selectedDesk && isLoading"
+        class="flex flex-column w-full surface-border border-round border-1 p-3 gap-3"
+      >
+        <div
+          class="w-full flex justify-content-between align-items-center pb-3 border-bottom-1 surface-border"
+        >
+          <p-skeleton height="2rem" width="6rem" />
+          <p-skeleton height="2rem" width="6rem" />
+        </div>
+        <div class="max-h-10rem h-10rem mx-auto">
+          <p-skeleton width="20rem" height="10rem"></p-skeleton>
+        </div>
+
+        <p-skeleton class="w-full" height="3rem"></p-skeleton>
+        <p-skeleton class="w-full" height="2rem"></p-skeleton>
+      </div>
 
       <div
         *ngIf="selectedDate && selectedDesk && !isLoading"
